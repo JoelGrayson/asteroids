@@ -181,7 +181,7 @@ int vsnprintf(char *buf, size_t bufsize, const char *format, va_list args) {
             
             switch (*format) { //determines the type of special sequence
                 case '%': {
-                    constructed_string[0] = ':';
+                    constructed_string[0] = '%';
                     constructed_string[1] = '\0';
                     break;
                 }
