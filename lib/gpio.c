@@ -1,13 +1,16 @@
 /* File: gpio.c
  * ------------
- * Control the GPIO with these functions
+ * ***** D1-H Mango Pi microcontroller GPIO pin basic control and monitoring functions implemented here. *****
  */
+#include <stdbool.h>
 #include "gpio.h"
-#include <stddef.h>
+
+// Defines for GPIO memory location and CFG0 offset from that location
+#define GPIO         0x02000000
+#define PB_CFG0_OFF  0x30
 
 enum { GROUP_B = 0, GROUP_C, GROUP_D, GROUP_E, GROUP_F, GROUP_G };
-
-typedef struct  {
+typedef struct {
     unsigned int group;
     unsigned int pin_index;
 } gpio_pin_t;
@@ -42,6 +45,12 @@ bool gpio_id_is_valid(gpio_id_t pin) {
     }
 }
 
+// Helper function that returns whether a GPIO input function is valid
+// (not calling a reserved function and within 4 bits, that is, < 16).
+static bool gpio_func_is_valid(unsigned int function) {
+    return (function < 16) && (function < 9 || function > 13);
+}
+
 // Helper function suggestion that returns address of config0
 // register for a gpio group, i.e. get_cfg0_reg(GROUP_B)
 // Refer to D1-H user manual to identify address of config0 register
@@ -49,24 +58,18 @@ bool gpio_id_is_valid(gpio_id_t pin) {
 // config2 registers can be computed as relative offset from config0.
 // (can discard this function if it doesn't fit with your design)
 static volatile unsigned int *get_cfg0_reg(unsigned int group) {
-    // 0x20...30 is PB_CFG0
-    // 0x20...60 is PC_CFG0 //this is 0x30 ahead and each int represents 0x04 so this is 12 required. 0x30 / 4 = 48 / 4 = 12
-    // 0x20...90 is PD_CFG0
-    
-    long addr = 0x02000000 + 0x30;
-    addr += 0x30 * group;
-    return (volatile unsigned int *)addr;
+    // Aborts with invalid request return if an invalid gpio group number (> 5) is specified.
+    if(group > 5) { return (volatile unsigned int*)GPIO_INVALID_REQUEST; }
+
+    // CFG0 registers for each gpio group are separated by 0x30 bytes in succession.
+    //volatile unsigned int* cfg0_reg = (volatile unsigned int*)GPIO + cfg0_reg += (PB_CFG0_OFF + (0x30*group));
+    return (volatile unsigned int*)GPIO + ((PB_CFG0_OFF + (0x30*group))/4);
 }
 
 // Similar to above, get address of data register for a gpio group
 // (can discard this function if it doesn't fit with your design)
 static volatile unsigned int *get_data_reg(unsigned int group) {
-    // 0x20...40 is PB_DATA
-    // 0x20...70 is PC_DATA
-
-    long addr = 0x02000000 + 0x40;
-    addr += 0x30 * group;
-    return (volatile unsigned int *)addr;
+    return get_cfg0_reg(group)+(0x10/4); // DAT registers for gpio group always 16 bytes (4 ints) after CFG0 register. So can re-use code/error checking from b4.
 }
 
 void gpio_init(void) {
@@ -81,95 +84,82 @@ void gpio_set_output(gpio_id_t pin) {
     gpio_set_function(pin, GPIO_FN_OUTPUT);
 }
 
-/** gpio_set_function takes in a pin and sets it to a function
- * It must take the address in cfg_0_reg and update it to a new value at the pin index to function
- */
 void gpio_set_function(gpio_id_t pin, unsigned int function) {
-    bool invalid_pin = !gpio_id_is_valid(pin);
-    bool invalid_function = function > 0b1111;
-    if (invalid_pin || invalid_function) //don't do anything if invalid
-        return;
+    // Aborts function call if gpio pin is invalid
+    if(!gpio_id_is_valid(pin)) { return; }
+    
+    // Aborts function call if gpio function is invalid
+    if(!gpio_func_is_valid(function)) { return; }
 
+    // Calculates pointer to memory of the desired gpio pin configuration register
+    gpio_pin_t pin_loc = get_group_and_index(pin);
+    volatile unsigned int* cfg_ptr = get_cfg0_reg(pin_loc.group)+(pin_loc.pin_index/8); // Uses rounding rules of integer division in C to our advantage!
+   
+    // The gpio function enums are fortunately already in the correct bitmasking once reduced to their 4 least significant bits!
+    // The trick is to correctly mask them over the preexisting register bits at the right (valid) data location! This is what I do:
 
-        
-    gpio_pin_t gp = get_group_and_index(pin);
+    // Wipes previous configuration data at desired 4-bit interval of CFG register.
+    unsigned int four_bits_of_annihilation = 0xf;
+    four_bits_of_annihilation <<= (pin_loc.pin_index*4);
+    four_bits_of_annihilation ^= 0xffffffff;
+    *cfg_ptr &= four_bits_of_annihilation;
 
-    volatile unsigned int *cfg_0_reg = get_cfg0_reg(gp.group);
-    unsigned int pin_index = gp.pin_index;
-    // Each memory address points to an unsigned int, of 32 bits. That is 8 x 4, which is for 8 GPIO pins functions. Thus, after 8 GPIO pins, you should point to the next word.
-    if (pin_index < 8) { // 0 to 7
-        // CFG0
-    } else if (pin_index >= 8 && pin_index <= 15) {
-        // CFG1. Go from 0x30 to 0x34 offset. That is, the address goes up by 4 bytes or 8 nibbles.
-        cfg_0_reg++;
-    } else if (pin_index >= 16) {
-        // CFG2 is 8 bits above cfg_0
-        cfg_0_reg += 2;
-    }
-    pin_index = pin_index % 8;
-
-    volatile unsigned int old_value = *cfg_0_reg; //read old value
-
-    volatile unsigned int mask = ~(0b1111 << pin_index * 4); // 1111 1111 1111 1111 1111 0000 1111 1111 for pin_index==2
-    volatile unsigned int erased_the_correct_nibble = old_value & mask;
-    volatile unsigned int inserted_the_correct_nibble = erased_the_correct_nibble | (function << (pin_index * 4));
-    *cfg_0_reg = inserted_the_correct_nibble; //write new value
+    // Sets desired 4-bit interval to our desired function
+    function <<= (pin_loc.pin_index*4);
+    *cfg_ptr |= function;
 }
 
 unsigned int gpio_get_function(gpio_id_t pin) {
-    bool is_valid = gpio_id_is_valid(pin);
-    if (!is_valid)
-        return GPIO_INVALID_REQUEST;
+    // Aborts function with return of invalid request if the pin provided is invalid
+    if(!gpio_id_is_valid(pin)) { return GPIO_INVALID_REQUEST; }
 
-    gpio_pin_t gp = get_group_and_index(pin);
-
-    volatile unsigned int *cfg_0_reg = get_cfg0_reg(gp.group);
-    unsigned int pin_index = gp.pin_index;
-    // Each memory address points to an unsigned int, of 32 bits. That is 8 x 4, which is for 8 GPIO pins functions. Thus, after 8 GPIO pins, you should point to the next word.
-    if (pin_index < 8) { // 0 to 7
-        // CFG0
-    } else if (pin_index >= 8 && pin_index <= 15) {
-        // CFG1. Go from 0x30 to 0x34 offset. That is, the address goes up by 4 bytes or 8 nibbles.
-        cfg_0_reg++;
-    } else if (pin_index >= 16) {
-        // CFG2 is 8 bits above cfg_0
-        cfg_0_reg += 2;
-    }
-    pin_index = pin_index % 8;
-
-    volatile unsigned int whole_word = *cfg_0_reg; //read the word. 8 nibbles of data. Need to bitshift to find the right one
-    volatile unsigned int the_value = (whole_word >> (pin_index * 4)) & 0b1111; //just get the correct nibble
-    return the_value;
+    // Calculates pointer to memory of the desired gpio pin configuration register
+    gpio_pin_t pin_loc = get_group_and_index(pin);
+    volatile unsigned int* cfg_ptr = get_cfg0_reg(pin_loc.group)+(pin_loc.pin_index/8); // Uses rounding rules of integer division in C to our advantage!
+    
+    unsigned int function = *cfg_ptr; // Derefences 4 bytes after the cfg start pointer to load into function.
+    // Reduces 32-bit config block to only the desired GPIO pins' function, then returns.
+    function >>= (pin_loc.pin_index*4);
+    function &= 0x0000000f;
+    return function;
 }
 
 void gpio_write(gpio_id_t pin, int value) {
-    bool is_valid = gpio_id_is_valid(pin);
-    if (!is_valid) //don't do anything if invalid
-        return;
+    // Aborts function if gpio pin provided is invalid
+    if(!gpio_id_is_valid(pin)) { return; }
+    // Aborts function if gpio pin is not already set to OUTPUT
+    if(gpio_get_function(pin) != GPIO_FN_OUTPUT) { return; }
+    
+    // Aborts for invalid non-single-bit value inputs to gpio_write.
+    if((value & 0xfffffffe) != 0) { return; }
 
-    gpio_pin_t gp = get_group_and_index(pin);
-    volatile unsigned int *addr = get_data_reg(gp.group);
+    // Calculates pointer to memory of the desired gpio pin data register
+    gpio_pin_t pin_loc = get_group_and_index(pin);
+    volatile unsigned int* dat_ptr = get_data_reg(pin_loc.group);
+   
+    // Wipes previous data at desired DAT register bit.
+    unsigned int bit_of_annihilation = 1;
+    bit_of_annihilation <<= (pin_loc.pin_index);
+    bit_of_annihilation ^= 0xffffffff;
+    *dat_ptr &= bit_of_annihilation;
 
-    // Returns a word of data. First 12 (PB) or 23 (PD) bits is the data. Rest is irrelevant
-    volatile unsigned int old_value = *addr;
-    volatile unsigned int mask = ~(1 << gp.pin_index); //11111011
-    volatile unsigned int erased = old_value & mask;
-    volatile unsigned int new_value = erased | (value << gp.pin_index);
-
-    *addr = new_value;
+    // Sets desired data register bit to our desired value
+    value <<= (pin_loc.pin_index);
+    *dat_ptr |= value;
 }
 
 int gpio_read(gpio_id_t pin) {
-    bool is_valid = gpio_id_is_valid(pin);
-    if (!is_valid)
-        return GPIO_INVALID_REQUEST;
-
-    gpio_pin_t gp = get_group_and_index(pin);
-    volatile unsigned int *addr = get_data_reg(gp.group);
-
-    // Returns a word of data. First 12 bits is the data. Rest is irrelevant
-    volatile unsigned int whole_word = *addr;
-    volatile int the_value = (whole_word >> gp.pin_index) & 0b1;
-    return the_value;
+    // Checks if gpio pin type provided is an actually valid pin
+    if(!gpio_id_is_valid(pin)) { return GPIO_INVALID_REQUEST; }
+    
+    // Calculates pointer to memory of the desired gpio pin data register
+    gpio_pin_t pin_loc = get_group_and_index(pin);
+    volatile unsigned int* dat_ptr = get_data_reg(pin_loc.group);
+    
+    // Reads desired DAT register bit into integer.
+    int bit_read = 1;
+    bit_read <<= (pin_loc.pin_index);
+    bit_read &= *dat_ptr;
+    bit_read >>= (pin_loc.pin_index);
+    return bit_read;
 }
-
