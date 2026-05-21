@@ -1,7 +1,7 @@
 RUN_PROGRAM = main.bin
 
 # Own custom implementations in lib/
-LIB_SOURCES = lib/printf.o
+LIB_SOURCES = lib/printf.o lib/malloc.o
 
 
 run: $(RUN_PROGRAM)
