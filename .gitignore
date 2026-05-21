@@ -1,5 +1,5 @@
 .vscode
-# *.o
-# *.elf
-# *.bin
+*.o
+*.elf
+*.bin
 
