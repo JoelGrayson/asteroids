@@ -1,7 +1,7 @@
 RUN_PROGRAM = main.bin
 
 # Own custom implementations in lib/
-LIB_SOURCES = lib/printf.o lib/malloc.o
+LIB_SOURCES = lib/printf.o # lib/malloc.o lib/gpio.o
 
 
 run: $(RUN_PROGRAM)
@@ -22,4 +22,8 @@ CFLAGS = $(ARCH) -g -Og -I$$CS107E/include $$warn $$freestanding -fno-omit-frame
 
 clean: #-f for it to shut up
 	rm -f *.o *.bin *.elf
+
+
+test_maths: test_maths.bin
+	mango-run $<
 
