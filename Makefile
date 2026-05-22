@@ -16,7 +16,7 @@ LDLIBS = -lmango -lmango_gcc
 	riscv64-unknown-elf-ld $(LD_FLAGS) $^ $(LDLIBS) -o $@ 
 
 ARCH = -march=rv64im_zicsr -mabi=lp64 
-CFLAGS = $(ARCH) -g -Og -I$$CS107E/include $$warn $$freestanding -fno-omit-frame-pointer -fstack-protector-strong -Wno-builtin-declaration-mismatch #no-builtin-decoration-mismatch because we implement math functions with different type signatures
+CFLAGS = $(ARCH) -g -Og -I$$CS107E/include -fno-omit-frame-pointer -fstack-protector-strong -Wno-builtin-declaration-mismatch  #no-builtin-decoration-mismatch because we implement math functions with different type signatures
 %.o: %.c
 	riscv64-unknown-elf-gcc $(CFLAGS) -c $< -o $@
 
@@ -29,5 +29,18 @@ test_maths: test_maths_temp.bin
 	mango-run $<
 
 
+tests/maths: tests/maths.bin
+	mango-run $<
+
+
 .PRECIOUS: %.o %.elf %.bin
+
+
+
+export warn = -Wall -Wpointer-arith -Wwrite-strings -Werror \
+              -Wno-unused-function -Wno-error=unused-variable \
+              -fno-diagnostics-show-option
+# export freestanding = -ffreestanding -nostdinc \
+#                       -isystem $(shell riscv64-unknown-elf-gcc -print-file-name=include)
+export freestanding = -ffreestanding -nostdinc
 

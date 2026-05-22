@@ -1,16 +1,16 @@
-#include "assert.h"
+#include "../lib/assert.h"
 #include "printf.h"
 #include "uart.h"
 #include <stdbool.h>
 #include "../maths.h"
-// #include "rocket.h"
+#include "../rocket.h"
 
 void test_max();
 
 int main() {
     uart_init();
     printf("Testing maths %d\n", 1);
-    
+    assert(false);
 }
 
 void test_max() {

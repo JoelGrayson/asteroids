@@ -7,5 +7,7 @@ enum asteroid_type {
     three
 };
 
+extern const int x = 3;
+
 #endif
 
