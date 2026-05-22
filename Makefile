@@ -24,6 +24,6 @@ clean: #-f for it to shut up
 	rm -f *.o *.bin *.elf
 
 
-test_maths: test_maths.bin
+tests/maths: tests/maths.bin
 	mango-run $<
 
