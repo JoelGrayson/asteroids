@@ -1,3 +1,6 @@
+#ifndef MATHS_H
+#define MATHS_H
+
 #define PI 3.141592653589793
 
 // Handy number theory functions
@@ -11,3 +14,6 @@ void trig_init(unsigned int precision);
 double sine(double angle);
 double cosine(double angle);
 double tan(double angle);
+
+#endif
+

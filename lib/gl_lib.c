@@ -1,5 +1,6 @@
 #include "gl.h"
 #include <stdbool.h>
+#include "maths.h"
 
 typedef enum {
     X,
@@ -11,45 +12,6 @@ struct point {
     double x;
     double y;
 };
-
-double abs(double num) {
-    if (num < 0) {
-        return -num;
-    }
-    return num;
-}
-
-double max(double a, double b) {
-    if (a > b) {
-        return a;
-    }
-    return b;
-}
-
-double sgn(double num) {
-    if (num > 0) {
-        return 1;
-    }
-    if (num < 0) {
-        return -1;
-    }
-    return 0;
-}
-
-int round(double num) {
-    // if num's tenth's place (1.t) has t<=4 then return (int)num else return (int)num+1
-    // num*10 is xxxt.xxx
-    // (int)(num*10) is xxxt
-    // (int)(num*10) % 10 is t
-
-    int t = (int)(num * 10) % 10;
-
-    if (t <= 4) {
-        return (int)num;
-    }
-    // else t >= 5
-    return (int)num + 1;
-}
 
 void draw_line(struct point p1, struct point p2, color_t c) {
     // dx/dy is what you have to do to move from p1 to p2
