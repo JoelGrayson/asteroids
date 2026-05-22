@@ -8,6 +8,11 @@ static struct mechanics rocket_mechanics = {
     .vx = 0,
     .vy = 0,
     .ax = 0,
-    .ay = 0
+    .ay = 0,
+    .rotation = 0
 };
+
+void draw_rocket() {
+    
+}
 
