@@ -1,5 +1,10 @@
 # Asteroids
 
+Questions for Julie:
+- [ ] why is printf from `make run` leading to puts issue and cannot include maths.h properly
+- [ ] How to have 
+
+
 ### Agenda
 In parallel:
 - [ ] Audio - sound effects
