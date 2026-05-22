@@ -7,7 +7,6 @@ In parallel:
 - [ ] Button presses
 
 
-### Code Explanation
-* lib/printf.c
-* lib/uart.c provided
+### Ideas
+* Use start button press time as the random seed
 
