@@ -1,7 +1,7 @@
 RUN_PROGRAM = main.bin
 
 # Own custom implementations in lib/
-LIB_SOURCES = lib/printf.o # lib/malloc.o lib/gpio.o
+LIB_SOURCES = maths.o # lib/malloc.o lib/gpio.o
 
 
 run: $(RUN_PROGRAM)
@@ -24,6 +24,9 @@ clean: #-f for it to shut up
 	rm -f *.o *.bin *.elf
 
 
-tests/maths: tests/maths.bin
+test_maths: test_maths_temp.bin
 	mango-run $<
+
+
+.PRECIOUS: %.o %.elf %.bin
 

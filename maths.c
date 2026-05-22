@@ -47,7 +47,13 @@ void trig_init(unsigned int precision) {
 
 // Basic trig functions
 double sine(double angle) {
-    angle = angle % (2*PI); // Reduces angle to its simplest equivalent.
+    while (angle < 0) {
+        angle += 2 * PI;
+    }
+    while (angle > 2 * PI) {
+        angle -= 2 * PI;
+    }
+    // angle = angle % (2*PI); // Reduces angle to its simplest equivalent.
     int index = (int)(angle*trig_precision_scale); // Calculates index that the sin of said angle SHOULD BE AT, or is closest to it.
     return sine_table[index];
 }
@@ -55,7 +61,7 @@ double cosine(double angle) {
     return sine(angle+(PI/2));
 }
 double tan(double angle) {
-    return sine(angle)/cos(angle);
+    return sine(angle)/cosine(angle);
 }
 
 

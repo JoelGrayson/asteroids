@@ -1,8 +1,7 @@
-#include "assert.h"
 #include "printf.h"
 #include "uart.h"
-#include <stdbool.h>
-#include "../maths.h"
+#include "maths.h"
+#include "assert.h"
 
 void test_max();
 
