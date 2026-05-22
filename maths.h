@@ -15,5 +15,10 @@ double sine(double angle);
 double cosine(double angle);
 double tan(double angle);
 
+double max(double, double);
+double sgn(double);
+double abs(double);
+int round(double);
+
 #endif
 

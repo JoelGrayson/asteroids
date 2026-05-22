@@ -1,3 +1,5 @@
+// Note: this file is not used. Instead, the built-in assert.h is used from libmango
+
 #ifndef ASSERT_H
 #define ASSERT_H
 

@@ -15,7 +15,7 @@ LD_FLAGS = -nostdlib -L$$CS107E/lib -T memmap.ld -lmango -lmango_gcc
 	riscv64-unknown-elf-ld $^ $(LD_FLAGS) -o $@ 
 
 ARCH = -march=rv64im_zicsr -mabi=lp64 
-CFLAGS = $(ARCH) -g -Og -I$$CS107E/include $$warn $$freestanding -fno-omit-frame-pointer -fstack-protector-strong
+CFLAGS = $(ARCH) -g -Og -I$$CS107E/include $$warn $$freestanding -fno-omit-frame-pointer -fstack-protector-strong -Wno-builtin-declaration-mismatch #no-builtin-decoration-mismatch because we implement math functions with different type signatures
 %.o: %.c
 	riscv64-unknown-elf-gcc $(CFLAGS) -c $< -o $@
 
