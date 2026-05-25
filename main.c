@@ -19,12 +19,14 @@ static int frame = 0;
 
 int main() {
     uart_init();
+    printf("Hello from main()\n");
     gl_init(MONITOR_WIDTH, MONITOR_HEIGHT, FB_DOUBLEBUFFER);
 
     run_game();
 }
 
 static void run_game() {
+    printf("Starting game\n");
     setup_game();
     
     while (true) {
@@ -89,8 +91,9 @@ static void run_one_frame() {
 
     for (int i = 0; i < 9; i++) {
         struct asteroid a = asteroids[i];
+        printf("Displaying asteroid %d\n", i);
         struct point *points = get_points_of_asteroid(a);
-        draw_points(points, GL_WHITE);
+        draw_points(points, ASTEROID_NUM_POINTS, GL_WHITE);
     }
     
     fb_swap_buffer(); //show the frame

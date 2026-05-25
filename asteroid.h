@@ -3,6 +3,7 @@
 
 #include "mechanics.h"
 #include "graphics/point.h"
+#include "printf.h"
 
 #define MAX_NUM_ASTEROIDS 1000
 

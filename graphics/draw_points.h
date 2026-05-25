@@ -5,6 +5,6 @@
 #include "draw_line.h"
 #include "point.h"
 
-void draw_points(struct point *points, color_t c);
+void draw_points(struct point *points, int num_points, color_t c);
 
 #endif

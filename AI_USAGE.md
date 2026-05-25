@@ -1,4 +1,5 @@
 # Figuring out
+* using find . -name '*.o' -delete instead of rm because `rm **/*.o` ignores current directory in bash/sh even though this is fine in zsh
 * debugging
   * turns out I had the same guard header ASTEROID_H in draw_asteroid.h and asteroid.h which led to issues
   * turns out I was missing #include "point.h" from my asteroid.h
