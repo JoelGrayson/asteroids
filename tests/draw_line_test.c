@@ -45,6 +45,13 @@ void test_draw_line() {
     draw_line(p1, p2, GL_PURPLE); //draw ↙
 
 
+    // Test direction_of_most_movement == X
+    p1 = (struct point){ 200, 200 }; //asked Claude how to do this
+    draw_line(p1, (struct point){ 200 + 50, 200 - 10 }, GL_RED);
+    draw_line(p1, (struct point){ 200 + 50, 200 + 10 }, GL_GREEN);
+    draw_line(p1, (struct point){ 200 - 50, 200 + 10 }, GL_BLUE);
+    draw_line(p1, (struct point){ 200 - 50, 200 - 10 }, GL_PURPLE);
+
     
     while (true); //actually show it
 }
