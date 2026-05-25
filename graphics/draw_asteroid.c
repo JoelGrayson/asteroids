@@ -1,11 +1,8 @@
 #include "draw_asteroid.h"
 
-struct point ASTEROID_1_POINTS[] = {
-    { 12 14.5 }
-};
-
-
-void draw_asteroid() {
-    draw_line();
+void draw_asteroid(struct point asteroid[], color_t c) {
+    for (int i = 0; i < NUM_POINTS_PER_ASTEROID - 1; i++) {
+        draw_line(asteroid[i], asteroid[i + 1], c);
+    }
 }
 

@@ -41,6 +41,10 @@ tests/draw_line_test: tests/draw_line_test.bin
 	mango-run $<
 
 
+tests/draw_asteroid_test: tests/draw_asteroid_test.bin
+	mango-run $<
+
+
 # .PRECIOUS: %.o %.elf %.bin
 
 

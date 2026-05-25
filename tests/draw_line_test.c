@@ -7,16 +7,16 @@
 #include "gl.h"
 #include "fb.h"
 
-void test_draw_line();
+void test_draw_asteroid();
 
 int main() {
     uart_init();
     printf("Testing draw_line\n");
-    test_draw_line();
+    test_draw_asteroid();
     printf("Done!\n"); //should never be called
 }
 
-void test_draw_line() {
+void test_draw_asteroid() {
     gl_init(1280, 720, FB_SINGLEBUFFER);
 
     color_t yellow = gl_color(0xf9, 0xc4, 0x4d);
