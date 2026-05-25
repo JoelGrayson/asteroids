@@ -2,9 +2,12 @@
 #include "uart.h"
 #include <stdbool.h>
 #include "constants.h"
+
+#include "asteroid.h"
+
 #include "fb.h"
 #include "gl.h"
-#include "asteroid.h"
+#include "graphics/draw_points.h"
 
 static void setup_game();
 static void run_game();
@@ -63,17 +66,17 @@ static void setup_game() {
         .mechanics = { 200, 300, 0, 0, 0, 0, 0 }
     };
 
-    asteroids[5] = (struct asteroid) {
+    asteroids[6] = (struct asteroid) {
         .size = SMALL,
         .type = A,
         .mechanics = { 300, 100, 0, 0, 0, 0, 0 }
     };
-    asteroids[6] = (struct asteroid) {
+    asteroids[7] = (struct asteroid) {
         .size = SMALL,
         .type = B,
         .mechanics = { 300, 200, 0, 0, 0, 0, 0 }
     };
-    asteroids[7] = (struct asteroid) {
+    asteroids[8] = (struct asteroid) {
         .size = SMALL,
         .type = C,
         .mechanics = { 300, 300, 0, 0, 0, 0, 0 }
@@ -86,7 +89,8 @@ static void run_one_frame() {
 
     for (int i = 0; i < 9; i++) {
         struct asteroid a = asteroids[i];
-        
+        struct point *points = get_points_of_asteroid(a);
+        draw_points(points, GL_WHITE);
     }
     
     fb_swap_buffer(); //show the frame
