@@ -32,10 +32,10 @@ clean: #-f for it to shut up
 	rm -f **/*.o **/*.bin **/*.elf
 
 
-tests/maths: tests/maths.bin
+tests/maths_test: tests/maths.bin
 	mango-run $<
 
-tests/draw_line: tests/draw_line.bin
+tests/draw_line_test: tests/draw_line.bin
 	mango-run $<
 
 

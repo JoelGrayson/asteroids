@@ -12,8 +12,10 @@ int main() {
     uart_init();
     trig_init(3);
     printf("Testing math\n");
+    assert(false);
     test_max();
     test_sine();
+    printf("All tests passed!\n");
 }
 
 void test_max() {

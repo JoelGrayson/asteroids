@@ -9,6 +9,7 @@
 #define assert(expr) \
     if (!(expr)) { \
         printf("Assert failed at line %d in %s\n", __LINE__, __FUNCTION__); \
+        mango_abort(); \
     }
 
 
