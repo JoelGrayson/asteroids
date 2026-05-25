@@ -41,7 +41,7 @@ tests/draw_line_test: tests/draw_line_test.bin
 	mango-run $<
 
 
-.PRECIOUS: %.o %.elf %.bin
+# .PRECIOUS: %.o %.elf %.bin
 
 
 
