@@ -31,17 +31,61 @@ static void run_game() {
 }
 
 static void setup_game() {
-    struct asteroid x = {
+    asteroids[0] = (struct asteroid) {
         .size = BIG,
         .type = A,
         .mechanics = { 100, 100, 0, 0, 0, 0, 0 }
     };
+    asteroids[1] = (struct asteroid) {
+        .size = BIG,
+        .type = B,
+        .mechanics = { 200, 100, 0, 0, 0, 0, 0 }
+    };
+    asteroids[2] = (struct asteroid) {
+        .size = BIG,
+        .type = C,
+        .mechanics = { 300, 100, 0, 0, 0, 0, 0 }
+    };
+
+    asteroids[3] = (struct asteroid) {
+        .size = MEDIUM,
+        .type = A,
+        .mechanics = { 200, 100, 0, 0, 0, 0, 0 }
+    };
+    asteroids[4] = (struct asteroid) {
+        .size = MEDIUM,
+        .type = B,
+        .mechanics = { 200, 200, 0, 0, 0, 0, 0 }
+    };
+    asteroids[5] = (struct asteroid) {
+        .size = MEDIUM,
+        .type = C,
+        .mechanics = { 200, 300, 0, 0, 0, 0, 0 }
+    };
+
+    asteroids[5] = (struct asteroid) {
+        .size = SMALL,
+        .type = A,
+        .mechanics = { 300, 100, 0, 0, 0, 0, 0 }
+    };
+    asteroids[6] = (struct asteroid) {
+        .size = SMALL,
+        .type = B,
+        .mechanics = { 300, 200, 0, 0, 0, 0, 0 }
+    };
+    asteroids[7] = (struct asteroid) {
+        .size = SMALL,
+        .type = C,
+        .mechanics = { 300, 300, 0, 0, 0, 0, 0 }
+    };
+
 }
 
 static void run_one_frame() {
     gl_clear(GL_BLACK);
 
-    for (int i = 0; i < MAX_NUM_ASTEROIDS; i++) {
+    for (int i = 0; i < 9; i++) {
+        struct asteroid a = asteroids[i];
         
     }
     
