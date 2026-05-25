@@ -32,10 +32,10 @@ clean: #-f for it to shut up
 	rm -f **/*.o **/*.bin **/*.elf
 
 
-tests/maths_test: tests/maths.bin
+tests/maths_test: tests/maths_test.bin
 	mango-run $<
 
-tests/draw_line_test: tests/draw_line.bin
+tests/draw_line_test: tests/draw_line_test.bin
 	mango-run $<
 
 
@@ -48,5 +48,4 @@ export warn = -Wall -Wpointer-arith -Wwrite-strings -Werror \
               -fno-diagnostics-show-option
 export freestanding = -ffreestanding -nostdinc \
                       -isystem $(shell riscv64-unknown-elf-gcc -print-file-name=include)
-# export freestanding = -ffreestanding -nostdinc
 

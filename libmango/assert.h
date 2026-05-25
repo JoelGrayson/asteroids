@@ -4,6 +4,7 @@
 #define ASSERT_H
 
 #include "printf.h"
+#include "mango.h"
 
 // Use a macro so that it expands so that __LINE__ and __FUNCTION__ work and are local the line
 #define assert(expr) \

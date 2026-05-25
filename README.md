@@ -15,3 +15,8 @@ In parallel:
 ### Ideas
 * Use start button press time as the random seed
 
+### The Way Things Work
+#### Makefile
+
+
+
