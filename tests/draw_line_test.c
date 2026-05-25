@@ -25,8 +25,8 @@ void test_draw_line() {
 
     gl_draw_string(100, 100, "HI THERE", GL_RED);
     
-    struct point p1 = { 10, 10 };
-    struct point p2 = { 20, 20 };
+    struct point p1 = { 10, 50 };
+    struct point p2 = { 20, 10 };
     draw_line(p1, p2, GL_BLACK);    
 
     while (true); //actually show it

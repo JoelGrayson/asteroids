@@ -11,6 +11,7 @@ void test_sine();
 
 int main() {
     uart_init();
+    printf("maths_test\n");
     trig_init(3);
     trig_init(5);
     printf("Testing max()\n");
