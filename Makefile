@@ -1,3 +1,10 @@
+# Usage
+# make run - main.c
+# make tests/maths - tests asserts
+# make tests/draw_line - draws on monitor
+
+
+
 RUN_PROGRAM = main.bin
 
 # Own custom implementations in lib/
@@ -25,11 +32,10 @@ clean: #-f for it to shut up
 	rm -f *.o *.bin *.elf
 
 
-test_maths: test_maths_temp.bin
+tests/maths: tests/maths.bin
 	mango-run $<
 
-
-tests/maths: tests/maths.bin
+tests/draw_line: tests/draw_line.bin
 	mango-run $<
 
 

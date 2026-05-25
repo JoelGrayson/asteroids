@@ -1,17 +1,7 @@
 #include "gl.h"
 #include <stdbool.h>
 #include "maths.h"
-
-typedef enum {
-    X,
-    Y
-} axis;
-
-
-struct point {
-    double x;
-    double y;
-};
+#include "gl_lib.h"
 
 void draw_line(struct point p1, struct point p2, color_t c) {
     // dx/dy is what you have to do to move from p1 to p2

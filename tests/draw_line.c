@@ -1,14 +1,16 @@
+#include "../libmango/assert.h"
 #include "printf.h"
 #include "uart.h"
-#include "maths.h"
-#include "assert.h"
+#include <stdbool.h>
+#include "../gl_lib.h"
+#include "../rocket.h"
 
 void test_max();
 
 int main() {
     uart_init();
     printf("Testing maths %d\n", 1);
-    
+    assert(false);
 }
 
 void test_max() {
