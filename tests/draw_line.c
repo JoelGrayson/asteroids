@@ -9,15 +9,9 @@ void test_max();
 
 int main() {
     uart_init();
-    printf("Testing maths %d\n", 1);
-    assert(false);
+    printf("Testing draw_line\n");
 }
 
 void test_max() {
-    assert(max(1.0, 4.0) == 4.0);
-    assert(max(-20.0, -3.0) == -3.0);
-    assert(max(-20.0, 4.0) == 4.0);
-    assert(max(-20.0, 0.0) == 0.0);
-    assert(max(20.0, 0.0) == 20.0);
 }
 

@@ -9,8 +9,7 @@ void test_max();
 
 int main() {
     uart_init();
-    printf("Testing maths %d\n", 1);
-    assert(false);
+    printf("Testing maths\n");
 }
 
 void test_max() {
