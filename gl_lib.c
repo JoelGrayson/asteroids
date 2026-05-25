@@ -22,7 +22,7 @@ void draw_line(struct point p1, struct point p2, color_t c) {
         while (true) {
             gl_draw_pixel(round(pos.x), round(pos.y), c); //double rounded to int so it draws the nearest pixel
 
-            pos.y += sgn_dy;
+            pos.y += sgn_dy; //change by ±1
             pos.x += sgn_dy * dx_div_dy;
 
             // Check if done (drew past p2). If done, return
@@ -36,8 +36,26 @@ void draw_line(struct point p1, struct point p2, color_t c) {
                 return;
             }
         }
-    } else {
+    } else { //direction of most movement is X
+        int sgn_dx = sgn(dx);
+        double dy_div_dx = dy / dx;
 
+        while (true) {
+            gl_draw_pixel(round(pos.x), round(pos.y), c);
+            
+            pos.x += sgn_dx;
+            pos.y += sgn_dx * dy_div_dx;
+
+            if (
+                // Moving right
+                (sgn_dx == 1 && pos.x >= p2.x)
+                ||
+                // Moving left
+                (sgn_dx == -1 && pos.x <= p2.x)
+            ) {
+                return;
+            }
+        }
     }
 }
 

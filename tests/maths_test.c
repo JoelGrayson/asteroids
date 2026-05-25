@@ -8,6 +8,7 @@
 void test_max();
 void test_factorial();
 void test_sine();
+void test_sgn(); //the other "sign" haha
 
 int main() {
     uart_init();

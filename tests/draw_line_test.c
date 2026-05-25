@@ -23,12 +23,29 @@ void test_draw_line() {
     color_t yellow = gl_color(0xf9, 0xc4, 0x4d);
     gl_clear(yellow); //yellow bg
 
-    gl_draw_string(100, 100, "HI THERE", GL_RED);
+    gl_draw_string(600, 400, "HI THERE", GL_RED);
     
+    // Test direction_of_most_movement == Y
     struct point p1 = { 10, 50 };
     struct point p2 = { 20, 10 };
-    draw_line(p1, p2, GL_BLACK);    
+    draw_line(p1, p2, GL_BLACK); //draw ↗
+    p2.y = 90;
+    draw_line(p1, p2, GL_BLUE); //draw ↘
+    
+    p1.x = 100;
+    p1.y = 100;
+    p2.x = 100 - 10;
+    p2.y = 100 - 50;
+    draw_line(p1, p2, GL_RED); //draw ↖
 
+    p1.x = 100;
+    p1.y = 100;
+    p2.x = 100 - 10;
+    p2.y = 100 + 50;
+    draw_line(p1, p2, GL_PURPLE); //draw ↙
+
+
+    
     while (true); //actually show it
 }
 
