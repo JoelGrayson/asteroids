@@ -1,12 +1,12 @@
 #include "draw_asteroid.h"
 
 void draw_asteroid(struct point asteroid[], color_t c) {
-    for (int i = 0; i < ASTEROID_A_NUM_POINTS - 1; i++) {
+    for (int i = 0; i < ASTEROID_NUM_POINTS - 1; i++) {
         draw_line(asteroid[i], asteroid[i + 1], c);
     }
 }
 
-struct point ASTEROID_A_SMALL[ASTEROID_A_NUM_POINTS] = {
+struct point ASTEROID_A_SMALL[ASTEROID_NUM_POINTS] = {
     { 10, 5 },
     { 19, 5 },
     { 27, 9 },
@@ -22,7 +22,7 @@ struct point ASTEROID_A_SMALL[ASTEROID_A_NUM_POINTS] = {
     { 10, 5 }
 };
 
-struct point ASTEROID_B_SMALL[ASTEROID_B_NUM_POINTS] = {
+struct point ASTEROID_B_SMALL[ASTEROID_NUM_POINTS] = {
     { 10, 5 },
     { 15, 10 },
     { 21, 5 },
@@ -33,10 +33,12 @@ struct point ASTEROID_B_SMALL[ASTEROID_B_NUM_POINTS] = {
     { 10, 25 },
     { 4, 20 },
     { 4, 17 },
+    { 4, 14 },
+    { 4, 12 },
     { 4, 10 },
 };
 
-struct point ASTEROID_C_SMALL[ASTEROID_C_NUM_POINTS] = {
+struct point ASTEROID_C_SMALL[ASTEROID_NUM_POINTS] = {
     { 10, 5 },
     { 4, 10 },
     { 7, 15 },
@@ -48,11 +50,12 @@ struct point ASTEROID_C_SMALL[ASTEROID_C_NUM_POINTS] = {
     { 21, 13 },
     { 26, 9 },
     { 21, 5 },
+    { 15, 8 },
     { 15, 7 },
 };
 
 
-struct point ASTEROID_A_MEDIUM[ASTEROID_A_NUM_POINTS] = {
+struct point ASTEROID_A_MEDIUM[ASTEROID_NUM_POINTS] = {
     { 10 * 2, 5 * 2 },
     { 19 * 2, 5 * 2 },
     { 27 * 2, 9 * 2 },
@@ -68,7 +71,7 @@ struct point ASTEROID_A_MEDIUM[ASTEROID_A_NUM_POINTS] = {
     { 10 * 2, 5 * 2 }
 };
 
-struct point ASTEROID_B_MEDIUM[ASTEROID_B_NUM_POINTS] = {
+struct point ASTEROID_B_MEDIUM[ASTEROID_NUM_POINTS] = {
     { 10 * 2, 5 * 2 },
     { 15 * 2, 10 * 2 },
     { 21 * 2, 5 * 2 },
@@ -79,10 +82,12 @@ struct point ASTEROID_B_MEDIUM[ASTEROID_B_NUM_POINTS] = {
     { 10 * 2, 25 * 2 },
     { 4 * 2, 20 * 2 },
     { 4 * 2, 17 * 2 },
+    { 4 * 2, 14 * 2 },
+    { 4 * 2, 12 * 2 },
     { 4 * 2, 10 * 2 },
 };
 
-struct point ASTEROID_C_MEDIUM[ASTEROID_C_NUM_POINTS] = {
+struct point ASTEROID_C_MEDIUM[ASTEROID_NUM_POINTS] = {
     { 10 * 2, 5 * 2 },
     { 4 * 2, 10 * 2 },
     { 7 * 2, 15 * 2 },
@@ -94,11 +99,12 @@ struct point ASTEROID_C_MEDIUM[ASTEROID_C_NUM_POINTS] = {
     { 21 * 2, 13 * 2 },
     { 26 * 2, 9 * 2 },
     { 21 * 2, 5 * 2 },
+    { 15 * 2, 8 * 2 },
     { 15 * 2, 7 * 2 },
 };
 
 
-struct point ASTEROID_A_LARGE[ASTEROID_A_NUM_POINTS] = {
+struct point ASTEROID_A_LARGE[ASTEROID_NUM_POINTS] = {
     { 10 * 4, 5 * 4 },
     { 19 * 4, 5 * 4 },
     { 27 * 4, 9 * 4 },
@@ -114,7 +120,7 @@ struct point ASTEROID_A_LARGE[ASTEROID_A_NUM_POINTS] = {
     { 10 * 4, 5 * 4 }
 };
 
-struct point ASTEROID_B_LARGE[ASTEROID_B_NUM_POINTS] = {
+struct point ASTEROID_B_LARGE[ASTEROID_NUM_POINTS] = {
     { 10 * 4, 5 * 4 },
     { 15 * 4, 10 * 4 },
     { 21 * 4, 5 * 4 },
@@ -125,10 +131,12 @@ struct point ASTEROID_B_LARGE[ASTEROID_B_NUM_POINTS] = {
     { 10 * 4, 25 * 4 },
     { 4 * 4, 20 * 4 },
     { 4 * 4, 17 * 4 },
+    { 4 * 4, 14 * 4 },
+    { 4 * 4, 12 * 4 },
     { 4 * 4, 10 * 4 },
 };
 
-struct point ASTEROID_C_LARGE[ASTEROID_C_NUM_POINTS] = {
+struct point ASTEROID_C_LARGE[ASTEROID_NUM_POINTS] = {
     { 10 * 4, 5 * 4 },
     { 4 * 4, 10 * 4 },
     { 7 * 4, 15 * 4 },
@@ -140,6 +148,7 @@ struct point ASTEROID_C_LARGE[ASTEROID_C_NUM_POINTS] = {
     { 21 * 4, 13 * 4 },
     { 26 * 4, 9 * 4 },
     { 21 * 4, 5 * 4 },
+    { 15 * 4, 8 * 4 },
     { 15 * 4, 7 * 4 },
 };
 
