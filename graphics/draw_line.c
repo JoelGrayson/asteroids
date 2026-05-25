@@ -1,7 +1,4 @@
-#include "gl.h"
-#include <stdbool.h>
-#include "maths.h"
-#include "gl_lib.h"
+#include "draw_line.h"
 
 void draw_line(struct point p1, struct point p2, color_t c) {
     // dx/dy is what you have to do to move from p1 to p2

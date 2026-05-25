@@ -2,11 +2,10 @@
 #include "printf.h"
 #include "uart.h"
 #include <stdbool.h>
-#include "../gl_lib.h"
+#include "../graphics/draw_line.h"
 #include "../rocket.h"
 #include "gl.h"
 #include "fb.h"
-#include "../gl_lib.h"
 
 void test_draw_line();
 
@@ -52,7 +51,7 @@ void test_draw_line() {
     draw_line(p1, (struct point){ 200 - 50, 200 + 10 }, GL_BLUE);
     draw_line(p1, (struct point){ 200 - 50, 200 - 10 }, GL_PURPLE);
 
-    
+
     while (true); //actually show it
 }
 

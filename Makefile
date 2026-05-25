@@ -9,7 +9,8 @@ RUN_PROGRAM = main.bin
 
 # Own custom implementations in lib/
 LIBMANGO_SOURCES = libmango/printf.o libmango/gpio.o libmango/malloc.o
-OTHER_SOURCES = maths.o gl_lib.o
+GRAPHICS_SOURCES = graphics/draw_line.o graphics/draw_asteroid.o graphics/draw_saucer.o
+OTHER_SOURCES = maths.o
 
 
 run: $(RUN_PROGRAM)
@@ -20,7 +21,7 @@ run: $(RUN_PROGRAM)
 
 LD_FLAGS = -nostdlib -L$$CS107E/lib -T memmap.ld
 LDLIBS = -lmango -lmango_gcc
-%.elf: %.o $(LIBMANGO_SOURCES) $(OTHER_SOURCES)
+%.elf: %.o $(LIBMANGO_SOURCES) $(GRAPHICS_SOURCES) $(OTHER_SOURCES)
 	riscv64-unknown-elf-ld $(LD_FLAGS) $^ $(LDLIBS) -o $@ 
 
 ARCH = -march=rv64im_zicsr -mabi=lp64 
