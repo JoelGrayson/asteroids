@@ -1,5 +1,6 @@
 #include "maths.h"
 #include "malloc.h"
+#include "printf.h"
 
 // Trigonometric data to load upon trig math intialization
 static double* sine_table;
@@ -16,8 +17,8 @@ double pow(double base, unsigned int exponent)
     return ret;
 }
 
-unsigned int factorial(unsigned int power) {
-    int ret = 1;
+double factorial(unsigned int power) {
+    double ret = 1;
     while(power != 0) {
         ret = ret * power;
         power--;
@@ -38,7 +39,7 @@ void trig_init(unsigned int precision) {
     double angle_it = (double)(1.0/trig_precision_scale);
     for(int i = 0; i < table_len; i++) { // Raw taylor series expansion calculations of sine function
         sine_table[i] = angle - (pow(angle,3)/(double)factorial(3)) + (pow(angle,5)/(double)factorial(5));
-        for(int j = 0; j < precision-2; j++) {
+        for(int j = 0; j < precision+2; j++) {
             sine_table[i] -= (pow(angle,7+(2*j))*pow(-1, (j & 1))/(double)factorial(7+2*j));
         }
         angle += angle_it; // Going through all angles which sine could be called for.
@@ -53,6 +54,7 @@ double sine(double angle) {
     while (angle > 2 * PI) {
         angle -= 2 * PI;
     }
+    //double sign = (angle < PI) ? 1 : -1; 
     int index = (int)(angle*trig_precision_scale); // Calculates index that the sin of said angle SHOULD BE AT, or is closest to it.
     return sine_table[index];
 }
@@ -87,17 +89,18 @@ double sgn(double num) {
     return 0;
 }
 
-int round(double num) {
+double round(double num) {
     // if num's tenth's place (1.t) has t<=4 then return (int)num else return (int)num+1
     // num*10 is xxxt.xxx
     // (int)(num*10) is xxxt
     // (int)(num*10) % 10 is t
 
     int t = (int)(num * 10) % 10;
+    int ret = (int)num;
 
     if (t <= 4) {
-        return (int)num;
+        return (double)ret;
     }
     // else t >= 5
-    return (int)num + 1;
+    return (double)ret + 1;
 }

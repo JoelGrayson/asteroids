@@ -5,7 +5,7 @@
 
 // Handy number theory functions
 double pow(double base, unsigned int exponent);
-unsigned int factorial(unsigned int pow);
+double factorial(unsigned int pow);
 
 // Function that calculates trig tables
 void trig_init(unsigned int precision);
@@ -18,7 +18,7 @@ double tan(double angle);
 double max(double, double);
 double sgn(double);
 double abs(double);
-int round(double);
+double round(double);
 
 #endif
 
