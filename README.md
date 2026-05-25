@@ -17,6 +17,7 @@ In parallel:
 
 ### The Way Things Work
 #### Makefile
-
+* Includes .h from $cs107e/include
+* The linker then takes all .o files as specified in LIB_SOURCES so that when linking it can discover the definitions of those .h values
 
 
