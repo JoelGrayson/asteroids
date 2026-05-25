@@ -35,11 +35,11 @@ void trig_init(unsigned int precision) {
     sine_table = malloc(sizeof(double)*table_len);
 
     double angle = 0;
-    double angle_it = 1/trig_precision_scale;
+    double angle_it = (double)(1.0/trig_precision_scale);
     for(int i = 0; i < table_len; i++) { // Raw taylor series expansion calculations of sine function
         sine_table[i] = angle - (pow(angle,3)/(double)factorial(3)) + (pow(angle,5)/(double)factorial(5));
         for(int j = 0; j < precision-2; j++) {
-            sine_table[i] = angle - (pow(angle,5+(2*j))*pow(-1, (j & 1))/(double)factorial(5+2*j));
+            sine_table[i] -= (pow(angle,7+(2*j))*pow(-1, (j & 1))/(double)factorial(7+2*j));
         }
         angle += angle_it; // Going through all angles which sine could be called for.
     }
@@ -53,7 +53,6 @@ double sine(double angle) {
     while (angle > 2 * PI) {
         angle -= 2 * PI;
     }
-    // angle = angle % (2*PI); // Reduces angle to its simplest equivalent.
     int index = (int)(angle*trig_precision_scale); // Calculates index that the sin of said angle SHOULD BE AT, or is closest to it.
     return sine_table[index];
 }
@@ -63,9 +62,6 @@ double cosine(double angle) {
 double tan(double angle) {
     return sine(angle)/cosine(angle);
 }
-
-
-
 
 double abs(double num) {
     if (num < 0) {
