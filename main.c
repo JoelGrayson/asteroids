@@ -44,44 +44,44 @@ static void setup_game() {
     asteroids[1] = (struct asteroid) {
         .size = BIG,
         .type = B,
-        .mechanics = { 200, 100, 0, 0, 0, 0, 0 }
+        .mechanics = { 300, 100, 0, 0, 0, 0, 0 }
     };
     asteroids[2] = (struct asteroid) {
         .size = BIG,
         .type = C,
-        .mechanics = { 300, 100, 0, 0, 0, 0, 0 }
+        .mechanics = { 500, 100, 0, 0, 0, 0, 0 }
     };
 
     asteroids[3] = (struct asteroid) {
         .size = MEDIUM,
         .type = A,
-        .mechanics = { 200, 100, 0, 0, 0, 0, 0 }
+        .mechanics = { 100, 300, 0, 0, 0, 0, 0 }
     };
     asteroids[4] = (struct asteroid) {
         .size = MEDIUM,
         .type = B,
-        .mechanics = { 200, 200, 0, 0, 0, 0, 0 }
+        .mechanics = { 300, 300, 0, 0, 0, 0, 0 }
     };
     asteroids[5] = (struct asteroid) {
         .size = MEDIUM,
         .type = C,
-        .mechanics = { 200, 300, 0, 0, 0, 0, 0 }
+        .mechanics = { 500, 300, 0, 0, 0, 0, 0 }
     };
 
     asteroids[6] = (struct asteroid) {
         .size = SMALL,
         .type = A,
-        .mechanics = { 300, 100, 0, 0, 0, 0, 0 }
+        .mechanics = { 100, 500, 0, 0, 0, 0, 0 }
     };
     asteroids[7] = (struct asteroid) {
         .size = SMALL,
         .type = B,
-        .mechanics = { 300, 200, 0, 0, 0, 0, 0 }
+        .mechanics = { 300, 500, 0, 0, 0, 0, 0 }
     };
     asteroids[8] = (struct asteroid) {
         .size = SMALL,
         .type = C,
-        .mechanics = { 300, 300, 0, 0, 0, 0, 0 }
+        .mechanics = { 500, 500, 0, 0, 0, 0, 0 }
     };
 
 }
