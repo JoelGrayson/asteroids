@@ -2,7 +2,6 @@
 #define DRAW_LINE_H
 
 #include "gl.h"
-#include "point.h"
 #include <stdbool.h>
 #include "../maths.h"
 
@@ -11,6 +10,6 @@ typedef enum {
     Y
 } axis;
 
-void draw_line(struct point p1, struct point p2, color_t c);
+void draw_line(double x1, double y1, double x2, double y2, color_t c);
 
 #endif
