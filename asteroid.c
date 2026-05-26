@@ -33,7 +33,7 @@ struct point ASTEROID_A_SMALL[ASTEROID_NUM_POINTS] = {
     { 4, 17 },
     { 4, 9 },
     { 13, 9 },
-    { 10, 5 }
+    { 10, 5 },
 };
 
 struct point ASTEROID_B_SMALL[ASTEROID_NUM_POINTS] = {
@@ -48,8 +48,8 @@ struct point ASTEROID_B_SMALL[ASTEROID_NUM_POINTS] = {
     { 4, 20 },
     { 4, 17 },
     { 4, 14 },
-    { 4, 12 },
     { 4, 10 },
+    { 10, 5 },
 };
 
 struct point ASTEROID_C_SMALL[ASTEROID_NUM_POINTS] = {
@@ -64,8 +64,8 @@ struct point ASTEROID_C_SMALL[ASTEROID_NUM_POINTS] = {
     { 21, 13 },
     { 26, 9 },
     { 21, 5 },
-    { 15, 8 },
     { 15, 7 },
+    { 10, 5 },
 };
 
 
@@ -82,7 +82,7 @@ struct point ASTEROID_A_MEDIUM[ASTEROID_NUM_POINTS] = {
     { 4 * 2, 17 * 2 },
     { 4 * 2, 9 * 2 },
     { 13 * 2, 9 * 2 },
-    { 10 * 2, 5 * 2 }
+    { 10 * 2, 5 * 2 },
 };
 
 struct point ASTEROID_B_MEDIUM[ASTEROID_NUM_POINTS] = {
@@ -97,8 +97,8 @@ struct point ASTEROID_B_MEDIUM[ASTEROID_NUM_POINTS] = {
     { 4 * 2, 20 * 2 },
     { 4 * 2, 17 * 2 },
     { 4 * 2, 14 * 2 },
-    { 4 * 2, 12 * 2 },
     { 4 * 2, 10 * 2 },
+    { 10 * 2, 5 * 2 },
 };
 
 struct point ASTEROID_C_MEDIUM[ASTEROID_NUM_POINTS] = {
@@ -113,8 +113,8 @@ struct point ASTEROID_C_MEDIUM[ASTEROID_NUM_POINTS] = {
     { 21 * 2, 13 * 2 },
     { 26 * 2, 9 * 2 },
     { 21 * 2, 5 * 2 },
-    { 15 * 2, 8 * 2 },
     { 15 * 2, 7 * 2 },
+    { 10 * 2, 5 * 2 },
 };
 
 
@@ -131,7 +131,7 @@ struct point ASTEROID_A_BIG[ASTEROID_NUM_POINTS] = {
     { 4 * 4, 17 * 4 },
     { 4 * 4, 9 * 4 },
     { 13 * 4, 9 * 4 },
-    { 10 * 4, 5 * 4 }
+    { 10 * 4, 5 * 4 },
 };
 
 struct point ASTEROID_B_BIG[ASTEROID_NUM_POINTS] = {
@@ -146,8 +146,8 @@ struct point ASTEROID_B_BIG[ASTEROID_NUM_POINTS] = {
     { 4 * 4, 20 * 4 },
     { 4 * 4, 17 * 4 },
     { 4 * 4, 14 * 4 },
-    { 4 * 4, 12 * 4 },
     { 4 * 4, 10 * 4 },
+    { 10 * 4, 5 * 4 },
 };
 
 struct point ASTEROID_C_BIG[ASTEROID_NUM_POINTS] = {
@@ -162,8 +162,8 @@ struct point ASTEROID_C_BIG[ASTEROID_NUM_POINTS] = {
     { 21 * 4, 13 * 4 },
     { 26 * 4, 9 * 4 },
     { 21 * 4, 5 * 4 },
-    { 15 * 4, 8 * 4 },
     { 15 * 4, 7 * 4 },
+    { 10 * 4, 5 * 4 },
 };
 
 

@@ -89,7 +89,7 @@ static void setup_game() {
 static void run_one_frame() {
     gl_clear(GL_BLACK);
 
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 9; i++) {
         struct asteroid a = asteroids[i];
         printf("Displaying asteroid %d\n", i);
         struct point *points = get_points_of_asteroid(a);
