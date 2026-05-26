@@ -8,9 +8,9 @@
 RUN_PROGRAM = main.bin
 
 # Own custom implementations in lib/
-LIBMANGO_SOURCES = libmango/printf.o libmango/gpio.o libmango/malloc.o
-GRAPHICS_SOURCES = graphics/draw_line.o graphics/draw_asteroid.o graphics/draw_saucer.o
-OTHER_SOURCES = maths.o
+LIBMANGO_SOURCES = libmango/gpio.o libmango/malloc.o #TODO: libmango/printf.o
+GRAPHICS_SOURCES = graphics/draw_line.o graphics/draw_points.o graphics/draw_saucer.o
+OTHER_SOURCES = maths.o asteroid.o
 
 
 run: $(RUN_PROGRAM)
@@ -30,8 +30,11 @@ CFLAGS = $(ARCH) -g -Og -I$$CS107E/include -fno-omit-frame-pointer $$warn $$free
 	riscv64-unknown-elf-gcc $(CFLAGS) -c $< -o $@
 
 
-clean: #-f for it to shut up
-	rm -f **/*.o **/*.bin **/*.elf
+clean:
+	find . -name '*.o' -delete
+	find . -name '*.bin' -delete
+	find . -name '*.elf' -delete
+	# in bash, rm **/*.o matches not current directory
 
 
 tests/maths_test: tests/maths_test.bin
