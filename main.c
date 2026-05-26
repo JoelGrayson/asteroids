@@ -93,7 +93,7 @@ static void run_one_frame() {
         struct asteroid a = asteroids[i];
         printf("Displaying asteroid %d\n", i);
         struct point *points = get_points_of_asteroid(a);
-        draw_points(points, ASTEROID_NUM_POINTS, GL_WHITE);
+        draw_points(points, ASTEROID_NUM_POINTS, a.mechanics.x, a.mechanics.y, GL_WHITE);
     }
     
     fb_swap_buffer(); //show the frame
