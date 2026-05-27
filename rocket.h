@@ -5,6 +5,6 @@
 
 #define ROCKET_NUM_POINTS 5
 
-extern struct point ROCKET[ROCKET_NUM_POINTS];
+extern struct point ROCKET_POINTS[ROCKET_NUM_POINTS];
 
 #endif
