@@ -166,4 +166,12 @@ struct point ASTEROID_C_BIG[ASTEROID_NUM_POINTS] = {
     { 10 * 4, 5 * 4 },
 };
 
+#define ROCKET_NUM_POINTS 5
+struct point ROCKET[ROCKET_NUM_POINTS] = {
+    { 25, 5 },
+    { 12, 45 },
+    { 15, 36 },
+    { 35, 36 },
+    { 38, 45 }
+};
 
