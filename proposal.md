@@ -1,11 +1,13 @@
 ## Title of your project
-
+Asteroids
 ## Team members
-
+Joel Grayson, Sebastian Hazlett
 ## Project goals
 Short description of project idea and end goal you are aiming for.
 Include stretch goals and/or fallback position to indicate how you 
 might fine-tune the project scope if needed.
+
+To recreate the Atari asteroids game, using a custom-written vector graphics library to recreate the original laser...
 
 ## Resources, budget
 Itemize components/materials you will need and plan for acquiring them.
@@ -13,7 +15,8 @@ We can reimburse cost of parts up to $20 per person.
 
 ## Tasks, member responsibilities
 Each team member should be responsible for a clearly identifiable part of the project.
-
+Sebastian -- audio
+Sebastian -- SD card persistent memory
 ## Schedule, midpoint milestones
 Sketch a timeline for steady progress across full project period
 Order tasks so as to resolve unknowns/risks sooner than later
