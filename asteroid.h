@@ -4,6 +4,7 @@
 #include "mechanics.h"
 #include "graphics/point.h"
 #include "printf.h"
+#include <stdbool.h>
 
 #define MAX_NUM_ASTEROIDS 1000
 
@@ -23,6 +24,8 @@ struct asteroid {
     enum asteroid_type type;
     enum asteroid_size size;
     struct mechanics mechanics;
+    bool is_exploding; //false by default
+    int exploding_frame; //starts at 0
 };
 
 
