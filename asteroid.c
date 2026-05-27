@@ -2,25 +2,25 @@
 
 struct point *get_points_of_asteroid(struct asteroid ast) {
     if (ast.type == A) {
-        if (ast.size == BIG)    return ASTEROID_A_BIG;
-        if (ast.size == MEDIUM) return ASTEROID_A_MEDIUM;
-        if (ast.size == SMALL)  return ASTEROID_A_SMALL;
+        if (ast.size == BIG)    return ASTEROID_A_BIG_POINTS;
+        if (ast.size == MEDIUM) return ASTEROID_A_MEDIUM_POINTS;
+        if (ast.size == SMALL)  return ASTEROID_A_SMALL_POINTS;
     }
     if (ast.type == B) {
-        if (ast.size == BIG)    return ASTEROID_B_BIG;
-        if (ast.size == MEDIUM) return ASTEROID_B_MEDIUM;
-        if (ast.size == SMALL)  return ASTEROID_B_SMALL;
+        if (ast.size == BIG)    return ASTEROID_B_BIG_POINTS;
+        if (ast.size == MEDIUM) return ASTEROID_B_MEDIUM_POINTS;
+        if (ast.size == SMALL)  return ASTEROID_B_SMALL_POINTS;
     }
     if (ast.type == C) {
-        if (ast.size == BIG)    return ASTEROID_C_BIG;
-        if (ast.size == MEDIUM) return ASTEROID_C_MEDIUM;
-        if (ast.size == SMALL)  return ASTEROID_C_SMALL;
+        if (ast.size == BIG)    return ASTEROID_C_BIG_POINTS;
+        if (ast.size == MEDIUM) return ASTEROID_C_MEDIUM_POINTS;
+        if (ast.size == SMALL)  return ASTEROID_C_SMALL_POINTS;
     }
     printf("Error: get_points_of_asteroid: invalid asteroid\n");
-    return ASTEROID_A_BIG; //should not happen
+    return ASTEROID_A_BIG_POINTS; //should not happen
 }
 
-struct point ASTEROID_A_SMALL[ASTEROID_NUM_POINTS] = {
+struct point ASTEROID_A_SMALL_POINTS[ASTEROID_NUM_POINTS] = {
     { 10, 5 },
     { 19, 5 },
     { 27, 9 },
@@ -36,7 +36,7 @@ struct point ASTEROID_A_SMALL[ASTEROID_NUM_POINTS] = {
     { 10, 5 },
 };
 
-struct point ASTEROID_B_SMALL[ASTEROID_NUM_POINTS] = {
+struct point ASTEROID_B_SMALL_POINTS[ASTEROID_NUM_POINTS] = {
     { 10, 5 },
     { 15, 10 },
     { 21, 5 },
@@ -52,7 +52,7 @@ struct point ASTEROID_B_SMALL[ASTEROID_NUM_POINTS] = {
     { 10, 5 },
 };
 
-struct point ASTEROID_C_SMALL[ASTEROID_NUM_POINTS] = {
+struct point ASTEROID_C_SMALL_POINTS[ASTEROID_NUM_POINTS] = {
     { 10, 5 },
     { 4, 10 },
     { 7, 15 },
@@ -69,7 +69,7 @@ struct point ASTEROID_C_SMALL[ASTEROID_NUM_POINTS] = {
 };
 
 
-struct point ASTEROID_A_MEDIUM[ASTEROID_NUM_POINTS] = {
+struct point ASTEROID_A_MEDIUM_POINTS[ASTEROID_NUM_POINTS] = {
     { 10 * 2, 5 * 2 },
     { 19 * 2, 5 * 2 },
     { 27 * 2, 9 * 2 },
@@ -85,7 +85,7 @@ struct point ASTEROID_A_MEDIUM[ASTEROID_NUM_POINTS] = {
     { 10 * 2, 5 * 2 },
 };
 
-struct point ASTEROID_B_MEDIUM[ASTEROID_NUM_POINTS] = {
+struct point ASTEROID_B_MEDIUM_POINTS[ASTEROID_NUM_POINTS] = {
     { 10 * 2, 5 * 2 },
     { 15 * 2, 10 * 2 },
     { 21 * 2, 5 * 2 },
@@ -101,7 +101,7 @@ struct point ASTEROID_B_MEDIUM[ASTEROID_NUM_POINTS] = {
     { 10 * 2, 5 * 2 },
 };
 
-struct point ASTEROID_C_MEDIUM[ASTEROID_NUM_POINTS] = {
+struct point ASTEROID_C_MEDIUM_POINTS[ASTEROID_NUM_POINTS] = {
     { 10 * 2, 5 * 2 },
     { 4 * 2, 10 * 2 },
     { 7 * 2, 15 * 2 },
@@ -118,7 +118,7 @@ struct point ASTEROID_C_MEDIUM[ASTEROID_NUM_POINTS] = {
 };
 
 
-struct point ASTEROID_A_BIG[ASTEROID_NUM_POINTS] = {
+struct point ASTEROID_A_BIG_POINTS[ASTEROID_NUM_POINTS] = {
     { 10 * 4, 5 * 4 },
     { 19 * 4, 5 * 4 },
     { 27 * 4, 9 * 4 },
@@ -134,7 +134,7 @@ struct point ASTEROID_A_BIG[ASTEROID_NUM_POINTS] = {
     { 10 * 4, 5 * 4 },
 };
 
-struct point ASTEROID_B_BIG[ASTEROID_NUM_POINTS] = {
+struct point ASTEROID_B_BIG_POINTS[ASTEROID_NUM_POINTS] = {
     { 10 * 4, 5 * 4 },
     { 15 * 4, 10 * 4 },
     { 21 * 4, 5 * 4 },
@@ -150,7 +150,7 @@ struct point ASTEROID_B_BIG[ASTEROID_NUM_POINTS] = {
     { 10 * 4, 5 * 4 },
 };
 
-struct point ASTEROID_C_BIG[ASTEROID_NUM_POINTS] = {
+struct point ASTEROID_C_BIG_POINTS[ASTEROID_NUM_POINTS] = {
     { 10 * 4, 5 * 4 },
     { 4 * 4, 10 * 4 },
     { 7 * 4, 15 * 4 },
@@ -165,5 +165,4 @@ struct point ASTEROID_C_BIG[ASTEROID_NUM_POINTS] = {
     { 15 * 4, 7 * 4 },
     { 10 * 4, 5 * 4 },
 };
-
 

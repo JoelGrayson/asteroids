@@ -4,6 +4,8 @@
 #include "constants.h"
 
 #include "asteroid.h"
+// #include "bullet.h"
+#include "rocket.h"
 
 #include "fb.h"
 #include "gl.h"
@@ -13,7 +15,10 @@ static void setup_game();
 static void run_game();
 static void run_one_frame();
 
+// Array of pointers to asteroids. If no asteroid, it is NULL
 static struct asteroid asteroids[MAX_NUM_ASTEROIDS];
+
+// static struct bullet bullets[MAX_NUM_BULLETS];
 
 static int frame = 0;
 
@@ -95,7 +100,35 @@ static void run_one_frame() {
         struct point *points = get_points_of_asteroid(a);
         draw_points(points, ASTEROID_NUM_POINTS, a.mechanics.x, a.mechanics.y, GL_WHITE);
     }
+
+    draw_points(ROCKET_POINTS, ROCKET_NUM_POINTS, 100, 100, GL_WHITE);
     
+    collision_detection();
+    update_mechanics();
     fb_swap_buffer(); //show the frame
 }
+
+
+void collision_detection() {
+    // for each asteroid
+    //      for each bullet
+    //            if asteroid touching bullet
+    // 
+
+
+/*
+Loop over each bullet:
+    check if touching asteroid
+    
+
+check if rocket touching asteroid
+
+*/
+}
+
+// Updates the position of all asteroids, rocket, and bullets using velocity and position
+void update_mechanics() {
+    for ()
+}
+
 

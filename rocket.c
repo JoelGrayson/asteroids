@@ -2,6 +2,15 @@
 #include "mechanics.h"
 #include "constants.h"
 
+struct point ROCKET_POINTS[ROCKET_NUM_POINTS] = {
+    { 25, 5 },
+    { 12, 45 },
+    { 15, 36 },
+    { 35, 36 },
+    { 38, 45 }
+};
+
+
 static struct mechanics rocket_mechanics = {
     .x = MONITOR_WIDTH / 2,
     .y = MONITOR_HEIGHT / 2,
@@ -11,8 +20,4 @@ static struct mechanics rocket_mechanics = {
     .ay = 0,
     .rotation = 0
 };
-
-void draw_rocket() {
-    
-}
 

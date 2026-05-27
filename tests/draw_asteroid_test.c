@@ -25,7 +25,7 @@ void test_draw_asteroid() {
 
     gl_draw_string(600, 400, "Asteroid test", GL_WHITE);
 
-    draw_asteroid(ASTEROID_A_SMALL, GL_WHITE);
+    draw_asteroid(ASTEROID_A_SMALL_POINTS, GL_WHITE);
 
     while (true); //actually show it
 }
