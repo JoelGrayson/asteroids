@@ -7,7 +7,7 @@
 #define ROCKET_SIDES_DRIFT_SPEED 8
 
 // Original number of rocket points vs. number of rocket points we tell other files there are.
-#define __ROCKET_NUM_POINTS 5
+#define __ROCKET_NUM_POINTS 6
 extern int ROCKET_NUM_POINTS;
 extern int ROCKET_EXPLODED_SIDES_NUM_POINTS; // At the start, we don't want to draw the exploded rocket sides.
 

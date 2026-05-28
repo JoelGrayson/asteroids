@@ -13,7 +13,8 @@ struct point ROCKET_POINTS[__ROCKET_NUM_POINTS] = {
     { 12, 45 },
     { 15, 36 },
     { 35, 36 },
-    { 38, 45 }
+    { 38, 45 },
+    { 25, 5 },
 };
 
 // Array of rocket sides polygons.
