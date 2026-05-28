@@ -6,6 +6,7 @@ struct vector {
     double y;
 };
 
+
 struct point midpoint(struct point p1, struct point p2); // returns midpoint between two points
 struct point point_plus_vec(struct point fulcrum, struct vector dir); // returns point + vector motion
 

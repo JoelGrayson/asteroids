@@ -10,6 +10,7 @@
 #include "fb.h"
 #include "gl.h"
 #include "graphics/draw_points.h"
+#include "maths.h"
 
 static void setup_game();
 static void run_game();
@@ -17,6 +18,8 @@ static void run_one_frame();
 
 // Array of pointers to asteroids. If no asteroid, it is NULL
 static struct asteroid asteroids[MAX_NUM_ASTEROIDS];
+
+
 
 // static struct bullet bullets[MAX_NUM_BULLETS];
 
@@ -28,6 +31,7 @@ void update_mechanics();
 
 int main() {
     uart_init();
+    trig_init(3);
     printf("Hello from main()\n");
     gl_init(MONITOR_WIDTH, MONITOR_HEIGHT, FB_DOUBLEBUFFER);
 
@@ -93,6 +97,7 @@ static void setup_game() {
         .mechanics = { 500, 500, 0, 0, 0, 0, 0 }
     };
 
+    // rocket_explode_init();
 }
 
 static void run_one_frame() {
@@ -105,12 +110,9 @@ static void run_one_frame() {
         draw_points(points, ASTEROID_NUM_POINTS, a.mechanics.x, a.mechanics.y, GL_WHITE);
     }
 
-    printf("ROCKET_NUM_POINTS = %d\n", ROCKET_NUM_POINTS);
-    printf("__ROCKET_NUM_POINTS = %d\n", __ROCKET_NUM_POINTS);
-
+    // draw_points(rotate_points(ROCKET_POINTS, rocket_mechanics.rotation), ROCKET_NUM_POINTS, 500, 400, GL_WHITE);
     draw_points(ROCKET_POINTS, ROCKET_NUM_POINTS, 500, 400, GL_WHITE);
-    draw_points(ROCKET_POINTS, ROCKET_NUM_POINTS, 100, 100, GL_WHITE);
-    for(int i = 0; i < ROCKET_NUM_POINTS; i++) { // draws exploded sides (if rocket has exploded).
+    for(int i = 0; i < __ROCKET_NUM_POINTS; i++) { // draws exploded sides (if rocket has exploded).
         draw_points(ROCKET_EXPLODED_POINTS[i], ROCKET_EXPLODED_SIDES_NUM_POINTS, 100, 100, GL_WHITE);
     }
  
@@ -118,6 +120,7 @@ static void run_one_frame() {
     rocket_explode_update();
     update_mechanics();
     fb_swap_buffer(); //show the frame
+    
 }
 
 

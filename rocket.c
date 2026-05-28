@@ -9,12 +9,19 @@ struct vector ROCKET_SIDES_DRIFT_VECS[__ROCKET_NUM_POINTS];
 
 // Rocket points, polygon.
 struct point ROCKET_POINTS[__ROCKET_NUM_POINTS] = {
-    { 25, 5 },
-    { 12, 45 },
-    { 15, 36 },
-    { 35, 36 },
-    { 38, 45 },
-    { 25, 5 },
+    { 25 - 25, 5  - 25 },
+    { 12 - 25, 45 - 25 },
+    { 15 - 25, 36 - 25 },
+    { 35 - 25, 36 - 25 },
+    { 38 - 25, 45 - 25 },
+    { 25 - 25, 5  - 25 },
+
+    // { 25, 5 },
+    // { 12, 45 },
+    // { 15, 36 },
+    // { 35, 36 },
+    // { 38, 45 },
+    // { 25, 5 },
 };
 
 // Array of rocket sides polygons.
@@ -23,10 +30,11 @@ struct point ROCKET_EXPLODED_POINTS[__ROCKET_NUM_POINTS][2] = {
     {   {12,45}, {15,36}    },
     {   {15,36}, {35,36}    },
     {   {35,36}, {38,45}    },
-    {   {38,45}, {25,5}     }
+    {   {38,45}, {25,5}     },
+    {   {12,45}, {25,5}     }
 };
 
-static struct mechanics rocket_mechanics = {
+struct mechanics rocket_mechanics = {
     .x = MONITOR_WIDTH / 2,
     .y = MONITOR_HEIGHT / 2,
     .vx = 0,

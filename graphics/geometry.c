@@ -23,7 +23,7 @@ struct vector vec_difference(struct point p1, struct point p2) {
     return diff;
 }
 struct vector vec_normalize(struct vector vec) {
-    double normalization_factor = max(vec.x, vec.y);
+    double normalization_factor = max(abs(vec.x), abs(vec.y));
     vec.x /= normalization_factor;
     vec.y /= normalization_factor;
     return vec;
