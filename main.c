@@ -102,8 +102,12 @@ static void run_one_frame() {
     }
 
     draw_points(ROCKET_POINTS, ROCKET_NUM_POINTS, 100, 100, GL_WHITE);
-    
+    for(int i = 0; i < __ROCKET_NUM_POINTS; i++) { // draws exploded sides (if rocket has exploded).
+        draw_points(ROCKET_EXPLODED_POINTS[i], ROCKET_EXPLODED_SIDES_NUM_POINTS, 100, 100, GL_WHITE);
+    }
+ 
     collision_detection();
+    rocket_explode_update();
     update_mechanics();
     fb_swap_buffer(); //show the frame
 }
