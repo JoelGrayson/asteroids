@@ -53,9 +53,9 @@ int main() {
     // Button handling interrupt setup:
     for(int i = 0; i < NUM_BUTTONS; i++) {
         // button click on negative edge, with debouncing.
-        gpio_interrupt_config(buttons[i].pin, GPIO_INTERRUPT_NEGATIVE_EDGE, true); 
-        // assigns button handler function to its gpio pin interrupt response; for now, passing in no aux_data.
-        gpio_interrupt_set_handler(buttons[i].pin, buttons[i].handler, NULL);
+        gpio_interrupt_config(buttons[i].pin, GPIO_INTERRUPT_NEGATIVE_EDGE, true);
+        // assigns button handler function to its gpio pin interrupt response; passing in button itself as aux_data.
+        gpio_interrupt_set_handler(buttons[i].pin, buttons[i].handler, &buttons[i]);
     }
 
     interrupts_global_enable();
