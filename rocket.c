@@ -2,6 +2,11 @@
 #include "mechanics.h"
 #include "constants.h"
 
+int ROCKET_NUM_POINTS = __ROCKET_NUM_POINTS;
+int ROCKET_EXPLODED_SIDES_NUM_POINTS = 0;
+
+struct vector ROCKET_SIDES_DRIFT_VECS[__ROCKET_NUM_POINTS];
+
 // Rocket points, polygon.
 struct point ROCKET_POINTS[__ROCKET_NUM_POINTS] = {
     { 25, 5 },
@@ -42,7 +47,10 @@ void rocket_explode_init() {
         struct vector sidev = vec_difference(ROCKET_EXPLODED_POINTS[i][0], ROCKET_EXPLODED_POINTS[i][1]);
         struct vector side_orthov = vec_orthogonal(sidev);
         // Scales that orthogonal vector to the speed at which the sides are flying out
-        side_orthov = ROCKET_SIDES_DRIFT_SPEED * vec_normalize(side_orthov);
+
+        struct vector vn = vec_normalize(side_orthov);
+        side_orthov.x = ROCKET_SIDES_DRIFT_SPEED * vn.x;
+        side_orthov.y = ROCKET_SIDES_DRIFT_SPEED * vn.y;
         ROCKET_SIDES_DRIFT_VECS[i] = side_orthov; // assigns this sides' stored drift vector to what we calculated
     }
     ROCKET_EXPLODED_SIDES_NUM_POINTS = 2; // each exploded side has 2 points in it to draw.
@@ -52,7 +60,7 @@ void rocket_explode_init() {
 void rocket_explode_update() {
     // Exploded sides position updating loop should not activate unless rocket_explode_init() previously called.
     for(int i = 0; i < __ROCKET_NUM_POINTS*(ROCKET_EXPLODED_SIDES_NUM_POINTS/2); i++) {
-        #pragma unroll GCC 2
+        // #pragma unroll GCC 2
         for(int j = 0; j < 2; j++) {
             // Makes rocket exploded side points drift as intended.
             ROCKET_EXPLODED_POINTS[i][j].x += ROCKET_SIDES_DRIFT_VECS[i].x;

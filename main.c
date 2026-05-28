@@ -22,6 +22,10 @@ static struct asteroid asteroids[MAX_NUM_ASTEROIDS];
 
 static int frame = 0;
 
+void collision_detection();
+void update_mechanics();
+
+
 int main() {
     uart_init();
     printf("Hello from main()\n");
@@ -96,13 +100,17 @@ static void run_one_frame() {
 
     for (int i = 0; i < 9; i++) {
         struct asteroid a = asteroids[i];
-        printf("Displaying asteroid %d\n", i);
+        // printf("Displaying asteroid %d\n", i);
         struct point *points = get_points_of_asteroid(a);
         draw_points(points, ASTEROID_NUM_POINTS, a.mechanics.x, a.mechanics.y, GL_WHITE);
     }
 
+    printf("ROCKET_NUM_POINTS = %d\n", ROCKET_NUM_POINTS);
+    printf("__ROCKET_NUM_POINTS = %d\n", __ROCKET_NUM_POINTS);
+
+    draw_points(ROCKET_POINTS, ROCKET_NUM_POINTS, 500, 400, GL_WHITE);
     draw_points(ROCKET_POINTS, ROCKET_NUM_POINTS, 100, 100, GL_WHITE);
-    for(int i = 0; i < __ROCKET_NUM_POINTS; i++) { // draws exploded sides (if rocket has exploded).
+    for(int i = 0; i < ROCKET_NUM_POINTS; i++) { // draws exploded sides (if rocket has exploded).
         draw_points(ROCKET_EXPLODED_POINTS[i], ROCKET_EXPLODED_SIDES_NUM_POINTS, 100, 100, GL_WHITE);
     }
  
@@ -132,7 +140,7 @@ check if rocket touching asteroid
 
 // Updates the position of all asteroids, rocket, and bullets using velocity and position
 void update_mechanics() {
-    for ()
+    // for ()
 }
 
 
