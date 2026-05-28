@@ -2,6 +2,8 @@
 #include "uart.h"
 #include <stdbool.h>
 #include "constants.h"
+#include "interrupts.h"
+#include "gpio_interrupt.h"
 
 #include "asteroid.h"
 // #include "bullet.h"
@@ -19,8 +21,6 @@ static void run_one_frame();
 // Array of pointers to asteroids. If no asteroid, it is NULL
 static struct asteroid asteroids[MAX_NUM_ASTEROIDS];
 
-
-
 // static struct bullet bullets[MAX_NUM_BULLETS];
 
 static int frame = 0;
@@ -30,11 +30,19 @@ void update_mechanics();
 
 
 int main() {
+    interrupts_init();
     uart_init();
     trig_init(3);
     printf("Hello from main()\n");
     gl_init(MONITOR_WIDTH, MONITOR_HEIGHT, FB_DOUBLEBUFFER);
 
+    gpio_interrupt_init();
+    
+    // TODO: FOR BUTTON HANDLING:
+    /*gpio_interrupt_config()
+    gpio_interrupt_set_handler()*/
+
+    interrupts_global_enable();
     run_game();
 }
 
