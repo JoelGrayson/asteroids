@@ -13,6 +13,9 @@
 #include "gl.h"
 #include "graphics/draw_points.h"
 #include "maths.h"
+#include "buttons.h"
+
+#define NUM_BUTTONS 5
 
 static void setup_game();
 static void run_game();
@@ -22,6 +25,15 @@ static void run_one_frame();
 static struct asteroid asteroids[MAX_NUM_ASTEROIDS];
 
 // static struct bullet bullets[MAX_NUM_BULLETS];
+
+// Array of buttons (pin + onclick interrupt handler function).
+static struct button buttons[NUM_BUTTONS] = {
+    {GPIO_PC1, onclick_thrust},
+    {GPIO_PD13, onclick_fire},
+    {GPIO_PD10, onclick_left},
+    {GPIO_PD11, onclick_right},
+    {GPIO_PD15, onclick_teleport}
+};
 
 static int frame = 0;
 
@@ -38,9 +50,13 @@ int main() {
 
     gpio_interrupt_init();
     
-    // TODO: FOR BUTTON HANDLING:
-    /*gpio_interrupt_config()
-    gpio_interrupt_set_handler()*/
+    // Button handling interrupt setup:
+    for(int i = 0; i < NUM_BUTTONS; i++) {
+        // button click on negative edge, with debouncing.
+        gpio_interrupt_config(buttons[i].pin, GPIO_INTERRUPT_NEGATIVE_EDGE, true); 
+        // assigns button handler function to its gpio pin interrupt response; for now, passing in no aux_data.
+        gpio_interrupt_set_handler(buttons[i].pin, buttons[i].handler, NULL);
+    }
 
     interrupts_global_enable();
     run_game();
@@ -153,5 +169,3 @@ check if rocket touching asteroid
 void update_mechanics() {
     // for ()
 }
-
-
