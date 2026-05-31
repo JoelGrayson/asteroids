@@ -130,7 +130,7 @@ static void setup_game() {
         .mechanics = { 500, 500, 0, 0, 0, 0, 0 }
     };
 
-    // rocket_explode_init();
+    rocket_explode_init();
 }
 
 void onclick_thrust(void* aux_data) {
@@ -182,8 +182,14 @@ static void run_one_frame() {
 
     // draw_points(rotate_points(ROCKET_POINTS, rocket_mechanics.rotation), ROCKET_NUM_POINTS, 500, 400, GL_WHITE);
     draw_points(ROCKET_POINTS, ROCKET_NUM_POINTS, 500, 400, GL_WHITE);
-    for (int i = 0; i < __ROCKET_NUM_POINTS; i++) { // draws exploded sides (if rocket has exploded).
-        draw_points(ROCKET_EXPLODED_POINTS[i], ROCKET_EXPLODED_SIDES_NUM_POINTS, 100, 100, GL_WHITE);
+    /*printf("rocket num points is: %d\n", ROCKET_NUM_POINTS);
+    printf("__rocket num points is: %d\n", __ROCKET_NUM_POINTS);
+    printf("rocket exploded sides num points is: %d\n", ROCKET_EXPLODED_SIDES_NUM_POINTS);*/
+    for (int i = 0; i < __ROCKET_NUM_POINTS-1; i++) { // draws exploded sides (if rocket has exploded).
+        /*struct point p1 = ROCKET_EXPLODED_POINTS[i][0];
+        struct point p2 = ROCKET_EXPLODED_POINTS[i][1];
+        printf("drawing from (%f, %f) to (%f, %f)\n", p1.x+100, p1.y+100, p2.x+100, p2.y+100);*/
+        draw_points(ROCKET_EXPLODED_POINTS[i], ROCKET_EXPLODED_SIDES_NUM_POINTS, 500, 400, GL_WHITE);
     }
  
     collision_detection();

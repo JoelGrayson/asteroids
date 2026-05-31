@@ -4,7 +4,7 @@
 #include "graphics/point.h"
 #include "graphics/geometry.h"
 
-#define ROCKET_SIDES_DRIFT_SPEED 8
+#define ROCKET_SIDES_DRIFT_SPEED 13
 
 extern struct mechanics rocket_mechanics;
 
@@ -17,7 +17,7 @@ extern int ROCKET_EXPLODED_SIDES_NUM_POINTS; // At the start, we don't want to d
 extern struct point ROCKET_POINTS[__ROCKET_NUM_POINTS];
 
 // Rocket sides polygons for when we want to display them.
-extern struct point ROCKET_EXPLODED_POINTS[__ROCKET_NUM_POINTS][2];
+extern struct point ROCKET_EXPLODED_POINTS[__ROCKET_NUM_POINTS-1][2];
 
 // Helper functions to intialize rocket exploded sides and then update their positions continuously.
 void rocket_explode_init(void);
