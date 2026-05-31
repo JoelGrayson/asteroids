@@ -2,7 +2,7 @@
 # make run - main.c
 # make tests/maths - tests asserts
 # make tests/draw_line - draws on monitor
-
+# make tests/audio - tests asteroids sounds playing through I2S
 
 
 RUN_PROGRAM = main.bin
@@ -20,7 +20,7 @@ run: $(RUN_PROGRAM)
 	riscv64-unknown-elf-objcopy $< -O binary $@
 
 LD_FLAGS = -nostdlib -L$$CS107E/lib -T memmap.ld
-LDLIBS = -lmango -lmango_gcc
+LDLIBS = -lextra -lmango -lmango_gcc
 %.elf: %.o $(LIBMANGO_SOURCES) $(GRAPHICS_SOURCES) $(OTHER_SOURCES)
 	riscv64-unknown-elf-ld $(LD_FLAGS) $^ $(LDLIBS) -o $@ 
 
@@ -47,6 +47,8 @@ tests/draw_line_test: tests/draw_line_test.bin
 tests/draw_asteroid_test: tests/draw_asteroid_test.bin
 	mango-run $<
 
+tests/audio_test: tests/audio_test.bin
+	mango-run $<
 
 # .PRECIOUS: %.o %.elf %.bin
 
