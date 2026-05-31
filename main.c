@@ -17,7 +17,7 @@
 
 // Array of buttons (pin + onclick interrupt handler function).
 struct button buttons[NUM_BUTTONS] = {
-    {GPIO_PC1, onclick_thrust},
+    {GPIO_PC0, onclick_thrust},
     {GPIO_PD13, onclick_fire},
     {GPIO_PD10, onclick_left},
     {GPIO_PD11, onclick_right},
@@ -39,6 +39,7 @@ static struct asteroid asteroids[MAX_NUM_ASTEROIDS];
 
 static int frame = 0;
 
+static void configure_button_interrupts();
 void collision_detection();
 void update_mechanics();
 
@@ -50,10 +51,17 @@ int main() {
     printf("Hello from main()\n");
     gl_init(MONITOR_WIDTH, MONITOR_HEIGHT, FB_DOUBLEBUFFER);
 
+    printf("Hello, welcome to Asteroids\n");
+    
+    configure_button_interrupts();
+    run_game();
+}
+
+static void configure_button_interrupts() {
     gpio_interrupt_init();
     
     // Button handling interrupt setup:
-    for(int i = 0; i < NUM_BUTTONS; i++) {
+    for (int i = 0; i < NUM_BUTTONS; i++) {
         // button click on negative edge, with debouncing.
         gpio_interrupt_config(buttons[i].pin, GPIO_INTERRUPT_NEGATIVE_EDGE, true);
         // assigns button handler function to its gpio pin interrupt response; passing in button itself as aux_data.
@@ -61,7 +69,6 @@ int main() {
     }
 
     interrupts_global_enable();
-    run_game();
 }
 
 static void run_game() {
@@ -126,6 +133,43 @@ static void setup_game() {
     // rocket_explode_init();
 }
 
+void onclick_thrust(void* aux_data) {
+    struct button *b = (struct button*)aux_data;
+    printf("Button pressed: thrust\n");
+    
+    
+    
+    
+    gpio_interrupt_clear(b->pin);
+}
+
+void onclick_fire(void* aux_data) {
+    // TODO!
+    struct button *b = (struct button*)aux_data;
+    printf("Fire!\n");
+    gpio_interrupt_clear(b->pin);
+}
+void onclick_left(void* aux_data) {
+    // TODO!
+    struct button *b = (struct button*)aux_data;
+    printf("Left!\n");
+    gpio_interrupt_clear(b->pin);
+}
+void onclick_right(void* aux_data) {
+    // TODO!
+    struct button *b = (struct button*)aux_data;
+    printf("Right!\n");
+    gpio_interrupt_clear(b->pin);
+}
+void onclick_teleport(void* aux_data) {
+    // TODO!
+    struct button *b = (struct button*)aux_data;
+    printf("Teleport!\n");
+    gpio_interrupt_clear(b->pin);
+}
+
+
+
 static void run_one_frame() {
     gl_clear(GL_BLACK);
 
@@ -138,7 +182,7 @@ static void run_one_frame() {
 
     // draw_points(rotate_points(ROCKET_POINTS, rocket_mechanics.rotation), ROCKET_NUM_POINTS, 500, 400, GL_WHITE);
     draw_points(ROCKET_POINTS, ROCKET_NUM_POINTS, 500, 400, GL_WHITE);
-    for(int i = 0; i < __ROCKET_NUM_POINTS; i++) { // draws exploded sides (if rocket has exploded).
+    for (int i = 0; i < __ROCKET_NUM_POINTS; i++) { // draws exploded sides (if rocket has exploded).
         draw_points(ROCKET_EXPLODED_POINTS[i], ROCKET_EXPLODED_SIDES_NUM_POINTS, 100, 100, GL_WHITE);
     }
  
