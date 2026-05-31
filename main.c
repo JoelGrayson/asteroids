@@ -14,6 +14,9 @@
 #include "graphics/draw_points.h"
 #include "maths.h"
 #include "buttons.h"
+#include "timer.h"
+
+#define TICKS_EXPLOSION_DISAPPEAR 2000000*TICKS_PER_USEC
 
 // Array of buttons (pin + onclick interrupt handler function).
 struct button buttons[NUM_BUTTONS] = {
@@ -38,6 +41,7 @@ static struct asteroid asteroids[MAX_NUM_ASTEROIDS];
 
 
 static int frame = 0;
+static unsigned long tickExplosion = 0; // Tick of explosion, used for rocket line erasure after set time of explosion.
 
 static void configure_button_interrupts();
 void collision_detection();
@@ -131,6 +135,7 @@ static void setup_game() {
     };
 
     rocket_explode_init();
+    tickExplosion = timer_get_ticks(); // Registers the explosion tick, so we can progressively delete rocket explosion lines.
 }
 
 void onclick_thrust(void* aux_data) {
@@ -185,13 +190,15 @@ static void run_one_frame() {
     /*printf("rocket num points is: %d\n", ROCKET_NUM_POINTS);
     printf("__rocket num points is: %d\n", __ROCKET_NUM_POINTS);
     printf("rocket exploded sides num points is: %d\n", ROCKET_EXPLODED_SIDES_NUM_POINTS);*/
-    for (int i = 0; i < __ROCKET_NUM_POINTS-1; i++) { // draws exploded sides (if rocket has exploded).
-        /*struct point p1 = ROCKET_EXPLODED_POINTS[i][0];
-        struct point p2 = ROCKET_EXPLODED_POINTS[i][1];
-        printf("drawing from (%f, %f) to (%f, %f)\n", p1.x+100, p1.y+100, p2.x+100, p2.y+100);*/
-        draw_points(ROCKET_EXPLODED_POINTS[i], ROCKET_EXPLODED_SIDES_NUM_POINTS, 500, 400, GL_WHITE);
+
+    // Draws all rocket exploded sides (- the number of despawned exploded sides).
+    if(tickExplosion != 0) {
+        unsigned long sides_to_despawn = timer_get_ticks()-tickExplosion;
+        sides_to_despawn /= TICKS_EXPLOSION_DISAPPEAR;
+        for (unsigned long i = 0; i < __ROCKET_NUM_POINTS-1-sides_to_despawn; i++) { // draws exploded sides (if rocket has exploded).
+            draw_points(ROCKET_EXPLODED_POINTS[i], ROCKET_EXPLODED_SIDES_NUM_POINTS, 500, 400, GL_WHITE);
+        }
     }
- 
     collision_detection();
     rocket_explode_update();
     update_mechanics();

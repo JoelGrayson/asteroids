@@ -59,9 +59,9 @@ void rocket_explode_init() {
 
         struct vector vn = vec_normalize(side_orthov);
         //printf("vn is (%f, %f)\n", vn.x, vn.y);
-        //printf("DRIFT SPEED IS %f\n", ROCKET_SIDES_DRIFT_SPEED/100.0);
-        side_orthov.x = ROCKET_SIDES_DRIFT_SPEED/100.0 * vn.x;
-        side_orthov.y = ROCKET_SIDES_DRIFT_SPEED/100.0 * vn.y;
+        printf("DRIFT SPEED IS %f\n", ROCKET_SIDES_DRIFT_SPEED/100.0);
+        side_orthov.x = (double)ROCKET_SIDES_DRIFT_SPEED/100.0 * vn.x;
+        side_orthov.y = (double)ROCKET_SIDES_DRIFT_SPEED/100.0 * vn.y;
         ROCKET_SIDES_DRIFT_VECS[i] = side_orthov; // assigns this sides' stored drift vector to what we calculated
     }
     ROCKET_EXPLODED_SIDES_NUM_POINTS = 2; // each exploded side has 2 points in it to draw.
