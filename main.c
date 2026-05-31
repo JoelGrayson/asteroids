@@ -201,7 +201,7 @@ static void run_one_frame() {
     }
     collision_detection();
     rocket_explode_update();
-    update_mechanics();
+    update_mechanics_main();
     fb_swap_buffer(); //show the frame
     
 }
@@ -225,6 +225,6 @@ check if rocket touching asteroid
 }
 
 // Updates the position of all asteroids, rocket, and bullets using velocity and position
-void update_mechanics() {
+void update_mechanics_main() {
     // for ()
 }

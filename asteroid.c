@@ -1,5 +1,8 @@
 #include "asteroid.h"
+#include "mechanics.h"
+#include "constants.h"
 
+// Gets the asteroid polygon points
 struct point *get_points_of_asteroid(struct asteroid ast) {
     if (ast.type == A) {
         if (ast.size == BIG)    return ASTEROID_A_BIG_POINTS;
@@ -18,6 +21,30 @@ struct point *get_points_of_asteroid(struct asteroid ast) {
     }
     printf("Error: get_points_of_asteroid: invalid asteroid\n");
     return ASTEROID_A_BIG_POINTS; //should not happen
+}
+
+// Mechanics function for asteroids during game loop
+void asteroids_update_mechanics(struct asteroids* asteroids, int num_asteroids) {
+    for(int i = 0; i < num_asteroids; i++) {
+        // Asteroid continues on its present course
+        update_mechanics(&asteroids[i].mechanics); // Any object in motion at a certain velocity will remain in motion at that velocity (Newton's 1st Law).
+        // Respawns asteroid if out-of-bounds
+        struct point pos = asteroid_get_pos(asteroids[i]);
+        if(pos.x < 0 || pos.x > MONITOR_WIDTH || pos.y < 0 || pos.y > MONITOR_HEIGHT) {
+            asteroid_respawn(&asteroid[i]);
+        }
+    }
+}
+
+// Returns position of asteroid in a more convenient way
+struct point asteroid_get_pos(struct asteroid ast) {
+    struct point ret = {ast.mechanics.x, ast.mechanics.y};
+    return ret;
+}
+
+// Respawns asteroid at a random point along the edge of the screen
+void asteroid_respawn(struct asteroid* ast) {
+    // TODO!
 }
 
 struct point ASTEROID_A_SMALL_POINTS[ASTEROID_NUM_POINTS] = {
