@@ -133,6 +133,43 @@ static void setup_game() {
     // rocket_explode_init();
 }
 
+void onclick_thrust(void* aux_data) {
+    struct button *b = (struct button*)aux_data;
+    printf("Button pressed: thrust\n");
+    
+    
+    
+    
+    gpio_interrupt_clear(b->pin);
+}
+
+void onclick_fire(void* aux_data) {
+    // TODO!
+    struct button *b = (struct button*)aux_data;
+    printf("Fire!\n");
+    gpio_interrupt_clear(b->pin);
+}
+void onclick_left(void* aux_data) {
+    // TODO!
+    struct button *b = (struct button*)aux_data;
+    printf("Left!\n");
+    gpio_interrupt_clear(b->pin);
+}
+void onclick_right(void* aux_data) {
+    // TODO!
+    struct button *b = (struct button*)aux_data;
+    printf("Right!\n");
+    gpio_interrupt_clear(b->pin);
+}
+void onclick_teleport(void* aux_data) {
+    // TODO!
+    struct button *b = (struct button*)aux_data;
+    printf("Teleport!\n");
+    gpio_interrupt_clear(b->pin);
+}
+
+
+
 static void run_one_frame() {
     gl_clear(GL_BLACK);
 
@@ -145,7 +182,7 @@ static void run_one_frame() {
 
     // draw_points(rotate_points(ROCKET_POINTS, rocket_mechanics.rotation), ROCKET_NUM_POINTS, 500, 400, GL_WHITE);
     draw_points(ROCKET_POINTS, ROCKET_NUM_POINTS, 500, 400, GL_WHITE);
-    for(int i = 0; i < __ROCKET_NUM_POINTS; i++) { // draws exploded sides (if rocket has exploded).
+    for (int i = 0; i < __ROCKET_NUM_POINTS; i++) { // draws exploded sides (if rocket has exploded).
         draw_points(ROCKET_EXPLODED_POINTS[i], ROCKET_EXPLODED_SIDES_NUM_POINTS, 100, 100, GL_WHITE);
     }
  
