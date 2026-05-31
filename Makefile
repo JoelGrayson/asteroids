@@ -8,7 +8,7 @@
 RUN_PROGRAM = main.bin
 
 # Own custom implementations in lib/
-LIBMANGO_SOURCES = libmango/gpio.o libmango/malloc.o #TODO: libmango/printf.o
+LIBMANGO_SOURCES = libmango/gpio.o libmango/malloc.o libmango/ccu.o libmango/i2s.o libmango/dma.o #TODO: libmango/printf.o
 GRAPHICS_SOURCES = graphics/draw_line.o graphics/draw_points.o graphics/geometry.o #graphics/draw_saucer.o
 OTHER_SOURCES = maths.o asteroid.o rocket.o buttons.o
 
@@ -20,7 +20,7 @@ run: $(RUN_PROGRAM)
 	riscv64-unknown-elf-objcopy $< -O binary $@
 
 LD_FLAGS = -nostdlib -L$$CS107E/lib -T memmap.ld
-LDLIBS = -lextra -lmango -lmango_gcc
+LDLIBS = -lmango -lmango_gcc
 %.elf: %.o $(LIBMANGO_SOURCES) $(GRAPHICS_SOURCES) $(OTHER_SOURCES)
 	riscv64-unknown-elf-ld $(LD_FLAGS) $^ $(LDLIBS) -o $@ 
 
