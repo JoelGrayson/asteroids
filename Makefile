@@ -20,7 +20,7 @@ run: $(RUN_PROGRAM)
 	riscv64-unknown-elf-objcopy $< -O binary $@
 
 LD_FLAGS = -nostdlib -L$$CS107E/lib -T memmap.ld
-LDLIBS = -lextra -lmango -lmango_gcc
+LDLIBS = -lmango -lmango_gcc
 %.elf: %.o $(LIBMANGO_SOURCES) $(GRAPHICS_SOURCES) $(OTHER_SOURCES)
 	riscv64-unknown-elf-ld $(LD_FLAGS) $^ $(LDLIBS) -o $@ 
 
