@@ -249,5 +249,5 @@ check if rocket touching asteroid
 // Updates the position of all asteroids, rocket, and bullets using velocity and position
 void update_mechanics_main() {
     asteroids_update_mechanics(asteroids, CUR_NUM_ASTEROIDS);
-    update_mechanics(&rocket_mechanics);
+    rocket_update_mechanics();
 }

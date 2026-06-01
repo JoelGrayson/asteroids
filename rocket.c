@@ -80,3 +80,10 @@ void rocket_explode_update() {
         }
     }
 }
+
+void rocket_update_mechanics() {
+    // TODO: bounds checking
+    update_mechanics(&rocket_mechanics);
+}
+
+

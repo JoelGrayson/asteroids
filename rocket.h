@@ -22,5 +22,7 @@ extern struct point ROCKET_EXPLODED_POINTS[__ROCKET_NUM_POINTS-1][2];
 // Helper functions to intialize rocket exploded sides and then update their positions continuously.
 void rocket_explode_init(void);
 void rocket_explode_update(void);
+void rocket_update_mechanics();
+
 
 #endif
