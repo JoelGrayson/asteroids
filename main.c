@@ -56,6 +56,7 @@ int main() {
 static void run_game() {
     printf("Starting game\n");
     setup_game();
+    printf("Setup done\n");
     
     while (true) {
         run_one_frame();
