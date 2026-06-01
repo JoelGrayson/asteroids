@@ -10,7 +10,7 @@ RUN_PROGRAM = main.bin
 # Own custom implementations in lib/
 LIBMANGO_SOURCES = libmango/gpio.o libmango/gpio_extra.o libmango/malloc.o libmango/ccu.o libmango/i2s.o libmango/dma.o #TODO: libmango/printf.o
 GRAPHICS_SOURCES = graphics/draw_line.o graphics/draw_points.o graphics/geometry.o graphics/rotate_points.o #graphics/draw_saucer.o
-OTHER_SOURCES = maths.o asteroid.o rocket.o mechanics.o
+OTHER_SOURCES = maths.o asteroid.o rocket.o mechanics.o buttons.o
 
 
 run: $(RUN_PROGRAM)
