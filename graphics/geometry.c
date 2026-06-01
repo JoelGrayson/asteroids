@@ -36,6 +36,7 @@ struct vector vec_orthogonal(struct vector vec) {
     return ortho;
 }
 
+// Copied math from Wikipedia to check whether line segments intersect. Had something to do with determinants.
 bool lines_intersect(struct point p1, struct point p2, struct point p3, struct point p4) {
     double t_num = (p1.x - p3.x)*(p3.y - p4.y) - (p1.y - p3.y)*(p3.x - p4.x);
     double t_den = (p1.x - p2.x)*(p3.y - p4.y) - (p1.y - p2.y)*(p3.x - p4.x);
