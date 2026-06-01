@@ -2,11 +2,11 @@
 
 typedef void (*click_fn_t)(void* aux_data);
 
-const gpio_id_t ROTATE_LEFT_BUTTON = GPIO_PB1;
-const gpio_id_t ROTATE_RIGHT_BUTTON = GPIO_PB0;
-const gpio_id_t HYPERSPACE_BUTTON = GPIO_PB4;
-const gpio_id_t THRUST_BUTTON = GPIO_PB3;
-const gpio_id_t FIRE_BUTTON = GPIO_PB2;
+const gpio_id_t ROTATE_LEFT_BUTTON = GPIO_PB3;
+const gpio_id_t ROTATE_RIGHT_BUTTON = GPIO_PB4;
+const gpio_id_t HYPERSPACE_BUTTON = GPIO_PB2;
+const gpio_id_t THRUST_BUTTON = GPIO_PC0;
+const gpio_id_t FIRE_BUTTON = GPIO_PD17;
 
 const gpio_id_t buttons[NUM_BUTTONS] = {
     ROTATE_LEFT_BUTTON,
