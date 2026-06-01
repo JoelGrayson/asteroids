@@ -163,7 +163,7 @@ void onclick_thrust(void* aux_data) {
     struct button *b = (struct button*)aux_data;
     printf("Button pressed: thrust\n");
     
-    
+    rocket_mechanics.vy++;
     
     
     gpio_interrupt_clear(b->pin);
@@ -207,7 +207,7 @@ static void run_one_frame() {
     }
 
     // draw_points(rotate_points(ROCKET_POINTS, rocket_mechanics.rotation), ROCKET_NUM_POINTS, 500, 400, GL_WHITE);
-    draw_points(ROCKET_POINTS, ROCKET_NUM_POINTS, 500, 400, GL_WHITE);
+    draw_points(ROCKET_POINTS, ROCKET_NUM_POINTS, rocket_mechanics.x, rocket_mechanics.y, GL_WHITE);
     /*printf("rocket num points is: %d\n", ROCKET_NUM_POINTS);
     printf("__rocket num points is: %d\n", __ROCKET_NUM_POINTS);
     printf("rocket exploded sides num points is: %d\n", ROCKET_EXPLODED_SIDES_NUM_POINTS);*/
@@ -217,7 +217,7 @@ static void run_one_frame() {
         unsigned long sides_to_despawn = timer_get_ticks()-tickExplosion;
         sides_to_despawn /= TICKS_EXPLOSION_DISAPPEAR;
         for (unsigned long i = 0; i < __ROCKET_NUM_POINTS-1-sides_to_despawn; i++) { // draws exploded sides (if rocket has exploded).
-            draw_points(ROCKET_EXPLODED_POINTS[i], ROCKET_EXPLODED_SIDES_NUM_POINTS, 500, 400, GL_WHITE);
+            draw_points(ROCKET_EXPLODED_POINTS[i], ROCKET_EXPLODED_SIDES_NUM_POINTS, rocket_mechanics.x, rocket_mechanics.y, GL_WHITE);
         }
     }
     collision_detection();
@@ -249,4 +249,5 @@ check if rocket touching asteroid
 // Updates the position of all asteroids, rocket, and bullets using velocity and position
 void update_mechanics_main() {
     asteroids_update_mechanics(asteroids, CUR_NUM_ASTEROIDS);
+    update_mechanics(&rocket_mechanics);
 }
