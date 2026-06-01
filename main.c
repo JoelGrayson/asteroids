@@ -8,6 +8,8 @@
 #include "asteroid.h"
 // #include "bullet.h"
 #include "rocket.h"
+#include "gpio.h"
+#include "libmango/gpio_extra.h"
 
 #include "fb.h"
 #include "gl.h"
@@ -46,6 +48,7 @@ static unsigned long tickExplosion = 0; // Tick of explosion, used for rocket li
 static void configure_button_interrupts();
 void collision_detection();
 void update_mechanics();
+void update_mechanics_main();
 
 
 int main() {
@@ -61,6 +64,8 @@ int main() {
     run_game();
 }
 
+#define TEST_BUTTON GPIO_PB4
+
 static void configure_button_interrupts() {
     gpio_interrupt_init();
     
@@ -72,6 +77,9 @@ static void configure_button_interrupts() {
         gpio_interrupt_set_handler(buttons[i].pin, buttons[i].handler, &buttons[i]);
     }
 
+    gpio_set_input(TEST_BUTTON);
+    gpio_set_pullup(TEST_BUTTON);
+    
     interrupts_global_enable();
 }
 
@@ -204,6 +212,7 @@ static void run_one_frame() {
     update_mechanics_main();
     fb_swap_buffer(); //show the frame
     
+    printf("Button: %d\n", gpio_read(TEST_BUTTON));
 }
 
 
