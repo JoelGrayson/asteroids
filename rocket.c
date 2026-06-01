@@ -88,6 +88,14 @@ void explode_rocket() {
     rocket_is_exploding = true;
 }
 
+struct point *get_points_of_rocket() {
+    return rotated_rocket_points;
+}
+
+int get_num_rocket_points() {
+    return ROCKET_NUM_POINTS;
+}
+
 
 
 

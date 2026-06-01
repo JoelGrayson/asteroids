@@ -56,5 +56,7 @@ void render_rocket(); //just draws the rocket
 void explode_rocket();
 struct mechanics get_rocket_mechanics();
 void rocket_update_mechanics(); //called once every cycle to update the position based on speed
+struct point *get_points_of_rocket(); // returns rockets' points (as currently rendered in rotation)
+int get_num_rocket_points(); // returns the total count of points forming rocket polygon
 
 #endif

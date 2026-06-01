@@ -14,6 +14,7 @@
 #include "fb.h"
 #include "gl.h"
 #include "graphics/draw_points.h"
+#include "graphics/geometry.h"
 #include "maths.h"
 #include "buttons.h"
 #include "timer.h"
@@ -45,7 +46,7 @@ int main() {
     uart_init();
     printf("Hello from main()\n");
 
-    buttons_init();
+    //buttons_init();
     trig_init(3);
     gl_init(MONITOR_WIDTH, MONITOR_HEIGHT, FB_DOUBLEBUFFER);
 
@@ -76,7 +77,7 @@ static void run_one_frame() {
 
     for (int i = 0; i < CUR_NUM_ASTEROIDS; i++) {
         struct asteroid a = asteroids[i];
-        // printf("Displaying asteroid %d\n", i);
+        //printf("Displaying asteroid %d\n", i);
         struct point *points = get_points_of_asteroid(a);
         draw_points(points, ASTEROID_NUM_POINTS, a.mechanics.x, a.mechanics.y, GL_WHITE);
     }
@@ -116,6 +117,26 @@ Loop over each bullet:
 check if rocket touching asteroid
 
 */
+    for(int i = 0; i < CUR_NUM_ASTEROIDS; i++) {
+        struct asteroid ast = asteroids[i];
+        struct point *ast_pts = get_points_of_asteroid(ast);
+        double ast_xoff = ast.mechanics.x;
+        double ast_yoff = ast.mechanics.y;
+        for(int j = 0; j < get_num_asteroid_points() - 1; j++) {
+            struct point p1 = { ast_pts[j].x+ast_xoff, ast_pts[j].y+ast_yoff };
+            struct point p2 = { ast_pts[j+1].x+ast_xoff, ast_pts[j+1].y+ast_yoff };
+            struct point *rocket_pts = get_points_of_rocket();
+
+            struct mechanics rocket_mech = get_rocket_mechanics();
+            double rocket_xoff = rocket_mech.x;
+            double rocket_yoff = rocket_mech.y;
+            for(int k = 0; k < get_num_rocket_points() - 1; k++) {
+                struct point p3 = { rocket_pts[k].x+rocket_xoff, rocket_pts[k].y+rocket_yoff };
+                struct point p4 = { rocket_pts[k+1].x+rocket_xoff, rocket_pts[k+1].y+rocket_yoff };
+                if(lines_intersect(p1, p2, p3, p4)) printf("collision between rocket and asteroid detected!\n");
+            }
+        }
+    }
 }
 
 // Updates the position of all asteroids, rocket, and bullets using velocity and position

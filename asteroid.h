@@ -48,6 +48,7 @@ void asteroids_update_mechanics(struct asteroid* asteroids, int num_asteroids);
 struct point asteroid_get_pos(struct asteroid ast);
 void asteroid_set_pos(struct asteroid* ast, struct point new_pos);
 void asteroid_respawn(struct asteroid* ast);
+int get_num_asteroid_points(); // returns the total count of points forming asteroid polygon
 
 #endif
 

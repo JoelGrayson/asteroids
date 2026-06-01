@@ -127,6 +127,10 @@ void asteroid_respawn(struct asteroid* ast) {
     ast->mechanics.vy = respawn_heading.y;
 }
 
+int get_num_asteroid_points() {
+    return ASTEROID_NUM_POINTS;
+}
+
 struct point ASTEROID_A_SMALL_POINTS[ASTEROID_NUM_POINTS] = {
     { 10 - 16, 5 - 14 },
     { 19 - 16, 5 - 14 },
