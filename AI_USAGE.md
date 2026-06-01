@@ -1,4 +1,5 @@
 # Figuring out
+* Centered asteroid coordinates using AI.
 * Realized there needed to be an include graphics/point.h in order to get the .c to work with point
 * using find . -name '*.o' -delete instead of rm because `rm **/*.o` ignores current directory in bash/sh even though this is fine in zsh
 * debugging

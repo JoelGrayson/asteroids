@@ -7,6 +7,7 @@
 #include <stdbool.h>
 
 #define MAX_NUM_ASTEROIDS 1000
+extern unsigned int MAX_ASTEROID_SPEED;
 
 enum asteroid_type {
     A,
@@ -43,9 +44,9 @@ extern struct point ASTEROID_B_BIG_POINTS[ASTEROID_NUM_POINTS];
 extern struct point ASTEROID_C_BIG_POINTS[ASTEROID_NUM_POINTS];
 
 struct point *get_points_of_asteroid(struct asteroid ast);
-// void asteroids_update_mechanics(struct asteroids* asteroids, int num_asteroids);
+void asteroids_update_mechanics(struct asteroid* asteroids, int num_asteroids);
 struct point asteroid_get_pos(struct asteroid ast);
-struct point asteroid_set_pos(struct asteroid* ast, struct point new_pos);
+void asteroid_set_pos(struct asteroid* ast, struct point new_pos);
 void asteroid_respawn(struct asteroid* ast);
 
 #endif

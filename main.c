@@ -151,7 +151,9 @@ static void setup_game() {
         .mechanics = { 500, 500, 0, 0, 0, 0, 0 }
     };
 
-    asteroid_respawn();
+    for(int i = 0; i < CUR_NUM_ASTEROIDS; i++) {
+        asteroid_respawn(&asteroids[i]);
+    }
     /*rocket_explode_init();
     tickExplosion = timer_get_ticks(); // Registers the explosion tick, so we can progressively delete rocket explosion lines. */
 }

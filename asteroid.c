@@ -5,6 +5,12 @@
 #include "graphics/geometry.h"
 #include "rand.h"
 
+// Maximum asteroid speed global variable -- should increase as game progresses in time (and thereby difficulty).
+unsigned int MAX_ASTEROID_SPEED = 10;
+
+// Minimum asteroid speed define
+#define MIN_ASTEROID_SPEED 2
+
 // Gets the asteroid polygon points
 struct point *get_points_of_asteroid(struct asteroid ast) {
     if (ast.type == A) {
@@ -27,17 +33,17 @@ struct point *get_points_of_asteroid(struct asteroid ast) {
 }
 
 // Mechanics function for asteroids during game loop
-// void asteroids_update_mechanics(struct asteroids* asteroids, int num_asteroids) {
-//     for(int i = 0; i < num_asteroids; i++) {
-//         // Asteroid continues on its present course
-//         update_mechanics(&asteroids[i].mechanics); // Any object in motion at a certain velocity will remain in motion at that velocity (Newton's 1st Law).
-//         // Respawns asteroid if out-of-bounds
-//         struct point pos = asteroid_get_pos(asteroids[i]);
-//         if(pos.x < 0 || pos.x > MONITOR_WIDTH || pos.y < 0 || pos.y > MONITOR_HEIGHT) {
-//             asteroid_respawn(&asteroid[i]);
-//         }
-//     }
-// }
+void asteroids_update_mechanics(struct asteroid* asteroids, int num_asteroids) {
+     for(int i = 0; i < num_asteroids; i++) {
+        // Asteroid continues on its present course
+        update_mechanics(&asteroids[i].mechanics); // Any object in motion at a certain velocity will remain in motion at that velocity (Newton's 1st Law).
+        // Respawns asteroid if out-of-bounds
+        struct point pos = asteroid_get_pos(asteroids[i]);
+        if(pos.x < -60 || pos.x > MONITOR_WIDTH+60 || pos.y < -60 || pos.y > MONITOR_HEIGHT+60) { // Asteroids ~ 60 radius max
+            asteroid_respawn(&asteroids[i]);
+        }
+    }
+}
 
 // Returns position of asteroid in a more convenient way
 struct point asteroid_get_pos(struct asteroid ast) {
@@ -46,52 +52,71 @@ struct point asteroid_get_pos(struct asteroid ast) {
 }
 
 // Sets position of asteroid in a more convenient way
-struct point asteroid_set_pos(struct asteroid* ast, struct point new_pos) {
+void asteroid_set_pos(struct asteroid* ast, struct point new_pos) {
     ast->mechanics.x = new_pos.x;
     ast->mechanics.y = new_pos.y;
 }
 
 // Respawns asteroid at a random point along the edge of the screen
-void asteroid_respawn(struct asteroid* ast, unsigned int MAX_ASTEROID_SPEED) {
+void asteroid_respawn(struct asteroid* ast) {
     int edge_axis = rand() % 3;    // Selects the edge we respawn the asteroid on by random lot
     struct point respawn_pos;      // Position of asteroid respawn (on edge of screen, top, bottom, left, right)
-    struct vector respawn_heading; // Heading/velocity of asteroid upon respawn
+    struct vector respawn_heading = {0, 0}; // Heading/velocity of asteroid upon respawn
+    
     switch(edge_axis) { // Sets initial edge positions of asteroids by clockwise edge asteroid starts out hugging.
         case 0: // Top edge
             respawn_pos.y = 1;
-            respawn_pos.x = 1+(rand() % (MONITOR_WIDTH - 2));
+            respawn_pos.x = 1+(rand() % (unsigned int)(MONITOR_WIDTH - 2));
 
-            respawn_heading.x = rand() % MAX_ASTEROID_SPEED;
-            if((rand() % 1)) respawn_heading.x *= -1;
+            while(respawn_heading.x < MIN_ASTEROID_SPEED) {
+                respawn_heading.x = (double)(rand() % (MAX_ASTEROID_SPEED*100))/100;
+            }
+            if((rand() % 2)) respawn_heading.x *= -1;
 
-            respawn_heading.y = rand() % MAX_ASTEROID_SPEED;
+            while(respawn_heading.y < MIN_ASTEROID_SPEED) {
+                respawn_heading.y = (double)(rand() % (MAX_ASTEROID_SPEED*100))/100;
+            }
             break;
         case 1: // Right edge
             respawn_pos.x = MONITOR_WIDTH-1;
-            respawn_pos.y = 1+(rand() % (MONITOR_HEIGHT - 2));
+            respawn_pos.y = 1+(rand() % (unsigned int)((MONITOR_HEIGHT - 2)));
 
-            respawn_heading.x = -1*(int)(rand() % MAX_ASTEROID_SPEED);
+            while(respawn_heading.x < MIN_ASTEROID_SPEED) {
+                respawn_heading.x = (double)(rand() % (MAX_ASTEROID_SPEED*100))/100;
+            }
+            respawn_heading.x *= -1;
             
-            respawn_heading.y = rand() % MAX_ASTEROID_SPEED;
-            if((rand() % 1)) respawn_heading.y *= -1;
+            while(respawn_heading.y < MIN_ASTEROID_SPEED) {
+                respawn_heading.y = (double)(rand() % (MAX_ASTEROID_SPEED*100))/100;
+            }
+            if((rand() % 2)) respawn_heading.y *= -1;
             break;
         case 2: // Bottom edge
             respawn_pos.y = MONITOR_HEIGHT-1;
-            respawn_pos.x = 1+(rand() % (MONITOR_WIDTH - 2));
+            respawn_pos.x = 1+(rand() % (unsigned int)(MONITOR_WIDTH - 2));
 
-            respawn_heading.x = rand() % MAX_ASTEROID_SPEED;
-            if((rand() % 1)) respawn_heading.x *= -1;
+            while(respawn_heading.x < MIN_ASTEROID_SPEED) {
+                respawn_heading.x = (double)(rand() % (MAX_ASTEROID_SPEED*100))/100;
+            }
+            if((rand() % 2)) respawn_heading.x *= -1;
             
-            respawn_heading.y = -1*(int)(rand() % MAX_ASTEROID_SPEED);
+            while(respawn_heading.y < MIN_ASTEROID_SPEED) {
+                respawn_heading.y = (double)(rand() % (MAX_ASTEROID_SPEED*100))/100;
+            }
+            respawn_heading.y *= -1;
             break;
         case 3: // Left edge
             respawn_pos.x = 1;
-            respawn_pos.y = 1+(rand() % (MONITOR_HEIGHT - 2));
+            respawn_pos.y = 1+(rand() % (unsigned int)(MONITOR_HEIGHT - 2));
 
-            respawn_heading.x = rand() % MAX_ASTEROID_SPEED;
+            while(respawn_heading.x < MIN_ASTEROID_SPEED) {
+                respawn_heading.x = (double)(rand() % (MAX_ASTEROID_SPEED*100))/100;
+            }
             
-            respawn_heading.y = rand() % MAX_ASTEROID_SPEED;
-            if((rand() % 1)) respawn_heading.y *= -1;
+            while(respawn_heading.y < MIN_ASTEROID_SPEED) {
+                respawn_heading.y = (double)(rand() % (MAX_ASTEROID_SPEED*100))/100;
+            }
+            if((rand() % 2)) respawn_heading.y *= -1;
             break;
     }
     // Updates mechanics position and velocities of asteroid to reflect its respawned position and heading.
@@ -103,148 +128,148 @@ void asteroid_respawn(struct asteroid* ast, unsigned int MAX_ASTEROID_SPEED) {
 }
 
 struct point ASTEROID_A_SMALL_POINTS[ASTEROID_NUM_POINTS] = {
-    { 10, 5 },
-    { 19, 5 },
-    { 27, 9 },
-    { 27, 12 },
-    { 19, 14 },
-    { 27, 19 },
-    { 21, 24 },
-    { 18, 21 },
-    { 10, 24 },
-    { 4, 17 },
-    { 4, 9 },
-    { 13, 9 },
-    { 10, 5 },
+    { 10 - 16, 5 - 14 },
+    { 19 - 16, 5 - 14 },
+    { 27 - 16, 9 - 14 },
+    { 27 - 16, 12 - 14 },
+    { 19 - 16, 14 - 14 },
+    { 27 - 16, 19 - 14 },
+    { 21 - 16, 24 - 14 },
+    { 18 - 16, 21 - 14 },
+    { 10 - 16, 24 - 14 },
+    { 4 - 16, 17 - 14 },
+    { 4 - 16, 9 - 14 },
+    { 13 - 16, 9 - 14 },
+    { 10 - 16, 5 - 14 },
 };
 
 struct point ASTEROID_B_SMALL_POINTS[ASTEROID_NUM_POINTS] = {
-    { 10, 5 },
-    { 15, 10 },
-    { 21, 5 },
-    { 26, 10 },
-    { 23, 15 },
-    { 26, 20 },
-    { 18, 25 },
-    { 10, 25 },
-    { 4, 20 },
-    { 4, 17 },
-    { 4, 14 },
-    { 4, 10 },
-    { 10, 5 },
+    { 10 - 14,  5 - 14 },
+    { 15 - 14, 10 - 14 },
+    { 21 - 14,  5 - 14 },
+    { 26 - 14, 10 - 14 },
+    { 23 - 14, 15 - 14 },
+    { 26 - 14, 20 - 14 },
+    { 18 - 14, 25 - 14 },
+    { 10 - 14, 25 - 14 },
+    { 4 - 14, 20 - 14 },
+    { 4 - 14, 17 - 14 },
+    { 4 - 14, 14 - 14 },
+    { 4 - 14, 10 - 14 },
+    { 10 - 14,  5 - 14 },
 };
 
 struct point ASTEROID_C_SMALL_POINTS[ASTEROID_NUM_POINTS] = {
-    { 10, 5 },
-    { 4, 10 },
-    { 7, 15 },
-    { 4, 19 },
-    { 9, 24 },
-    { 13, 21 },
-    { 21, 24 },
-    { 26, 17 },
-    { 21, 13 },
-    { 26, 9 },
-    { 21, 5 },
-    { 15, 7 },
-    { 10, 5 },
+    { 10 - 15,  5 - 14 },
+    {  4 - 15, 10 - 14 },
+    {  7 - 15, 15 - 14 },
+    {  4 - 15, 19 - 14 },
+    {  9 - 15, 24 - 14 },
+    { 13 - 15, 21 - 14 },
+    { 21 - 15, 24 - 14 },
+    { 26 - 15, 17 - 14 },
+    { 21 - 15, 13 - 14 },
+    { 26 - 15,  9 - 14 },
+    { 21 - 15,  5 - 14 },
+    { 15 - 15,  7 - 14 },
+    { 10 - 15,  5 - 14 },
 };
 
 
 struct point ASTEROID_A_MEDIUM_POINTS[ASTEROID_NUM_POINTS] = {
-    { 10 * 2, 5 * 2 },
-    { 19 * 2, 5 * 2 },
-    { 27 * 2, 9 * 2 },
-    { 27 * 2, 12 * 2 },
-    { 19 * 2, 14 * 2 },
-    { 27 * 2, 19 * 2 },
-    { 21 * 2, 24 * 2 },
-    { 18 * 2, 21 * 2 },
-    { 10 * 2, 24 * 2 },
-    { 4 * 2, 17 * 2 },
-    { 4 * 2, 9 * 2 },
-    { 13 * 2, 9 * 2 },
-    { 10 * 2, 5 * 2 },
+    { (10 - 16) * 2, (5 - 14) * 2 },
+    { (19 - 16) * 2, (5 - 14) * 2 },
+    { (27 - 16) * 2, (9 - 14) * 2 },
+    { (27 - 16) * 2, (12 - 14) * 2 },
+    { (19 - 16) * 2, (14 - 14) * 2 },
+    { (27 - 16) * 2, (19 - 14) * 2 },
+    { (21 - 16) * 2, (24 - 14) * 2 },
+    { (18 - 16) * 2, (21 - 14) * 2 },
+    { (10 - 16) * 2, (24 - 14) * 2 },
+    { (4 - 16) * 2, (17 - 14) * 2 },
+    { (4 - 16) * 2, (9 - 14) * 2 },
+    { (13 - 16) * 2, (9 - 14) * 2 },
+    { (10 - 16) * 2, (5 - 14) * 2 },
 };
 
 struct point ASTEROID_B_MEDIUM_POINTS[ASTEROID_NUM_POINTS] = {
-    { 10 * 2, 5 * 2 },
-    { 15 * 2, 10 * 2 },
-    { 21 * 2, 5 * 2 },
-    { 26 * 2, 10 * 2 },
-    { 23 * 2, 15 * 2 },
-    { 26 * 2, 20 * 2 },
-    { 18 * 2, 25 * 2 },
-    { 10 * 2, 25 * 2 },
-    { 4 * 2, 20 * 2 },
-    { 4 * 2, 17 * 2 },
-    { 4 * 2, 14 * 2 },
-    { 4 * 2, 10 * 2 },
-    { 10 * 2, 5 * 2 },
+    { (10 - 14) * 2, (5 - 14) * 2 },
+    { (15 - 14) * 2, (10 - 14) * 2 },
+    { (21 - 14) * 2, (5 - 14) * 2 },
+    { (26 - 14) * 2, (10 - 14) * 2 },
+    { (23 - 14) * 2, (15 - 14) * 2 },
+    { (26 - 14) * 2, (20 - 14) * 2 },
+    { (18 - 14) * 2, (25 - 14) * 2 },
+    { (10 - 14) * 2, (25 - 14) * 2 },
+    { (4 - 14) * 2, (20 - 14) * 2 },
+    { (4 - 14) * 2, (17 - 14) * 2 },
+    { (4 - 14) * 2, (14 - 14) * 2 },
+    { (4 - 14) * 2, (10 - 14) * 2 },
+    { (10 - 14) * 2, (5 - 14) * 2 },
 };
 
 struct point ASTEROID_C_MEDIUM_POINTS[ASTEROID_NUM_POINTS] = {
-    { 10 * 2, 5 * 2 },
-    { 4 * 2, 10 * 2 },
-    { 7 * 2, 15 * 2 },
-    { 4 * 2, 19 * 2 },
-    { 9 * 2, 24 * 2 },
-    { 13 * 2, 21 * 2 },
-    { 21 * 2, 24 * 2 },
-    { 26 * 2, 17 * 2 },
-    { 21 * 2, 13 * 2 },
-    { 26 * 2, 9 * 2 },
-    { 21 * 2, 5 * 2 },
-    { 15 * 2, 7 * 2 },
-    { 10 * 2, 5 * 2 },
+    { (10 - 15) * 2, (5 - 14) * 2 },
+    { (4 - 15) * 2, (10 - 14) * 2 },
+    { (7 - 15) * 2, (15 - 14) * 2 },
+    { (4 - 15) * 2, (19 - 14) * 2 },
+    { (9 - 15) * 2, (24 - 14) * 2 },
+    { (13 - 15) * 2, (21 - 14) * 2 },
+    { (21 - 15) * 2, (24 - 14) * 2 },
+    { (26 - 15) * 2, (17 - 14) * 2 },
+    { (21 - 15) * 2, (13 - 14) * 2 },
+    { (26 - 15) * 2, (9 - 14) * 2 },
+    { (21 - 15) * 2, (5 - 14) * 2 },
+    { (15 - 15) * 2, (7 - 14) * 2 },
+    { (10 - 15) * 2, (5 - 14) * 2 },
 };
 
 
 struct point ASTEROID_A_BIG_POINTS[ASTEROID_NUM_POINTS] = {
-    { 10 * 4, 5 * 4 },
-    { 19 * 4, 5 * 4 },
-    { 27 * 4, 9 * 4 },
-    { 27 * 4, 12 * 4 },
-    { 19 * 4, 14 * 4 },
-    { 27 * 4, 19 * 4 },
-    { 21 * 4, 24 * 4 },
-    { 18 * 4, 21 * 4 },
-    { 10 * 4, 24 * 4 },
-    { 4 * 4, 17 * 4 },
-    { 4 * 4, 9 * 4 },
-    { 13 * 4, 9 * 4 },
-    { 10 * 4, 5 * 4 },
+    { (10 - 16) * 4, (5 - 14) * 4 },
+    { (19 - 16) * 4, (5 - 14) * 4 },
+    { (27 - 16) * 4, (9 - 14) * 4 },
+    { (27 - 16) * 4, (12 - 14) * 4 },
+    { (19 - 16) * 4, (14 - 14) * 4 },
+    { (27 - 16) * 4, (19 - 14) * 4 },
+    { (21 - 16) * 4, (24 - 14) * 4 },
+    { (18 - 16) * 4, (21 - 14) * 4 },
+    { (10 - 16) * 4, (24 - 14) * 4 },
+    { (4 - 16) * 4, (17 - 14) * 4 },
+    { (4 - 16) * 4, (9 - 14) * 4 },
+    { (13 - 16) * 4, (9 - 14) * 4 },
+    { (10 - 16) * 4, (5 - 14) * 4 },
 };
 
 struct point ASTEROID_B_BIG_POINTS[ASTEROID_NUM_POINTS] = {
-    { 10 * 4, 5 * 4 },
-    { 15 * 4, 10 * 4 },
-    { 21 * 4, 5 * 4 },
-    { 26 * 4, 10 * 4 },
-    { 23 * 4, 15 * 4 },
-    { 26 * 4, 20 * 4 },
-    { 18 * 4, 25 * 4 },
-    { 10 * 4, 25 * 4 },
-    { 4 * 4, 20 * 4 },
-    { 4 * 4, 17 * 4 },
-    { 4 * 4, 14 * 4 },
-    { 4 * 4, 10 * 4 },
-    { 10 * 4, 5 * 4 },
+    { (10 - 14) * 4, (5 - 14) * 4 },
+    { (15 - 14) * 4, (10 - 14) * 4 },
+    { (21 - 14) * 4, (5 - 14) * 4 },
+    { (26 - 14) * 4, (10 - 14) * 4 },
+    { (23 - 14) * 4, (15 - 14) * 4 },
+    { (26 - 14) * 4, (20 - 14) * 4 },
+    { (18 - 14) * 4, (25 - 14) * 4 },
+    { (10 - 14) * 4, (25 - 14) * 4 },
+    { (4 - 14) * 4, (20 - 14) * 4 },
+    { (4 - 14) * 4, (17 - 14) * 4 },
+    { (4 - 14) * 4, (14 - 14) * 4 },
+    { (4 - 14) * 4, (10 - 14) * 4 },
+    { (10 - 14) * 4, (5 - 14) * 4 },
 };
 
 struct point ASTEROID_C_BIG_POINTS[ASTEROID_NUM_POINTS] = {
-    { 10 * 4, 5 * 4 },
-    { 4 * 4, 10 * 4 },
-    { 7 * 4, 15 * 4 },
-    { 4 * 4, 19 * 4 },
-    { 9 * 4, 24 * 4 },
-    { 13 * 4, 21 * 4 },
-    { 21 * 4, 24 * 4 },
-    { 26 * 4, 17 * 4 },
-    { 21 * 4, 13 * 4 },
-    { 26 * 4, 9 * 4 },
-    { 21 * 4, 5 * 4 },
-    { 15 * 4, 7 * 4 },
-    { 10 * 4, 5 * 4 },
+    { (10 - 15) * 4, (5 - 14) * 4 },
+    { (4 - 15) * 4, (10 - 14) * 4 },
+    { (7 - 15) * 4, (15 - 14) * 4 },
+    { (4 - 15) * 4, (19 - 14) * 4 },
+    { (9 - 15) * 4, (24 - 14) * 4 },
+    { (13 - 15) * 4, (21 - 14) * 4 },
+    { (21 - 15) * 4, (24 - 14) * 4 },
+    { (26 - 15) * 4, (17 - 14) * 4 },
+    { (21 - 15) * 4, (13 - 14) * 4 },
+    { (26 - 15) * 4, (9 - 14) * 4 },
+    { (21 - 15) * 4, (5 - 14) * 4 },
+    { (15 - 15) * 4, (7 - 14) * 4 },
+    { (10 - 15) * 4, (5 - 14) * 4 },
 };
 
