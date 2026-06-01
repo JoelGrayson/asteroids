@@ -19,7 +19,10 @@ run: $(RUN_PROGRAM)
 %.bin: %.elf
 	riscv64-unknown-elf-objcopy $< -O binary $@
 
-LD_FLAGS = -nostdlib -L$$CS107E/lib -T memmap.ld
+# --allow-multiple-definition: our own libmango/gpio_extra.o defines the same
+# pull-state symbols that the staff -lmango archive does. Listing our objects
+# before -lmango means ld keeps our definitions and ignores the duplicates.
+LD_FLAGS = -nostdlib -L$$CS107E/lib -T memmap.ld --allow-multiple-definition
 LDLIBS = -lmango -lmango_gcc
 %.elf: %.o $(LIBMANGO_SOURCES) $(GRAPHICS_SOURCES) $(OTHER_SOURCES)
 	riscv64-unknown-elf-ld $(LD_FLAGS) $^ $(LDLIBS) -o $@ 

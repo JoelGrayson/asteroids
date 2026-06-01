@@ -8,6 +8,8 @@
 #include "asteroid.h"
 // #include "bullet.h"
 #include "rocket.h"
+#include "gpio.h"
+#include "libmango/gpio_extra.h"
 
 #include "fb.h"
 #include "gl.h"
@@ -47,6 +49,7 @@ static unsigned long tickExplosion = 0; // Tick of explosion, used for rocket li
 static void configure_button_interrupts();
 void collision_detection();
 void update_mechanics();
+void update_mechanics_main();
 
 
 int main() {
@@ -56,10 +59,15 @@ int main() {
     printf("Hello from main()\n");
     gl_init(MONITOR_WIDTH, MONITOR_HEIGHT, FB_DOUBLEBUFFER);
 
-    printf("Hello, welcome to Asteroids\n");
-    
     configure_button_interrupts();
     run_game();
+}
+
+#define TEST_BUTTON GPIO_PB4
+
+void say_hi() {
+    printf("You pressed me!\n");
+    gpio_interrupt_clear(TEST_BUTTON);
 }
 
 static void configure_button_interrupts() {
@@ -67,12 +75,20 @@ static void configure_button_interrupts() {
     
     // Button handling interrupt setup:
     for (int i = 0; i < NUM_BUTTONS; i++) {
+        struct button b = buttons[i];
+
+        gpio_set_pullup(b.pin);
+        
         // button click on negative edge, with debouncing.
-        gpio_interrupt_config(buttons[i].pin, GPIO_INTERRUPT_NEGATIVE_EDGE, true);
+        gpio_interrupt_config(b.pin, GPIO_INTERRUPT_NEGATIVE_EDGE, true);
         // assigns button handler function to its gpio pin interrupt response; passing in button itself as aux_data.
-        gpio_interrupt_set_handler(buttons[i].pin, buttons[i].handler, &buttons[i]);
+        gpio_interrupt_set_handler(b.pin, b.handler, &buttons[i]);
     }
 
+    gpio_set_pullup(TEST_BUTTON);
+    gpio_interrupt_config(TEST_BUTTON, GPIO_INTERRUPT_NEGATIVE_EDGE, true);
+    gpio_interrupt_set_handler(TEST_BUTTON, say_hi, NULL);
+    
     interrupts_global_enable();
 }
 
@@ -206,6 +222,7 @@ static void run_one_frame() {
     update_mechanics_main();
     fb_swap_buffer(); //show the frame
     
+    // printf("Button: %d\n", gpio_read(TEST_BUTTON));
 }
 
 
