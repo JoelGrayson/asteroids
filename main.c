@@ -22,7 +22,8 @@
 
 // Array of buttons (pin + onclick interrupt handler function).
 struct button buttons[NUM_BUTTONS] = {
-    {GPIO_PC0, onclick_thrust},
+    {GPIO_PB4, onclick_thrust},
+
     {GPIO_PD13, onclick_fire},
     {GPIO_PD10, onclick_left},
     {GPIO_PD11, onclick_right},
@@ -85,9 +86,9 @@ static void configure_button_interrupts() {
         gpio_interrupt_set_handler(b.pin, b.handler, &buttons[i]);
     }
 
-    gpio_set_pullup(TEST_BUTTON);
-    gpio_interrupt_config(TEST_BUTTON, GPIO_INTERRUPT_NEGATIVE_EDGE, true);
-    gpio_interrupt_set_handler(TEST_BUTTON, say_hi, NULL);
+    // gpio_set_pullup(TEST_BUTTON);
+    // gpio_interrupt_config(TEST_BUTTON, GPIO_INTERRUPT_NEGATIVE_EDGE, true);
+    // gpio_interrupt_set_handler(TEST_BUTTON, say_hi, NULL);
     
     interrupts_global_enable();
 }
