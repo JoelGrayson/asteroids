@@ -35,6 +35,7 @@ static void run_one_frame();
 
 // Array of pointers to asteroids. If no asteroid, it is NULL
 static struct asteroid asteroids[MAX_NUM_ASTEROIDS];
+static int CUR_NUM_ASTEROIDS = 9; // Number of asteroids to actively draw, update, and check collisions for.
 
 // static struct bullet bullets[MAX_NUM_BULLETS];
 
@@ -134,8 +135,9 @@ static void setup_game() {
         .mechanics = { 500, 500, 0, 0, 0, 0, 0 }
     };
 
-    rocket_explode_init();
-    tickExplosion = timer_get_ticks(); // Registers the explosion tick, so we can progressively delete rocket explosion lines.
+    asteroid_respawn();
+    /*rocket_explode_init();
+    tickExplosion = timer_get_ticks(); // Registers the explosion tick, so we can progressively delete rocket explosion lines. */
 }
 
 void onclick_thrust(void* aux_data) {
@@ -178,7 +180,7 @@ void onclick_teleport(void* aux_data) {
 static void run_one_frame() {
     gl_clear(GL_BLACK);
 
-    for (int i = 0; i < 9; i++) {
+    for (int i = 0; i < CUR_NUM_ASTEROIDS; i++) {
         struct asteroid a = asteroids[i];
         // printf("Displaying asteroid %d\n", i);
         struct point *points = get_points_of_asteroid(a);
@@ -226,5 +228,5 @@ check if rocket touching asteroid
 
 // Updates the position of all asteroids, rocket, and bullets using velocity and position
 void update_mechanics_main() {
-    // for ()
+    asteroids_update_mechanics(asteroids, CUR_NUM_ASTEROIDS);
 }

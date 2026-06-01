@@ -1,6 +1,9 @@
 #include "asteroid.h"
 #include "mechanics.h"
 #include "constants.h"
+#include "graphics/point.h"
+#include "graphics/geometry.h"
+#include "rand.h"
 
 // Gets the asteroid polygon points
 struct point *get_points_of_asteroid(struct asteroid ast) {
@@ -42,9 +45,61 @@ struct point asteroid_get_pos(struct asteroid ast) {
     return ret;
 }
 
+// Sets position of asteroid in a more convenient way
+struct point asteroid_set_pos(struct asteroid* ast, struct point new_pos) {
+    ast->mechanics.x = new_pos.x;
+    ast->mechanics.y = new_pos.y;
+}
+
 // Respawns asteroid at a random point along the edge of the screen
-void asteroid_respawn(struct asteroid* ast) {
-    // TODO!
+void asteroid_respawn(struct asteroid* ast, unsigned int MAX_ASTEROID_SPEED) {
+    int edge_axis = rand() % 3;    // Selects the edge we respawn the asteroid on by random lot
+    struct point respawn_pos;      // Position of asteroid respawn (on edge of screen, top, bottom, left, right)
+    struct vector respawn_heading; // Heading/velocity of asteroid upon respawn
+    switch(edge_axis) { // Sets initial edge positions of asteroids by clockwise edge asteroid starts out hugging.
+        case 0: // Top edge
+            respawn_pos.y = 1;
+            respawn_pos.x = 1+(rand() % (MONITOR_WIDTH - 2));
+
+            respawn_heading.x = rand() % MAX_ASTEROID_SPEED;
+            if((rand() % 1)) respawn_heading.x *= -1;
+
+            respawn_heading.y = rand() % MAX_ASTEROID_SPEED;
+            break;
+        case 1: // Right edge
+            respawn_pos.x = MONITOR_WIDTH-1;
+            respawn_pos.y = 1+(rand() % (MONITOR_HEIGHT - 2));
+
+            respawn_heading.x = -1*(int)(rand() % MAX_ASTEROID_SPEED);
+            
+            respawn_heading.y = rand() % MAX_ASTEROID_SPEED;
+            if((rand() % 1)) respawn_heading.y *= -1;
+            break;
+        case 2: // Bottom edge
+            respawn_pos.y = MONITOR_HEIGHT-1;
+            respawn_pos.x = 1+(rand() % (MONITOR_WIDTH - 2));
+
+            respawn_heading.x = rand() % MAX_ASTEROID_SPEED;
+            if((rand() % 1)) respawn_heading.x *= -1;
+            
+            respawn_heading.y = -1*(int)(rand() % MAX_ASTEROID_SPEED);
+            break;
+        case 3: // Left edge
+            respawn_pos.x = 1;
+            respawn_pos.y = 1+(rand() % (MONITOR_HEIGHT - 2));
+
+            respawn_heading.x = rand() % MAX_ASTEROID_SPEED;
+            
+            respawn_heading.y = rand() % MAX_ASTEROID_SPEED;
+            if((rand() % 1)) respawn_heading.y *= -1;
+            break;
+    }
+    // Updates mechanics position and velocities of asteroid to reflect its respawned position and heading.
+    ast->mechanics.x = respawn_pos.x;
+    ast->mechanics.y = respawn_pos.y;
+
+    ast->mechanics.vx = respawn_heading.x;
+    ast->mechanics.vy = respawn_heading.y;
 }
 
 struct point ASTEROID_A_SMALL_POINTS[ASTEROID_NUM_POINTS] = {
