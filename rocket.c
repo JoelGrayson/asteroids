@@ -38,10 +38,18 @@ struct mechanics rocket_mechanics = {
 };
 
 struct rocket {
+    int num_points = ROCKET_NUM_POINTS,
+    struct point rotated_points[]
     // rocket points = constant (just facing north)
     // rotated_points = re-caluclated every frame by calling rotate_points(rocket_points)
     // mechanics
 };
+
+struct rocket rocket_object;
+
+void rocket_init() {
+    rocket_object.
+}
 
 void rocket_explode_init() {
     // Copies present positions of rocket sides to exploded sides arrays in order to isolate the sides

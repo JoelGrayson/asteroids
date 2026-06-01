@@ -25,4 +25,18 @@ void rocket_explode_update(void);
 void rocket_update_mechanics();
 
 
+
+
+
+rotate_rocket_theta()
+rotate_rocket_left() = rotate_rocket_theta(-1)
+rotate_rocket_right() = rotate_rocket_theta(+1)
+get_rocket_mechanics()
+explode_rocket()
+render_rocket()
+update_rocket_mechanics()
+rocket_fire()
+rocket_thrust()
+
+
 #endif
