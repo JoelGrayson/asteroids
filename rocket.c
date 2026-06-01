@@ -37,6 +37,12 @@ struct mechanics rocket_mechanics = {
     .rotation = 0
 };
 
+struct rocket {
+    // rocket points = constant (just facing north)
+    // rotated_points = re-caluclated every frame by calling rotate_points(rocket_points)
+    // mechanics
+};
+
 void rocket_explode_init() {
     // Copies present positions of rocket sides to exploded sides arrays in order to isolate the sides
     // each in their own polygon array able to fly off in different directions.
