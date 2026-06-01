@@ -117,6 +117,7 @@ Loop over each bullet:
 check if rocket touching asteroid
 
 */
+    // Loops over each asteroid, and checks if it intersects with rocket.
     for(int i = 0; i < CUR_NUM_ASTEROIDS; i++) {
         struct asteroid ast = asteroids[i];
         struct point *ast_pts = get_points_of_asteroid(ast);
