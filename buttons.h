@@ -9,7 +9,7 @@
 #include "printf.h"
 #include "rocket.h"
 
-#define NUM_BUTTONS 5
+#define NUM_BUTTONS 7
 
 /** Sets up event listeners (button press and release) */
 void buttons_init();
