@@ -26,6 +26,7 @@ void thrust_pressed_listener();
 void fire_pressed_listener();
 
 void buttons_init() {
+    interrupts_init();
     gpio_interrupt_init();
     
     // All are pull up so no resistors are needed in the circuit
@@ -33,8 +34,30 @@ void buttons_init() {
         gpio_set_pullup(buttons[i]);
     }
 
-    gpio_interrupt_config();
+    gpio_interrupt_config(ROTATE_LEFT_BUTTON, GPIO_INTERRUPT_NEGATIVE_EDGE, true);
+    gpio_interrupt_set_handler(ROTATE_LEFT_BUTTON, rotate_left_pressed_listener, NULL);
 
+    gpio_interrupt_config(ROTATE_LEFT_BUTTON, GPIO_INTERRUPT_POSITIVE_EDGE, true);
+    gpio_interrupt_set_handler(ROTATE_LEFT_BUTTON, rotate_left_released_listener, NULL);
+    
+    gpio_interrupt_config(ROTATE_RIGHT_BUTTON, GPIO_INTERRUPT_NEGATIVE_EDGE, true);
+    gpio_interrupt_set_handler(ROTATE_RIGHT_BUTTON, rotate_right_pressed_listener, NULL);
+    
+    gpio_interrupt_config(ROTATE_RIGHT_BUTTON, GPIO_INTERRUPT_POSITIVE_EDGE, true);
+    gpio_interrupt_set_handler(ROTATE_RIGHT_BUTTON, rotate_right_released_listener, NULL);
+    
+    gpio_interrupt_config(HYPERSPACE_BUTTON, GPIO_INTERRUPT_NEGATIVE_EDGE, true);
+    gpio_interrupt_set_handler(HYPERSPACE_BUTTON, hyperspace_pressed_listener, NULL);
+    
+    gpio_interrupt_config(THRUST_BUTTON, GPIO_INTERRUPT_NEGATIVE_EDGE, true);
+    gpio_interrupt_set_handler(THRUST_BUTTON, thrust_pressed_listener, NULL);
+    
+    gpio_interrupt_config(FIRE_BUTTON, GPIO_INTERRUPT_NEGATIVE_EDGE, true);
+    gpio_interrupt_set_handler(FIRE_BUTTON, fire_pressed_listener, NULL);
+
+
+    // Knife switch
+    interrupts_global_enable();
 }
 
 

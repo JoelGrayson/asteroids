@@ -20,17 +20,6 @@
 
 #define TICKS_EXPLOSION_DISAPPEAR 2000000*TICKS_PER_USEC
 
-// Array of buttons (pin + onclick interrupt handler function).
-struct button buttons[NUM_BUTTONS] = {
-    {GPIO_PD10, onclick_thrust},
-
-    {GPIO_PD13, onclick_fire},
-    {GPIO_PB4, onclick_left},
-    {GPIO_PD11, onclick_right},
-    {GPIO_PD15, onclick_hyperspace}
-};
-
-
 
 static void setup_game();
 static void run_game();
@@ -53,43 +42,14 @@ void update_mechanics_main();
 
 
 int main() {
-    interrupts_init();
     uart_init();
-    trig_init(3);
     printf("Hello from main()\n");
+
+    buttons_init();
+    trig_init(3);
     gl_init(MONITOR_WIDTH, MONITOR_HEIGHT, FB_DOUBLEBUFFER);
 
-    configure_button_interrupts();
     run_game();
-}
-
-#define TEST_BUTTON GPIO_PB4
-
-void say_hi() {
-    printf("You pressed me!\n");
-    gpio_interrupt_clear(TEST_BUTTON);
-}
-
-static void configure_button_interrupts() {
-    gpio_interrupt_init();
-    
-    // Button handling interrupt setup:
-    for (int i = 0; i < NUM_BUTTONS; i++) {
-        struct button b = buttons[i];
-
-        gpio_set_pullup(b.pin);
-        
-        // button click on negative edge, with debouncing.
-        gpio_interrupt_config(b.pin, GPIO_INTERRUPT_NEGATIVE_EDGE, true);
-        // assigns button handler function to its gpio pin interrupt response; passing in button itself as aux_data.
-        gpio_interrupt_set_handler(b.pin, b.handler, &buttons[i]);
-    }
-
-    // gpio_set_pullup(TEST_BUTTON);
-    // gpio_interrupt_config(TEST_BUTTON, GPIO_INTERRUPT_NEGATIVE_EDGE, true);
-    // gpio_interrupt_set_handler(TEST_BUTTON, say_hi, NULL);
-    
-    interrupts_global_enable();
 }
 
 static void run_game() {
@@ -109,52 +69,6 @@ static void setup_game() {
     /*rocket_explode_init();
     tickExplosion = timer_get_ticks(); // Registers the explosion tick, so we can progressively delete rocket explosion lines. */
 }
-
-void onclick_thrust(void* aux_data) {
-    struct button *b = (struct button*)aux_data;
-
-    printf("Button pressed: thrust\n");
-    rocket_thrust();
-
-    gpio_interrupt_clear(b->pin);
-}
-
-void onclick_fire(void* aux_data) {
-    struct button *b = (struct button*)aux_data;
-
-    printf("Button pressed: fire\n");
-    rocket_fire();
-    
-    gpio_interrupt_clear(b->pin);
-}
-
-void onclick_left(void* aux_data) {
-    struct button *b = (struct button*)aux_data;
-
-    printf("Button pressed: left\n");
-    rocket_rotate_left();
-
-    gpio_interrupt_clear(b->pin);
-}
-
-void onclick_right(void* aux_data) {
-    struct button *b = (struct button*)aux_data;
-
-    printf("Button pressed: right\n");
-    rocket_rotate_right();
-
-    gpio_interrupt_clear(b->pin);
-}
-
-void onclick_hyperspace(void* aux_data) {
-    struct button *b = (struct button*)aux_data;
-
-    printf("Button pressed: hyperspace\n");
-    rocket_hyperspace();
-
-    gpio_interrupt_clear(b->pin);
-}
-
 
 
 static void run_one_frame() {
