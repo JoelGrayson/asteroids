@@ -62,12 +62,46 @@ void buttons_init() {
 
 
 // Rotate left and right have pressed and released listeners. Hyperspace, thrust, and fire only have pressed listeners
-void rotate_left_pressed_listener();
-void rotate_left_released_listener();
-void rotate_right_pressed_listener();
-void rotate_right_released_listener();
-void hyperspace_pressed_listener();
-void thrust_pressed_listener();
-void fire_pressed_listener();
+void rotate_left_pressed_listener() {
 
+}
+
+void rotate_left_released_listener() {
+
+}
+
+void rotate_right_pressed_listener() {
+    printf("Button pressed: right\n");
+    rocket_rotate_right();
+
+    gpio_interrupt_clear(ROTATE_RIGHT_BUTTON);
+}
+
+void rotate_right_released_listener() {
+    printf("Button released: right\n");
+    rocket_rotate_right();
+
+    gpio_interrupt_clear(ROTATE_RIGHT_BUTTON);
+}
+
+void hyperspace_pressed_listener() {
+    printf("Button pressed: hyperspace\n");
+    rocket_hyperspace();
+
+    gpio_interrupt_clear(HYPERSPACE_BUTTON);
+}
+
+void thrust_pressed_listener() {
+    printf("Button pressed: thrust\n");
+    rocket_thrust();
+
+    gpio_interrupt_clear(THRUST_BUTTON);
+}
+
+void fire_pressed_listener() {
+    printf("Button pressed: fire\n");
+    rocket_fire();
+
+    gpio_interrupt_clear(FIRE_BUTTON);
+}
 
