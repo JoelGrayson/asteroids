@@ -84,6 +84,20 @@ void rocket_explode_update() {
 void rocket_update_mechanics() {
     // TODO: bounds checking
     update_mechanics(&rocket_mechanics);
+    if (rocket_mechanics.x < 0) {
+        rocket_mechanics.x = MONITOR_WIDTH;
+    }
+    if (rocket_mechanics.x > MONITOR_WIDTH) {
+        rocket_mechanics.x = 0;
+    }
+    
+    if (rocket_mechanics.y < 0) {
+        rocket_mechanics.y = MONITOR_HEIGHT;
+    }
+    if (rocket_mechanics.y > MONITOR_HEIGHT) {
+        rocket_mechanics.y = 0;
+    }
+
 }
 
 
