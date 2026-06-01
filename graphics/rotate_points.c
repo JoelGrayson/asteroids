@@ -1,9 +1,9 @@
+#include "rotate_points.h"
 #include "malloc.h"
 #include "point.h"
 #include "../maths.h"
 
-// Rotates a list of points around x,y = 0
-void *rotate_points(struct point *points, int num_points, double theta) {
+void rotate_points(struct point *points, int num_points, double theta) {
     for(int i = 0; i < num_points; i++) {
         struct point to_rotate = points[i];
         points[i].x = (cosine(theta) * to_rotate.x) + (sine(theta) * to_rotate.y);
@@ -11,8 +11,7 @@ void *rotate_points(struct point *points, int num_points, double theta) {
     }
 }
 
-// Rotates a list of points around x,y = 0
-void *rotate_template_points(struct point *points_dst, struct point *points_template, int num_points, double theta) {
+void rotate_template_points(struct point *points_dst, struct point *points_template, int num_points, double theta) {
     for(int i = 0; i < num_points; i++) {
         struct point to_rotate = points_template[i];
         points_dst[i].x = (cosine(theta) * to_rotate.x) + (sine(theta) * to_rotate.y);

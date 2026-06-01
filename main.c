@@ -45,11 +45,10 @@ static int CUR_NUM_ASTEROIDS = 9; // Number of asteroids to actively draw, updat
 
 
 static int frame = 0;
-static unsigned long tickExplosion = 0; // Tick of explosion, used for rocket line erasure after set time of explosion.
+// static unsigned long tickExplosion = 0; // Tick of explosion, used for rocket line erasure after set time of explosion.
 
 static void configure_button_interrupts();
 void collision_detection();
-void update_mechanics();
 void update_mechanics_main();
 
 
@@ -104,54 +103,6 @@ static void run_game() {
 }
 
 static void setup_game() {
-    asteroids[0] = (struct asteroid) {
-        .size = BIG,
-        .type = A,
-        .mechanics = { 100, 100, 0, 0, 0, 0, 0 }
-    };
-    asteroids[1] = (struct asteroid) {
-        .size = BIG,
-        .type = B,
-        .mechanics = { 300, 100, 0, 0, 0, 0, 0 }
-    };
-    asteroids[2] = (struct asteroid) {
-        .size = BIG,
-        .type = C,
-        .mechanics = { 500, 100, 0, 0, 0, 0, 0 }
-    };
-
-    asteroids[3] = (struct asteroid) {
-        .size = MEDIUM,
-        .type = A,
-        .mechanics = { 100, 300, 0, 0, 0, 0, 0 }
-    };
-    asteroids[4] = (struct asteroid) {
-        .size = MEDIUM,
-        .type = B,
-        .mechanics = { 300, 300, 0, 0, 0, 0, 0 }
-    };
-    asteroids[5] = (struct asteroid) {
-        .size = MEDIUM,
-        .type = C,
-        .mechanics = { 500, 300, 0, 0, 0, 0, 0 }
-    };
-
-    asteroids[6] = (struct asteroid) {
-        .size = SMALL,
-        .type = A,
-        .mechanics = { 100, 500, 0, 0, 0, 0, 0 }
-    };
-    asteroids[7] = (struct asteroid) {
-        .size = SMALL,
-        .type = B,
-        .mechanics = { 300, 500, 0, 0, 0, 0, 0 }
-    };
-    asteroids[8] = (struct asteroid) {
-        .size = SMALL,
-        .type = C,
-        .mechanics = { 500, 500, 0, 0, 0, 0, 0 }
-    };
-
     for(int i = 0; i < CUR_NUM_ASTEROIDS; i++) {
         asteroid_respawn(&asteroids[i]);
     }
@@ -226,9 +177,9 @@ static void run_one_frame() {
     //         draw_points(ROCKET_EXPLODED_POINTS[i], ROCKET_EXPLODED_SIDES_NUM_POINTS, rocket_mechanics.x, rocket_mechanics.y, GL_WHITE);
     //     }
     // }
-    
+
     collision_detection();
-    rocket_explode_update();
+    // rocket_explode_update();
     update_mechanics_main();
     fb_swap_buffer(); //show the frame
     

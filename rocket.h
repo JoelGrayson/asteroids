@@ -11,6 +11,8 @@
 #include "graphics/draw_points.h"
 
 
+#define ROCKET_NUM_POINTS 6
+
 // #define ROCKET_SIDES_DRIFT_SPEED 25
 
 // extern struct mechanics rocket_mechanics;
@@ -50,6 +52,6 @@ void rocket_rotate_radians(double theta);
 void render_rocket(); //just draws the rocket
 void explode_rocket();
 struct mechanics get_rocket_mechanics();
-void update_rocket_mechanics(); //called once every cycle to update the position based on speed
+void rocket_update_mechanics(); //called once every cycle to update the position based on speed
 
 #endif

@@ -36,7 +36,7 @@ struct point *get_points_of_asteroid(struct asteroid ast) {
 void asteroids_update_mechanics(struct asteroid* asteroids, int num_asteroids) {
      for(int i = 0; i < num_asteroids; i++) {
         // Asteroid continues on its present course
-        update_mechanics(&asteroids[i].mechanics); // Any object in motion at a certain velocity will remain in motion at that velocity (Newton's 1st Law).
+        update_mechanics(&asteroids[i].mechanics, false); // Any object in motion at a certain velocity will remain in motion at that velocity (Newton's 1st Law).
         // Respawns asteroid if out-of-bounds
         struct point pos = asteroid_get_pos(asteroids[i]);
         if(pos.x < -60 || pos.x > MONITOR_WIDTH+60 || pos.y < -60 || pos.y > MONITOR_HEIGHT+60) { // Asteroids ~ 60 radius max

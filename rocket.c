@@ -1,7 +1,5 @@
 #include "rocket.h"
 
-static const int ROCKET_NUM_POINTS = 6;
-
 // Points of a rocket facing north
 static struct point ROCKET_POINTS[ROCKET_NUM_POINTS] = {
     { 25 - 25, 5  - 25 },
@@ -39,6 +37,7 @@ static int num_frames_after_rocket_exploded = 0;
 
 void rocket_rotate_left() {
     rocket_rotate_radians(-0.01);
+    (void) num_frames_after_rocket_exploded;
 }
 
 void rocket_rotate_right() {

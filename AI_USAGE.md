@@ -1,4 +1,5 @@
 # Figuring out
+* Learned that you can't do const int ROCKET_NUM_POINTS = 6 and then create a constant array length ROCKET_NUM_POINTS because even though const int it still treats it like an int. Compiler is confused and things it can be variable-length and cosntant at same time so throws an error. Soln is to use a #define.
 * Centered asteroid coordinates using AI.
 * Realized there needed to be an include graphics/point.h in order to get the .c to work with point
 * using find . -name '*.o' -delete instead of rm because `rm **/*.o` ignores current directory in bash/sh even though this is fine in zsh
