@@ -27,7 +27,7 @@ struct button buttons[NUM_BUTTONS] = {
     {GPIO_PD13, onclick_fire},
     {GPIO_PD10, onclick_left},
     {GPIO_PD11, onclick_right},
-    {GPIO_PD15, onclick_teleport}
+    {GPIO_PD15, onclick_hyperspace}
 };
 
 
@@ -161,36 +161,46 @@ static void setup_game() {
 
 void onclick_thrust(void* aux_data) {
     struct button *b = (struct button*)aux_data;
+
     printf("Button pressed: thrust\n");
-    
-    rocket_mechanics.vy++;
-    
-    
+    rocket_thrust();
+
     gpio_interrupt_clear(b->pin);
 }
 
 void onclick_fire(void* aux_data) {
-    // TODO!
     struct button *b = (struct button*)aux_data;
-    printf("Fire!\n");
+
+    printf("Button pressed: fire\n");
+    rocket_fire();
+    
     gpio_interrupt_clear(b->pin);
 }
+
 void onclick_left(void* aux_data) {
-    // TODO!
     struct button *b = (struct button*)aux_data;
-    printf("Left!\n");
+
+    printf("Button pressed: left\n");
+    rocket_rotate_left();
+
     gpio_interrupt_clear(b->pin);
 }
+
 void onclick_right(void* aux_data) {
-    // TODO!
     struct button *b = (struct button*)aux_data;
-    printf("Right!\n");
+
+    printf("Button pressed: right\n");
+    rocket_rotate_right();
+
     gpio_interrupt_clear(b->pin);
 }
-void onclick_teleport(void* aux_data) {
-    // TODO!
+
+void onclick_hyperspace(void* aux_data) {
     struct button *b = (struct button*)aux_data;
-    printf("Teleport!\n");
+
+    printf("Button pressed: hyperspace\n");
+    rocket_hyperspace();
+
     gpio_interrupt_clear(b->pin);
 }
 
@@ -206,20 +216,17 @@ static void run_one_frame() {
         draw_points(points, ASTEROID_NUM_POINTS, a.mechanics.x, a.mechanics.y, GL_WHITE);
     }
 
-    // draw_points(rotate_points(ROCKET_POINTS, rocket_mechanics.rotation), ROCKET_NUM_POINTS, 500, 400, GL_WHITE);
-    draw_points(ROCKET_POINTS, ROCKET_NUM_POINTS, rocket_mechanics.x, rocket_mechanics.y, GL_WHITE);
-    /*printf("rocket num points is: %d\n", ROCKET_NUM_POINTS);
-    printf("__rocket num points is: %d\n", __ROCKET_NUM_POINTS);
-    printf("rocket exploded sides num points is: %d\n", ROCKET_EXPLODED_SIDES_NUM_POINTS);*/
+    render_rocket();
 
     // Draws all rocket exploded sides (- the number of despawned exploded sides).
-    if(tickExplosion != 0) {
-        unsigned long sides_to_despawn = timer_get_ticks()-tickExplosion;
-        sides_to_despawn /= TICKS_EXPLOSION_DISAPPEAR;
-        for (unsigned long i = 0; i < __ROCKET_NUM_POINTS-1-sides_to_despawn; i++) { // draws exploded sides (if rocket has exploded).
-            draw_points(ROCKET_EXPLODED_POINTS[i], ROCKET_EXPLODED_SIDES_NUM_POINTS, rocket_mechanics.x, rocket_mechanics.y, GL_WHITE);
-        }
-    }
+    // if(tickExplosion != 0) {
+    //     unsigned long sides_to_despawn = timer_get_ticks()-tickExplosion;
+    //     sides_to_despawn /= TICKS_EXPLOSION_DISAPPEAR;
+    //     for (unsigned long i = 0; i < __ROCKET_NUM_POINTS-1-sides_to_despawn; i++) { // draws exploded sides (if rocket has exploded).
+    //         draw_points(ROCKET_EXPLODED_POINTS[i], ROCKET_EXPLODED_SIDES_NUM_POINTS, rocket_mechanics.x, rocket_mechanics.y, GL_WHITE);
+    //     }
+    // }
+    
     collision_detection();
     rocket_explode_update();
     update_mechanics_main();
