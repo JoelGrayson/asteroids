@@ -61,8 +61,8 @@ void rocket_fire() {
     struct mechanics mech = {
         .x = rocket_mechanics.x,
         .y = rocket_mechanics.y,
-        .vx = rocket_mechanics.vx * 2,
-        .vy = rocket_mechanics.vy * 2,
+        .vx = 10, //rocket_mechanics.vx * 2,
+        .vy = 0, //rocket_mechanics.vy * 2,
         .ax = 0,
         .ay = 0,
         .rotation = rocket_mechanics.rotation

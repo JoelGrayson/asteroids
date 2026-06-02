@@ -29,3 +29,5 @@ void draw_bullet(struct bullet *bullet) ;
 
 void draw_bullets();
 
+void bullets_update_mechanics();
+

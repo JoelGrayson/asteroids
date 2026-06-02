@@ -35,3 +35,12 @@ void draw_bullets() {
         }
     }
 }
+
+void bullets_update_mechanics() {
+    for (int i = 0; i < MAX_NUM_BULLETS; i++) {
+        struct bullet *bullet = bullets[i];
+        if (bullet) {
+            update_mechanics(&bullet->mechanics, false);
+        }
+    }
+}

@@ -147,4 +147,5 @@ check if rocket touching asteroid
 void update_mechanics_main() {
     asteroids_update_mechanics(asteroids, CUR_NUM_ASTEROIDS);
     rocket_update_mechanics();
+    bullets_update_mechanics();
 }
