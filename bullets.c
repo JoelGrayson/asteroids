@@ -7,7 +7,7 @@ void new_bullet(struct mechanics mechanics, enum bullet_owner owner) {
     int i = 0;
     while (true) {
         if (i == MAX_NUM_BULLETS) {
-            printf("There is no more room to allocate a bullet");
+            printf("There is no more room to allocate a bullet\n");
             return;
         }
         if (bullets[i] == NULL) {
