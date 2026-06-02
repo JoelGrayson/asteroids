@@ -3,6 +3,8 @@
 #include "graphics/geometry.h"
 #include "graphics/rotate_vector.h"
 #include "maths.h"
+#include "timer.h"
+#include "rand.h"
 
 #define ROCKET_DECELERATION 0.15
 
@@ -66,7 +68,10 @@ void rocket_unthrust() {
 }
 
 void rocket_hyperspace() {
-    // TODO: teleport to a random place
+    unsigned int ticks = (unsigned int)timer_get_ticks();
+    srand(ticks);
+    rocket_mechanics.x = (double)(22 + (rand() % (unsigned int)(MONITOR_WIDTH-44)));
+    rocket_mechanics.y = (double)(22 + (rand() % (unsigned int)(MONITOR_HEIGHT-44)));
 }
 
 struct mechanics get_rocket_mechanics() {
@@ -196,11 +201,14 @@ int get_num_rocket_points() {
 void rocket_update_mechanics() {
     struct mechanics *mech = &rocket_mechanics;
     if(rocket_is_thrusting) {
+        // Rocket thrusts with magnitude 1 acceleration in the direction of its cone
         struct vector dir = {0, -1};
         rotate_vector(&dir, mech->rotation);
         mech->ax = dir.x;
         mech->ay = dir.y;
     } else {
+        // If the rocket isn't thrusting, set acceleration to zero and manually decelerate using the if blocks below, since we don't want deceleration to
+        // accidentally push the rocket into negative acceleration of its previous heading.
         mech->ax = 0;
         mech->ay = 0;
         if(abs(mech->vx) >= ROCKET_DECELERATION) {
@@ -214,7 +222,6 @@ void rocket_update_mechanics() {
             mech->vy = 0;
         }
     }
-
     update_mechanics(&rocket_mechanics, true);
 }
 
