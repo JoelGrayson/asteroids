@@ -84,6 +84,7 @@ static void run_one_frame() {
     }
 
     render_rocket();
+    draw_bullets();
 
     // Draws all rocket exploded sides (- the number of despawned exploded sides).
     // if(tickExplosion != 0) {

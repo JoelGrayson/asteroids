@@ -20,3 +20,18 @@ void new_bullet(struct mechanics mechanics, enum bullet_owner owner) {
     }
 }
 
+
+void draw_bullet(struct bullet *bullet) {
+    struct mechanics mech = bullet->mechanics;
+    
+    gl_draw_pixel(mech.x, mech.y, GL_WHITE);
+}
+
+void draw_bullets() {
+    for (int i = 0; i < MAX_NUM_BULLETS; i++) {
+        struct bullet *bullet = bullets[i];
+        if (bullet) {
+            draw_bullet(bullet);
+        }
+    }
+}

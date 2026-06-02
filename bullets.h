@@ -1,6 +1,7 @@
 
 #include "mechanics.h"
 #include "printf.h"
+#include "gl.h"
 
 /* Represents who shot the bullet */
 #define MAX_NUM_BULLETS 1024
@@ -16,13 +17,14 @@ struct bullet {
     struct mechanics mechanics;
 };
 
-// Points of rocket facing north
-static struct BULLET_POINTS_TEMPLATE {}
-
 /* Creates a new bullet with specified mechanics and owner */
 void new_bullet(struct mechanics mechanics, enum bullet_owner owner);
 
 // Extern of list of pointers to bullets. Each element of list is either NULL (no bullet) or a pointer to a bullet
 // Use extern pattern instead of get_bullets because then it would copy
 extern struct bullet *bullets[MAX_NUM_BULLETS];
+
+void draw_bullet(struct bullet *bullet) ;
+
+void draw_bullets();
 
