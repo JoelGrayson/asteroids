@@ -2,6 +2,27 @@
 
 typedef void (*click_fn_t)(void* aux_data);
 
+#define JOEL
+
+#ifdef JOEL
+/*
+Left - PB12
+Right - PB11
+Hyperspace
+Thrust - PB2
+Fire - PC0
+*/
+#define NOT_YET GPIO_PB0 //TODO: remove these
+const gpio_id_t ROTATE_LEFT_BUTTON_PRESS = GPIO_PB12;
+const gpio_id_t ROTATE_LEFT_BUTTON_RELEASE = NOT_YET;
+const gpio_id_t ROTATE_RIGHT_BUTTON_PRESS = GPIO_PB11; //falling edge
+const gpio_id_t ROTATE_RIGHT_BUTTON_RELEASE = NOT_YET; //rising edge
+const gpio_id_t HYPERSPACE_BUTTON = NOT_YET;
+const gpio_id_t THRUST_BUTTON_PRESS = GPIO_PB2;
+const gpio_id_t THRUST_BUTTON_RELEASE = NOT_YET;
+const gpio_id_t FIRE_BUTTON = GPIO_PC0;
+#else
+// Sebastian's button configuration
 const gpio_id_t ROTATE_LEFT_BUTTON_PRESS = GPIO_PD12;
 const gpio_id_t ROTATE_LEFT_BUTTON_RELEASE = GPIO_PD13;
 const gpio_id_t ROTATE_RIGHT_BUTTON_PRESS = GPIO_PD11; //falling edge
@@ -10,6 +31,7 @@ const gpio_id_t HYPERSPACE_BUTTON = GPIO_PB10;
 const gpio_id_t THRUST_BUTTON_PRESS = GPIO_PB11;
 const gpio_id_t THRUST_BUTTON_RELEASE = GPIO_PC0;
 const gpio_id_t FIRE_BUTTON = GPIO_PB12;
+#endif
 
 const gpio_id_t buttons[NUM_BUTTONS] = {
     ROTATE_LEFT_BUTTON_PRESS,
