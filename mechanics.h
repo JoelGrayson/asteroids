@@ -9,6 +9,8 @@ struct mechanics {
     double y;
     double vx;
     double vy;
+    double ax;
+    double ay;
     double rotation; //heading/bearing from North. pi/2 is East
 };
 

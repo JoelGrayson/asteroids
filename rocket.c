@@ -1,6 +1,10 @@
+#include <stdbool.h>
 #include "rocket.h"
 #include "graphics/geometry.h"
 #include "graphics/rotate_vector.h"
+#include "maths.h"
+
+#define ROCKET_DECELERATION 0.15
 
 // Points of a rocket facing north
 static struct point ROCKET_POINTS[ROCKET_NUM_POINTS] = {
@@ -27,11 +31,14 @@ static struct mechanics rocket_mechanics = {
     .y = MONITOR_HEIGHT / 2,
     .vx = 0,
     .vy = 0,
+    .ax = 0,
+    .ay = 0,
     .rotation = 0
 };
 
 
 static bool rocket_is_exploding = false;
+static bool rocket_is_thrusting = false;
 
 // Increases when rocket_is_exploding == true. Determines how far off the rocket segments are from each other when rendering
 static int num_frames_after_rocket_exploded = 0;
@@ -51,10 +58,11 @@ void rocket_fire() {
 }
 
 void rocket_thrust() {
-    struct vector dir = {0, -1};
-    rotate_vector(&dir, rocket_mechanics.rotation);
-    rocket_mechanics.vx += dir.x;
-    rocket_mechanics.vy += dir.y;
+    rocket_is_thrusting = true;
+}
+
+void rocket_unthrust() {
+    rocket_is_thrusting = false;
 }
 
 void rocket_hyperspace() {
@@ -186,6 +194,27 @@ int get_num_rocket_points() {
 // }
 
 void rocket_update_mechanics() {
+    struct mechanics *mech = &rocket_mechanics;
+    if(rocket_is_thrusting) {
+        struct vector dir = {0, -1};
+        rotate_vector(&dir, mech->rotation);
+        mech->ax = dir.x;
+        mech->ay = dir.y;
+    } else {
+        mech->ax = 0;
+        mech->ay = 0;
+        if(abs(mech->vx) >= ROCKET_DECELERATION) {
+            mech->vx = (mech->vx < 0) ? mech->vx + ROCKET_DECELERATION : mech->vx - ROCKET_DECELERATION;
+        } else {
+            mech->vx = 0;
+        }
+        if(abs(mech->vy) >= ROCKET_DECELERATION) {
+            mech->vy = (mech->vy < 0) ? mech->vy + ROCKET_DECELERATION : mech->vy - ROCKET_DECELERATION;
+        } else {
+            mech->vy = 0;
+        }
+    }
+
     update_mechanics(&rocket_mechanics, true);
 }
 

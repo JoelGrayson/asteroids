@@ -7,7 +7,8 @@ const gpio_id_t ROTATE_LEFT_BUTTON_RELEASE = GPIO_PD13;
 const gpio_id_t ROTATE_RIGHT_BUTTON_PRESS = GPIO_PD11; //falling edge
 const gpio_id_t ROTATE_RIGHT_BUTTON_RELEASE = GPIO_PE17; //rising edge
 const gpio_id_t HYPERSPACE_BUTTON = GPIO_PB10;
-const gpio_id_t THRUST_BUTTON = GPIO_PB11;
+const gpio_id_t THRUST_BUTTON_PRESS = GPIO_PB11;
+const gpio_id_t THRUST_BUTTON_RELEASE = GPIO_PC0;
 const gpio_id_t FIRE_BUTTON = GPIO_PB12;
 
 const gpio_id_t buttons[NUM_BUTTONS] = {
@@ -16,7 +17,8 @@ const gpio_id_t buttons[NUM_BUTTONS] = {
     ROTATE_RIGHT_BUTTON_PRESS,
     ROTATE_RIGHT_BUTTON_RELEASE,
     HYPERSPACE_BUTTON,
-    THRUST_BUTTON,
+    THRUST_BUTTON_PRESS,
+    THRUST_BUTTON_RELEASE,
     FIRE_BUTTON
 };
 
@@ -27,6 +29,7 @@ void rotate_right_pressed_listener();
 void rotate_right_released_listener();
 void hyperspace_pressed_listener();
 void thrust_pressed_listener();
+void thrust_released_listener();
 void fire_pressed_listener();
 
 void buttons_init() {
@@ -53,8 +56,11 @@ void buttons_init() {
     gpio_interrupt_config(HYPERSPACE_BUTTON, GPIO_INTERRUPT_NEGATIVE_EDGE, true);
     gpio_interrupt_set_handler(HYPERSPACE_BUTTON, hyperspace_pressed_listener, NULL);
     
-    gpio_interrupt_config(THRUST_BUTTON, GPIO_INTERRUPT_NEGATIVE_EDGE, true);
-    gpio_interrupt_set_handler(THRUST_BUTTON, thrust_pressed_listener, NULL);
+    gpio_interrupt_config(THRUST_BUTTON_PRESS, GPIO_INTERRUPT_NEGATIVE_EDGE, true);
+    gpio_interrupt_set_handler(THRUST_BUTTON_PRESS, thrust_pressed_listener, NULL);
+
+    gpio_interrupt_config(THRUST_BUTTON_RELEASE, GPIO_INTERRUPT_POSITIVE_EDGE, true);
+    gpio_interrupt_set_handler(THRUST_BUTTON_RELEASE, thrust_released_listener, NULL);
     
     gpio_interrupt_config(FIRE_BUTTON, GPIO_INTERRUPT_NEGATIVE_EDGE, true);
     gpio_interrupt_set_handler(FIRE_BUTTON, fire_pressed_listener, NULL);
@@ -74,7 +80,6 @@ void rotate_left_pressed_listener() {
 
 void rotate_left_released_listener() {
     printf("Button release: left\n");
-    rocket_rotate_left();
     gpio_interrupt_clear(ROTATE_LEFT_BUTTON_RELEASE);
 }
 
@@ -87,8 +92,6 @@ void rotate_right_pressed_listener() {
 
 void rotate_right_released_listener() {
     printf("Button released: right\n");
-    rocket_rotate_right();
-
     gpio_interrupt_clear(ROTATE_RIGHT_BUTTON_RELEASE);
 }
 
@@ -103,7 +106,14 @@ void thrust_pressed_listener() {
     printf("Button pressed: thrust\n");
     rocket_thrust();
 
-    gpio_interrupt_clear(THRUST_BUTTON);
+    gpio_interrupt_clear(THRUST_BUTTON_PRESS);
+}
+
+void thrust_released_listener() {
+    printf("Button released: thrust\n");
+    rocket_unthrust();
+
+    gpio_interrupt_clear(THRUST_BUTTON_RELEASE);
 }
 
 void fire_pressed_listener() {

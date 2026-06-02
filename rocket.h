@@ -48,6 +48,7 @@ void rocket_rotate_left(); // = rotate_rocket_theta(-1)
 void rocket_rotate_right(); // = rotate_rocket_theta(+1)
 void rocket_fire();
 void rocket_thrust();
+void rocket_unthrust();
 void rocket_hyperspace();
 
 // Increases the rotation of the rocket by theta. Then, changes the internal rotated_rocket_points to ROCKET_POINTS rotated by an amount (so only recomputes rotation when the rotation changes)
