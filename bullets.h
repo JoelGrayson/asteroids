@@ -3,6 +3,7 @@
 #include "printf.h"
 #include "gl.h"
 #include "malloc.h"
+#include "graphics/out_of_bounds.h"
 
 /* Represents who shot the bullet */
 #define MAX_NUM_BULLETS 1024

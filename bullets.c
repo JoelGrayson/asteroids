@@ -37,6 +37,7 @@ void draw_bullets() {
     }
 }
 
+void clean_up_out_of_bounds_bullets();
 void bullets_update_mechanics() {
     for (int i = 0; i < MAX_NUM_BULLETS; i++) {
         struct bullet *bullet = bullets[i];
@@ -44,4 +45,18 @@ void bullets_update_mechanics() {
             update_mechanics(&bullet->mechanics, false);
         }
     }
+
+    clean_up_out_of_bounds_bullets();
 }
+
+/* Deallocates bullets who have gone off the screen. Called manually by bullet_update_mechanics */
+void clean_up_out_of_bounds_bullets() {
+    for (int i = 0; i < MAX_NUM_BULLETS; i++) {
+        struct bullet *bullet = bullets[i];
+        if (bullet && out_of_bounds((struct point){ .x = bullet->mechanics.x, .y = bullet->mechanics.y })) {
+            free(bullet);
+            bullets[i] = NULL;
+        }
+    }
+}
+
