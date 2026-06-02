@@ -15,6 +15,7 @@ void new_bullet(struct mechanics mechanics, enum bullet_owner owner) {
             bullets[i] = malloc(sizeof(struct bullet));
             bullets[i]->mechanics = mechanics;
             bullets[i]->owner = owner;
+            return;
         }
         i++;
     }
