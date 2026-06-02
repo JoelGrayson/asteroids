@@ -16,6 +16,9 @@ struct bullet {
     struct mechanics mechanics;
 };
 
+// Points of rocket facing north
+static struct BULLET_POINTS_TEMPLATE {}
+
 /* Creates a new bullet with specified mechanics and owner */
 void new_bullet(struct mechanics mechanics, enum bullet_owner owner);
 

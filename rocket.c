@@ -9,7 +9,7 @@
 #define ROCKET_DECELERATION 0.15
 
 // Points of a rocket facing north
-static struct point ROCKET_POINTS[ROCKET_NUM_POINTS] = {
+static struct point ROCKET_POINTS_TEMPLATE[ROCKET_NUM_POINTS] = {
     { 25 - 25, 5  - 25 },
     { 12 - 25, 45 - 25 },
     { 15 - 25, 36 - 25 },
@@ -18,7 +18,7 @@ static struct point ROCKET_POINTS[ROCKET_NUM_POINTS] = {
     { 25 - 25, 5  - 25 }
 };
 
-// Starts off as the same as ROCKET_POINTS
+// Starts off as the same as ROCKET_POINTS_TEMPLATE
 static struct point rotated_rocket_points[ROCKET_NUM_POINTS] = {
     { 25 - 25, 5  - 25 },
     { 12 - 25, 45 - 25 },
@@ -85,7 +85,7 @@ void rocket_rotate_radians(double theta) {
 
     rotate_template_points(
         rotated_rocket_points,
-        ROCKET_POINTS,
+        ROCKET_POINTS_TEMPLATE,
         ROCKET_NUM_POINTS,
         rocket_mechanics.rotation
     );
@@ -161,11 +161,11 @@ int get_num_rocket_points() {
 //     for(int i = 0; i < __ROCKET_NUM_POINTS-1; i++) {
 //         int nexti_cyclic = (i+1) % __ROCKET_NUM_POINTS; // cyclic so we can link the first and last points.
 //         //printf("i is %d, nexti_cyclic is %d\n", i, nexti_cyclic);
-//         ROCKET_EXPLODED_POINTS[i][0] = ROCKET_POINTS[i];
-//         ROCKET_EXPLODED_POINTS[i][1] = ROCKET_POINTS[nexti_cyclic];
+//         ROCKET_EXPLODED_POINTS[i][0] = ROCKET_POINTS_TEMPLATE[i];
+//         ROCKET_EXPLODED_POINTS[i][1] = ROCKET_POINTS_TEMPLATE[nexti_cyclic];
         
-//         //printf("ROCKET_POINTS[%d] is (%f, %f)\n", i, ROCKET_POINTS[i].x, ROCKET_POINTS[i].y); 
-//         //printf("ROCKET_POINTS[%d] is (%f, %f)\n", nexti_cyclic, ROCKET_POINTS[nexti_cyclic].x, ROCKET_POINTS[nexti_cyclic].y);
+//         //printf("ROCKET_POINTS_TEMPLATE[%d] is (%f, %f)\n", i, ROCKET_POINTS_TEMPLATE[i].x, ROCKET_POINTS_TEMPLATE[i].y); 
+//         //printf("ROCKET_POINTS_TEMPLATE[%d] is (%f, %f)\n", nexti_cyclic, ROCKET_POINTS_TEMPLATE[nexti_cyclic].x, ROCKET_POINTS_TEMPLATE[nexti_cyclic].y);
         
 //         // Constructs orthogonal vector to currently selected exploded side
 //         struct vector sidev = vec_difference(ROCKET_EXPLODED_POINTS[i][0], ROCKET_EXPLODED_POINTS[i][1]);
