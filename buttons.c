@@ -2,13 +2,13 @@
 
 typedef void (*click_fn_t)(void* aux_data);
 
-const gpio_id_t ROTATE_LEFT_BUTTON_PRESS = GPIO_PB0;
-const gpio_id_t ROTATE_LEFT_BUTTON_RELEASE = GPIO_PB0;
-const gpio_id_t ROTATE_RIGHT_BUTTON_PRESS = GPIO_PB4; //falling edge
-const gpio_id_t ROTATE_RIGHT_BUTTON_RELEASE = GPIO_PB3; //rising edge
-const gpio_id_t HYPERSPACE_BUTTON = GPIO_PB0;
-const gpio_id_t THRUST_BUTTON = GPIO_PB0;
-const gpio_id_t FIRE_BUTTON = GPIO_PB0;
+const gpio_id_t ROTATE_LEFT_BUTTON_PRESS = GPIO_PD12;
+const gpio_id_t ROTATE_LEFT_BUTTON_RELEASE = GPIO_PD13;
+const gpio_id_t ROTATE_RIGHT_BUTTON_PRESS = GPIO_PD11; //falling edge
+const gpio_id_t ROTATE_RIGHT_BUTTON_RELEASE = GPIO_PE17; //rising edge
+const gpio_id_t HYPERSPACE_BUTTON = GPIO_PB10;
+const gpio_id_t THRUST_BUTTON = GPIO_PB11;
+const gpio_id_t FIRE_BUTTON = GPIO_PB12;
 
 const gpio_id_t buttons[NUM_BUTTONS] = {
     ROTATE_LEFT_BUTTON_PRESS,
@@ -67,11 +67,15 @@ void buttons_init() {
 
 // Rotate left and right have pressed and released listeners. Hyperspace, thrust, and fire only have pressed listeners
 void rotate_left_pressed_listener() {
-
+    printf("Button pressed: left\n");
+    rocket_rotate_left();
+    gpio_interrupt_clear(ROTATE_LEFT_BUTTON_PRESS);
 }
 
 void rotate_left_released_listener() {
-
+    printf("Button release: left\n");
+    rocket_rotate_left();
+    gpio_interrupt_clear(ROTATE_LEFT_BUTTON_RELEASE);
 }
 
 void rotate_right_pressed_listener() {

@@ -46,9 +46,9 @@ int main() {
     uart_init();
     printf("Hello from main()\n");
 
-    //buttons_init();
     trig_init(3);
     gl_init(MONITOR_WIDTH, MONITOR_HEIGHT, FB_DOUBLEBUFFER);
+    buttons_init();
 
     run_game();
 }
