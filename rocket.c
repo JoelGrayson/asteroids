@@ -68,9 +68,10 @@ void rocket_unthrust() {
 }
 
 void rocket_hyperspace() {
+    // Teleports to a "random" location within the screen bounds after seeding random with the current tick count.
     unsigned int ticks = (unsigned int)timer_get_ticks();
     srand(ticks);
-    rocket_mechanics.x = (double)(22 + (rand() % (unsigned int)(MONITOR_WIDTH-44)));
+    rocket_mechanics.x = (double)(22 + (rand() % (unsigned int)(MONITOR_WIDTH-44))); // offset of 22 from edges to ensure rocket is fully rendered within screen.
     rocket_mechanics.y = (double)(22 + (rand() % (unsigned int)(MONITOR_HEIGHT-44)));
 }
 
