@@ -1,4 +1,6 @@
 #include "rocket.h"
+#include "graphics/geometry.h"
+#include "graphics/rotate_vector.h"
 
 // Points of a rocket facing north
 static struct point ROCKET_POINTS[ROCKET_NUM_POINTS] = {
@@ -36,12 +38,12 @@ static int num_frames_after_rocket_exploded = 0;
 
 
 void rocket_rotate_left() {
-    rocket_rotate_radians(-0.01);
+    rocket_rotate_radians(-0.1);
     (void) num_frames_after_rocket_exploded;
 }
 
 void rocket_rotate_right() {
-    rocket_rotate_radians(+0.01);
+    rocket_rotate_radians(+0.1);
 }
 
 void rocket_fire() {
@@ -49,8 +51,10 @@ void rocket_fire() {
 }
 
 void rocket_thrust() {
-    // TODO: move forward based on rotation
-    rocket_mechanics.vy++;
+    struct vector dir = {0, -1};
+    rotate_vector(&dir, rocket_mechanics.rotation);
+    rocket_mechanics.vx += dir.x;
+    rocket_mechanics.vy += dir.y;
 }
 
 void rocket_hyperspace() {
