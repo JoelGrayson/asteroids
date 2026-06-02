@@ -5,6 +5,7 @@
 #include "maths.h"
 #include "timer.h"
 #include "rand.h"
+#include "bullets.h"
 
 #define ROCKET_DECELERATION 0.15
 
@@ -55,8 +56,18 @@ void rocket_rotate_right() {
     rocket_rotate_radians(+0.1);
 }
 
+/** Creates a bullet */
 void rocket_fire() {
-    // TODO: create a bullet
+    struct mechanics mech = {
+        .x = rocket_mechanics.x,
+        .y = rocket_mechanics.y,
+        .vx = rocket_mechanics.vx * 2,
+        .vy = rocket_mechanics.vy * 2,
+        .ax = 0,
+        .ay = 0,
+        .rotation = rocket_mechanics.rotation
+    };
+    new_bullet(mech, ROCKET);
 }
 
 void rocket_thrust() {

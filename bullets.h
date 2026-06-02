@@ -2,6 +2,7 @@
 #include "mechanics.h"
 #include "printf.h"
 #include "gl.h"
+#include "malloc.h"
 
 /* Represents who shot the bullet */
 #define MAX_NUM_BULLETS 1024
