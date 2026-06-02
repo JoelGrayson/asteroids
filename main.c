@@ -18,6 +18,7 @@
 #include "maths.h"
 #include "buttons.h"
 #include "timer.h"
+#include "bullets.h"
 
 #define TICKS_EXPLOSION_DISAPPEAR 2000000*TICKS_PER_USEC
 
@@ -94,6 +95,7 @@ static void run_one_frame() {
     
     render_asteroids();
     render_rocket();
+    draw_bullets();
 
     // Draws all rocket exploded sides (- the number of despawned exploded sides).
     // if(tickExplosion != 0) {
@@ -155,4 +157,5 @@ check if rocket touching asteroid
 void update_mechanics_main() {
     asteroids_update_mechanics();
     rocket_update_mechanics();
+    bullets_update_mechanics();
 }

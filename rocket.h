@@ -26,7 +26,7 @@
 // extern int ROCKET_EXPLODED_SIDES_NUM_POINTS; // At the start, we don't want to draw the exploded rocket sides.
 
 // // Rocket points polygon
-// extern struct point ROCKET_POINTS[__ROCKET_NUM_POINTS];
+// extern struct point ROCKET_POINTS_TEMPLATE[__ROCKET_NUM_POINTS];
 
 // // Rocket sides polygons for when we want to display them.
 // extern struct point ROCKET_EXPLODED_POINTS[__ROCKET_NUM_POINTS-1][2];
@@ -51,7 +51,7 @@ void rocket_thrust();
 void rocket_unthrust();
 void rocket_hyperspace();
 
-// Increases the rotation of the rocket by theta. Then, changes the internal rotated_rocket_points to ROCKET_POINTS rotated by an amount (so only recomputes rotation when the rotation changes)
+// Increases the rotation of the rocket by theta. Then, changes the internal rotated_rocket_points to ROCKET_POINTS_TEMPLATE rotated by an amount (so only recomputes rotation when the rotation changes)
 void rocket_rotate_radians(double theta);
 void render_rocket(); //just draws the rocket
 void explode_rocket();
