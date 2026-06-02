@@ -21,13 +21,15 @@
 
 #define TICKS_EXPLOSION_DISAPPEAR 2000000*TICKS_PER_USEC
 
+// Variable which controls the spawning interval of asteroids
+static unsigned long SPAWN_INTERVAL_TICKS = 500000*TICKS_PER_USEC;
+// Variable which tracks the last tick an asteroid was spawned
+static unsigned long last_spawn_tick;
 
 static void setup_game();
 static void run_game();
 static void run_one_frame();
 
-// Array of pointers to asteroids. If no asteroid, it is NULL
-static struct asteroid asteroids[MAX_NUM_ASTEROIDS];
 static int CUR_NUM_ASTEROIDS = 9; // Number of asteroids to actively draw, update, and check collisions for.
 
 // static struct bullet bullets[MAX_NUM_BULLETS];
@@ -66,8 +68,9 @@ static void run_game() {
 
 static void setup_game() {
     for(int i = 0; i < CUR_NUM_ASTEROIDS; i++) {
-        asteroid_respawn(&asteroids[i]);
+        asteroid_spawn();
     }
+    last_spawn_tick = timer_get_ticks();
     /*rocket_explode_init();
     tickExplosion = timer_get_ticks(); // Registers the explosion tick, so we can progressively delete rocket explosion lines. */
 }
@@ -76,13 +79,20 @@ static void setup_game() {
 static void run_one_frame() {
     gl_clear(GL_BLACK);
 
-    for (int i = 0; i < CUR_NUM_ASTEROIDS; i++) {
-        struct asteroid a = asteroids[i];
+    /*for (int i = 0; i < CUR_NUM_ASTEROIDS; i++) {
+        struct asteroid a = asteroids[i].ast;
         //printf("Displaying asteroid %d\n", i);
         struct point *points = get_points_of_asteroid(a);
         draw_points(points, ASTEROID_NUM_POINTS, a.mechanics.x, a.mechanics.y, GL_WHITE);
-    }
+    }*/
 
+    // Spawns new asteroid at regularly spaced intervals
+    if(timer_get_ticks() - last_spawn_tick > SPAWN_INTERVAL_TICKS) {
+        asteroid_spawn();
+        last_spawn_tick = timer_get_ticks();
+    }
+    
+    render_asteroids();
     render_rocket();
 
     // Draws all rocket exploded sides (- the number of despawned exploded sides).
@@ -119,7 +129,7 @@ check if rocket touching asteroid
 
 */
     // Loops over each asteroid, and checks if it intersects with rocket.
-    for(int i = 0; i < CUR_NUM_ASTEROIDS; i++) {
+    /*for(int i = 0; i < CUR_NUM_ASTEROIDS; i++) {
         struct asteroid ast = asteroids[i];
         struct point *ast_pts = get_points_of_asteroid(ast);
         double ast_xoff = ast.mechanics.x;
@@ -138,11 +148,11 @@ check if rocket touching asteroid
                 if(lines_intersect(p1, p2, p3, p4)) printf("collision between rocket and asteroid detected!\n");
             }
         }
-    }
+    }*/
 }
 
 // Updates the position of all asteroids, rocket, and bullets using velocity and position
 void update_mechanics_main() {
-    asteroids_update_mechanics(asteroids, CUR_NUM_ASTEROIDS);
+    asteroids_update_mechanics();
     rocket_update_mechanics();
 }
