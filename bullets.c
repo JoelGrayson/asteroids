@@ -3,6 +3,14 @@
 
 struct bullet *bullets[MAX_NUM_BULLETS] = { 0 }; //zero out so all are NULL
 
+// A square. More visible than a single point
+static struct point BULLET_POINTS[BULLET_NUM_POINTS] = {
+    { 0, 0 },
+    { 1, 0 },
+    { 1, 1 },
+    { 0, 1 }
+};
+
 void new_bullet(struct mechanics mechanics, enum bullet_owner owner) {
     int i = 0;
     while (true) {
@@ -26,6 +34,9 @@ void draw_bullet(struct bullet *bullet) {
     struct mechanics mech = bullet->mechanics;
     
     gl_draw_pixel(mech.x, mech.y, GL_WHITE);
+    gl_draw_pixel(mech.x, mech.y + 1, GL_WHITE);
+    gl_draw_pixel(mech.x + 1, mech.y, GL_WHITE);
+    gl_draw_pixel(mech.x + 1, mech.y + 1, GL_WHITE);
 }
 
 void draw_bullets() {
@@ -58,5 +69,9 @@ void clean_up_out_of_bounds_bullets() {
             bullets[i] = NULL;
         }
     }
+}
+
+struct point *get_bullet_points() {
+    return BULLET_POINTS;
 }
 

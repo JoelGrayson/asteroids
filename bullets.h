@@ -1,4 +1,3 @@
-
 #include "mechanics.h"
 #include "printf.h"
 #include "gl.h"
@@ -12,6 +11,10 @@ enum bullet_owner {
     ROCKET,
     SAUCER
 };
+
+// This is not a template. No rotation rendering on bullet
+#define BULLET_NUM_POINTS 4
+
 
 /* Represents a bullet */
 struct bullet {
@@ -31,4 +34,6 @@ void draw_bullet(struct bullet *bullet) ;
 void draw_bullets();
 
 void bullets_update_mechanics();
+
+struct point *get_bullet_points();
 
