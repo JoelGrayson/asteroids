@@ -13,6 +13,7 @@ struct point explosion_points[NUM_EXPLOSION_POINTS] = {
     // { 25, 48 },
     // { 42, 49 },
 
+    // Centered to zero
     { -13.9, -21.8 },
     {   9.1, -21.8 },
     {  -2.9, -15.8 },

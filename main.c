@@ -36,7 +36,6 @@ static int CUR_NUM_ASTEROIDS = 9; // Number of asteroids to actively draw, updat
 
 
 static int frame = 0;
-// static unsigned long tickExplosion = 0; // Tick of explosion, used for rocket line erasure after set time of explosion.
 
 static void configure_button_interrupts();
 void collision_detection();
@@ -80,8 +79,6 @@ static void setup_game() {
         asteroid_spawn();
     }
     last_spawn_tick = timer_get_ticks();
-    /*rocket_explode_init();
-    tickExplosion = timer_get_ticks(); // Registers the explosion tick, so we can progressively delete rocket explosion lines. */
 }
 
 
@@ -99,17 +96,8 @@ static void run_one_frame() {
     render_rocket();
     draw_bullets();
 
-    // Draws all rocket exploded sides (- the number of despawned exploded sides).
-    // if(tickExplosion != 0) {
-    //     unsigned long sides_to_despawn = timer_get_ticks()-tickExplosion;
-    //     sides_to_despawn /= TICKS_EXPLOSION_DISAPPEAR;
-    //     for (unsigned long i = 0; i < __ROCKET_NUM_POINTS-1-sides_to_despawn; i++) { // draws exploded sides (if rocket has exploded).
-    //         draw_points(ROCKET_EXPLODED_POINTS[i], ROCKET_EXPLODED_SIDES_NUM_POINTS, rocket_mechanics.x, rocket_mechanics.y, GL_WHITE);
-    //     }
-    // }
 
     collision_detection();
-    // rocket_explode_update();
     update_mechanics_main();
     fb_swap_buffer(); //show the frame
 }
@@ -151,7 +139,10 @@ check if rocket touching asteroid
             }
         }
     }*/
-    if(rocket_asteroid_collision()) printf("Rocket has collided with an asteroid!\n");
+    if(rocket_asteroid_collision()) {
+        rocket_explode();
+        num_lives--;
+    }
 }
 
 // Updates the position of all asteroids, rocket, and bullets using velocity and position
