@@ -6,7 +6,6 @@
 #include "gpio_interrupt.h"
 
 #include "asteroid.h"
-// #include "bullet.h"
 #include "rocket.h"
 #include "gpio.h"
 #include "libmango/gpio_extra.h"
@@ -20,6 +19,8 @@
 #include "timer.h"
 #include "bullets.h"
 #include "audio/sounds.h"
+#include "fps.h"
+#include "score_and_lives.h"
 
 #define TICKS_EXPLOSION_DISAPPEAR 2000000*TICKS_PER_USEC
 
@@ -36,7 +37,6 @@ static int CUR_NUM_ASTEROIDS = 9; // Number of asteroids to actively draw, updat
 
 
 static int frame = 0;
-// static unsigned long tickExplosion = 0; // Tick of explosion, used for rocket line erasure after set time of explosion.
 
 static void configure_button_interrupts();
 void collision_detection();
@@ -51,6 +51,7 @@ int main() {
     gl_init(MONITOR_WIDTH, MONITOR_HEIGHT, FB_DOUBLEBUFFER);
     sounds_init();
     buttons_init();
+    score_and_lives_init();
 
     run_game();
 }
@@ -81,8 +82,6 @@ static void setup_game() {
         asteroid_spawn();
     }
     last_spawn_tick = timer_get_ticks();
-    /*rocket_explode_init();
-    tickExplosion = timer_get_ticks(); // Registers the explosion tick, so we can progressively delete rocket explosion lines. */
 }
 
 
@@ -98,41 +97,23 @@ static void run_one_frame() {
     
     render_asteroids();
     render_rocket();
+    render_score_and_lives();
     draw_bullets();
 
-    // Draws all rocket exploded sides (- the number of despawned exploded sides).
-    // if(tickExplosion != 0) {
-    //     unsigned long sides_to_despawn = timer_get_ticks()-tickExplosion;
-    //     sides_to_despawn /= TICKS_EXPLOSION_DISAPPEAR;
-    //     for (unsigned long i = 0; i < __ROCKET_NUM_POINTS-1-sides_to_despawn; i++) { // draws exploded sides (if rocket has exploded).
-    //         draw_points(ROCKET_EXPLODED_POINTS[i], ROCKET_EXPLODED_SIDES_NUM_POINTS, rocket_mechanics.x, rocket_mechanics.y, GL_WHITE);
-    //     }
-    // }
 
     collision_detection();
-    // rocket_explode_update();
     update_mechanics_main();
     fb_swap_buffer(); //show the frame
 }
 
 
 void collision_detection() {
-    // for each asteroid
-    //      for each bullet
-    //            if asteroid touching bullet
-    // 
-
-
-/*
-Loop over each bullet:
-    check if touching asteroid
-    
-
-check if rocket touching asteroid
-
-*/
-    if(rocket_asteroid_collision()) printf("Rocket has collided with an asteroid!\n");
     bullets_asteroid_collision();
+    if(rocket_asteroid_collision()) {
+        rocket_explode();
+        decrease_lives();
+        render_score_and_lives();
+    }
 }
 
 // Updates the position of all asteroids, rocket, and bullets using velocity and position
