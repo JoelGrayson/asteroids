@@ -33,9 +33,6 @@ static void run_one_frame();
 
 static int CUR_NUM_ASTEROIDS = 9; // Number of asteroids to actively draw, update, and check collisions for.
 
-// static struct bullet bullets[MAX_NUM_BULLETS];
-
-
 
 static int frame = 0;
 // static unsigned long tickExplosion = 0; // Tick of explosion, used for rocket line erasure after set time of explosion.
@@ -56,14 +53,26 @@ int main() {
     run_game();
 }
 
+
+// #define FPS 2
+#define FPS 30
+const long min_time_per_frame = 24*1000*1000/FPS;
+
 static void run_game() {
     printf("Starting game\n");
     setup_game();
     printf("Setup done\n");
     
+
+    long ticks_at_start_of_loop = timer_get_ticks();
     while (true) {
         run_one_frame();
         frame++;
+
+        while (timer_get_ticks() - ticks_at_start_of_loop < min_time_per_frame)
+            ; // SPIN!
+
+        ticks_at_start_of_loop = timer_get_ticks();
     }
 }
 
