@@ -1,4 +1,5 @@
 # AI Usage
+* Center-align my rocket points
 * Learned that NULL can be assigned to any pointer type and `= { 0 }` is how you set a new array to all NULL (instead of garbage value because not zeroed out by default). Also if (x == NULL) can be written as if (!x) because of the falsiness of NULL
 * Used Claude cowork to convert the .wav audio files from 8 bit to 16 bit and 11 kHz to 48 kHz
 * Learned that you can't do const int ROCKET_NUM_POINTS = 6 and then create a constant array length ROCKET_NUM_POINTS because even though const int it still treats it like an int. Compiler is confused and things it can be variable-length and cosntant at same time so throws an error. Soln is to use a #define.
