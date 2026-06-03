@@ -6,6 +6,7 @@
 #include "timer.h"
 #include "rand.h"
 #include "bullets.h"
+#include "asteroid.h"
 
 #define ROCKET_DECELERATION 0.15
 
@@ -123,6 +124,17 @@ struct point *get_points_of_rocket() {
 
 int get_num_rocket_points() {
     return ROCKET_NUM_POINTS;
+}
+
+bool rocket_asteroid_collision() {
+    // Tries to find an asteroid which has collided with our rocket:
+    struct asteroid_list_t *to_explode = get_asteroid_collision(rocket_mechanics, rotated_rocket_points, ROCKET_NUM_POINTS);
+    // If an asteroid has collided with our rocket, remove it (explode it!) and then return true (there has been a collision)
+    if(to_explode != NULL) {
+        asteroid_explode(to_explode);
+        return true;
+    }
+    return false; // No asteroid collision, return false.
 }
 
 

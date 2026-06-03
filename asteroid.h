@@ -57,6 +57,8 @@ void asteroid_despawn(struct asteroid_list_t* ast);
 int get_num_asteroid_points(); // returns the total count of points forming asteroid polygon
 struct asteroid_list_t *get_next_spawnable_asteroid(); // Finds the pointer of the next asteroid which can be allocated out of the list of asteroids.
 void render_asteroids(); // draws asteroid list
-
+// If any of the allocated asteroids collides with said object, return a pointer to that asteroid; otherwise return NULL.
+struct asteroid_list_t *get_asteroid_collision(struct mechanics obj, struct point *points_obj, int num_points_obj);
+void asteroid_explode(struct asteroid_list_t *ast); // Explodes a particular asteroid (with particle effects! and deallocates it).
 #endif
 

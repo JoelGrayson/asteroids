@@ -179,6 +179,25 @@ void render_asteroids() {
     }
 }
 
+struct asteroid_list_t *get_asteroid_collision(struct mechanics obj, struct point *points_obj, int num_points_obj) {
+    // Checks all allocated asteroids for collisions with object:
+    for(int i = 0; i < list_size; i++) {
+        if(list[i].allocated) {
+            struct asteroid a = list[i].ast;
+            struct point *points = get_points_of_asteroid(a);
+            if(are_colliding(a.mechanics, obj, points, points_obj, ASTEROID_NUM_POINTS, num_points_obj)) return &list[i];
+        }
+    }
+    return NULL; // No asteroids found colliding with our object.
+}
+
+void asteroid_explode(struct asteroid_list_t *ast) {
+    ast->allocated = false;
+    /* 
+    *  TODO: IMPLEMENT PARTICLE EXPLOSION EFFECT!
+    */
+}
+
 struct point ASTEROID_A_SMALL_POINTS[ASTEROID_NUM_POINTS] = {
     { 10 - 16, 5 - 14 },
     { 19 - 16, 5 - 14 },

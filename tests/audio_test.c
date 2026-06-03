@@ -22,13 +22,13 @@ void main(void) {
     uart_init();
     dma_init();
 
-    assert(gwav_bangLarge->bits_per_sample == 16); // DAC support only tested for 16-bit
-    int sample_freq = gwav_bangLarge->frames_per_sec;
+    assert(gwav->bits_per_sample == 16); // DAC support only tested for 16-bit
+    int sample_freq = gwav->frames_per_sec;
     i2s_init(sample_freq);
-    i2s_frame_type_t ftype = (gwav_bangLarge->samples_per_frame == 1) ? I2S_MONO : I2S_STEREO;
+    i2s_frame_type_t ftype = (gwav->samples_per_frame == 1) ? I2S_MONO : I2S_STEREO;
 
     while(1) {
-        i2s_stream_playback_nb(gwav_bangLarge->data, gwav_bangLarge->n_data, ftype);
+        i2s_stream_playback_nb(gwav->data, gwav->n_data, ftype);
         i2s_await();
         timer_delay_ms(250);
     }

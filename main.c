@@ -151,6 +151,7 @@ check if rocket touching asteroid
             }
         }
     }*/
+    if(rocket_asteroid_collision()) printf("Rocket has collided with an asteroid!\n");
 }
 
 // Updates the position of all asteroids, rocket, and bullets using velocity and position
