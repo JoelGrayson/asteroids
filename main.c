@@ -21,6 +21,7 @@
 #include "audio/sounds.h"
 #include "fps.h"
 #include "score_and_lives.h"
+#include "saucer.h"
 
 #define TICKS_EXPLOSION_DISAPPEAR 2000000*TICKS_PER_USEC
 
