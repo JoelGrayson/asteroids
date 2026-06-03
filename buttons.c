@@ -6,13 +6,6 @@ typedef void (*click_fn_t)(void* aux_data);
 #define JOEL
 
 #ifdef JOEL
-/*
-Left - PB12
-Right - PB10
-Hyperspace
-Thrust - PB2
-Fire - PC0
-*/
 const gpio_id_t ROTATE_LEFT_BUTTON_PRESS = GPIO_PB12;   //falling edge
 const gpio_id_t ROTATE_LEFT_BUTTON_RELEASE = GPIO_PB11; //rising edge
 const gpio_id_t ROTATE_RIGHT_BUTTON_PRESS = GPIO_PB10;
@@ -96,23 +89,25 @@ void buttons_init() {
 // Rotate left and right have pressed and released listeners. Hyperspace, thrust, and fire only have pressed listeners
 void rotate_left_pressed_listener() {
     printf("Button pressed: left\n");
-    rocket_rotate_left();
+    rocket_rotate_left_press();
     gpio_interrupt_clear(ROTATE_LEFT_BUTTON_PRESS);
 }
 
 void rotate_left_released_listener() {
     printf("Button release: left\n");
+    rocket_rotate_left_release();
     gpio_interrupt_clear(ROTATE_LEFT_BUTTON_RELEASE);
 }
 
 void rotate_right_pressed_listener() {
     printf("Button pressed: right\n");
-    rocket_rotate_right();
+    rocket_rotate_right_press();
     gpio_interrupt_clear(ROTATE_RIGHT_BUTTON_PRESS);
 }
 
 void rotate_right_released_listener() {
     printf("Button released: right\n");
+    rocket_rotate_right_release();
     gpio_interrupt_clear(ROTATE_RIGHT_BUTTON_RELEASE);
 }
 

@@ -57,14 +57,27 @@ static bool rocket_is_thrusting = false;
 static int num_frames_after_rocket_exploded = 0;
 
 
-void rocket_rotate_left() {
-    rocket_rotate_radians(-0.1);
-    (void) num_frames_after_rocket_exploded;
+static bool is_rotating_left = false;
+static bool is_rotating_right = false;
+
+
+void rocket_rotate_left_press() {
+    is_rotating_left = true;
 }
 
-void rocket_rotate_right() {
-    rocket_rotate_radians(+0.1);
+void rocket_rotate_left_release() {
+    is_rotating_left = false;
 }
+
+void rocket_rotate_right_press() {
+    is_rotating_right = true;
+}
+
+void rocket_rotate_right_release() {
+    is_rotating_right = false;
+}
+
+
 
 /** Creates a bullet */
 void rocket_fire() {
@@ -171,6 +184,14 @@ bool rocket_asteroid_collision() {
 
 void rocket_update_mechanics() {
     struct mechanics *mech = &rocket_mechanics;
+
+    if (is_rotating_left) {
+        mech->rotation--;
+    } else if (is_rotating_right) {
+        mech->rotation++;
+    }
+    
+    
     if(rocket_is_thrusting) {
         // Rocket thrusts with magnitude 1.5 acceleration in the direction of its cone
         struct vector dir = {0, -1.5};

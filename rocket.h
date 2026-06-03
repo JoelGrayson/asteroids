@@ -20,8 +20,10 @@
 extern struct point ROCKET_POINTS_TEMPLATE[ROCKET_NUM_POINTS];
 
 // The five arcade buttons
-void rocket_rotate_left(); // = rotate_rocket_theta(-1)
-void rocket_rotate_right(); // = rotate_rocket_theta(+1)
+void rocket_rotate_left_press();
+void rocket_rotate_left_release();
+void rocket_rotate_right_press();
+void rocket_rotate_right_release();
 void rocket_fire();
 void rocket_thrust();
 void rocket_unthrust();
