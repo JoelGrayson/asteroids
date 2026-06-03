@@ -186,11 +186,16 @@ void rocket_update_mechanics() {
     struct mechanics *mech = &rocket_mechanics;
 
     if (is_rotating_left) {
-        mech->rotation--;
+        mech->rotation -= 0.3;
     } else if (is_rotating_right) {
-        mech->rotation++;
+        mech->rotation += 0.3;
     }
-    
+    rotate_template_points(
+        rotated_rocket_points,
+        ROCKET_POINTS_TEMPLATE,
+        ROCKET_NUM_POINTS,
+        rocket_mechanics.rotation
+    );
     
     if(rocket_is_thrusting) {
         // Rocket thrusts with magnitude 1.5 acceleration in the direction of its cone
