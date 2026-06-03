@@ -9,6 +9,8 @@
 #include <stdbool.h>
 #include "graphics/rotate_points.h"
 #include "graphics/draw_points.h"
+#include "rocket.h"
+#include "explosion.h"
 
 
 #define ROCKET_NUM_POINTS 6

@@ -19,6 +19,7 @@
 #include "buttons.h"
 #include "timer.h"
 #include "bullets.h"
+#include "fps.h"
 
 #define TICKS_EXPLOSION_DISAPPEAR 2000000*TICKS_PER_USEC
 

@@ -2,6 +2,8 @@
 
 #include "fps.h"
 #include "graphics/point.h"
+#include "gl.h"
+#include "printf.h"
 
 #define NUM_FRAMES_OF_EXPLOSION FPS //1 second
 

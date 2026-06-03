@@ -111,7 +111,13 @@ void render_rocket() {
         // gl_draw_pixel(rocket_mechanics.x, rocket_mechanics.y, GL_WHITE);
 
         // Draw three lines: /, \, and _
-        
+        render_explosion((struct point){ .x = rocket_mechanics.x, .y = rocket_mechanics.y }, num_frames_after_rocket_exploded);
+
+        if (num_frames_after_rocket_exploded >= NUM_FRAMES_OF_EXPLOSION) {
+            // Explosion over
+            rocket_is_exploding = 0;
+            num_frames_after_rocket_exploded = 0;
+        }
     } else {
         // Normal rocket
         draw_points(rotated_rocket_points, ROCKET_NUM_POINTS, rocket_mechanics.x, rocket_mechanics.y, GL_WHITE);
