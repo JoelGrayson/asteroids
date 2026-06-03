@@ -5,6 +5,7 @@
 #include "graphics/point.h"
 #include "printf.h"
 #include <stdbool.h>
+#include "explosion.h"
 
 #define MAX_NUM_ASTEROIDS 1000
 extern unsigned int MAX_ASTEROID_SPEED;

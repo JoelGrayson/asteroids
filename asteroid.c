@@ -53,6 +53,13 @@ struct point *get_points_of_asteroid(struct asteroid ast) {
 void asteroids_update_mechanics() {
      for(int i = 0; i < list_size; i++) {
         if(list[i].allocated) { // Only update mechanics
+            // Done exploding animation
+            if (list[i].ast.exploding_frame > NUM_FRAMES_OF_EXPLOSION) {
+                list[i].ast.exploding_frame = 0;
+                list[i].ast.is_exploding = false;
+                asteroid_despawn(&list[i]);
+            }
+            
             // Asteroid continues on its present course
             update_mechanics(&list[i].ast.mechanics, false); // Any object in motion at a certain velocity will remain in motion at that velocity (Newton's 1st Law).
             // Respawns asteroid if out-of-bounds
@@ -217,9 +224,9 @@ void asteroid_explode(struct asteroid_list_t *ast) {
         }
         last_explosion_sound_tick = timer_get_ticks();
     }
-    /* 
-    *  TODO: IMPLEMENT PARTICLE EXPLOSION EFFECT!
-    */
+    
+    ast->ast.is_exploding = true;
+    ast->ast.exploding_frame = 0;
 }
 
 struct point ASTEROID_A_SMALL_POINTS[ASTEROID_NUM_POINTS] = {
