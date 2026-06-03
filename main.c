@@ -54,7 +54,6 @@ int main() {
 }
 
 
-// #define FPS 2
 #define FPS 30
 const long min_time_per_frame = 24*1000*1000/FPS;
 
@@ -87,14 +86,8 @@ static void setup_game() {
 
 
 static void run_one_frame() {
+    // Clear frame to blank black frame
     gl_clear(GL_BLACK);
-
-    /*for (int i = 0; i < CUR_NUM_ASTEROIDS; i++) {
-        struct asteroid a = asteroids[i].ast;
-        //printf("Displaying asteroid %d\n", i);
-        struct point *points = get_points_of_asteroid(a);
-        draw_points(points, ASTEROID_NUM_POINTS, a.mechanics.x, a.mechanics.y, GL_WHITE);
-    }*/
 
     // Spawns new asteroid at regularly spaced intervals
     if(timer_get_ticks() - last_spawn_tick > SPAWN_INTERVAL_TICKS) {
@@ -119,8 +112,6 @@ static void run_one_frame() {
     // rocket_explode_update();
     update_mechanics_main();
     fb_swap_buffer(); //show the frame
-    
-    // printf("Button: %d\n", gpio_read(TEST_BUTTON));
 }
 
 

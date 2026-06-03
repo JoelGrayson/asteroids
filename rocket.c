@@ -11,22 +11,24 @@
 
 // Points of a rocket facing north
 static struct point ROCKET_POINTS_TEMPLATE[ROCKET_NUM_POINTS] = {
-    { 25 - 25, 5  - 25 },
-    { 12 - 25, 45 - 25 },
-    { 15 - 25, 36 - 25 },
-    { 35 - 25, 36 - 25 },
-    { 38 - 25, 45 - 25 },
-    { 25 - 25, 5  - 25 }
+    {   0, -20 }, //1
+    //    /
+    { -13,  20 }, //2
+    // 
+    { -10,  11 }, //3
+    {  10,  11 }, //4
+    {  13,  20 }, //5
+    {   0, -20 }  //6
 };
 
 // Starts off as the same as ROCKET_POINTS_TEMPLATE
 static struct point rotated_rocket_points[ROCKET_NUM_POINTS] = {
-    { 25 - 25, 5  - 25 },
-    { 12 - 25, 45 - 25 },
-    { 15 - 25, 36 - 25 },
-    { 35 - 25, 36 - 25 },
-    { 38 - 25, 45 - 25 },
-    { 25 - 25, 5  - 25 }
+    {   0, -20 },
+    { -13,  20 },
+    { -10,  11 },
+    {  10,  11 },
+    {  13,  20 },
+    {   0, -20 }
 };
 
 static struct mechanics rocket_mechanics = {
@@ -105,7 +107,7 @@ void rocket_rotate_radians(double theta) {
 // Draws the rocket
 void render_rocket() {
     if (rocket_is_exploding) {
-
+        gl_draw_pixel(rocket_mechanics.x, rocket_mechanics.y, GL_WHITE);
     } else {
         // Normal rocket
         draw_points(rotated_rocket_points, ROCKET_NUM_POINTS, rocket_mechanics.x, rocket_mechanics.y, GL_WHITE);
@@ -115,6 +117,7 @@ void render_rocket() {
 
 void explode_rocket() {
     rocket_is_exploding = true;
+    num_frames_after_rocket_exploded = 0;
 }
 
 struct point *get_points_of_rocket() {
