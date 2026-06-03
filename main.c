@@ -54,7 +54,6 @@ int main() {
 }
 
 
-#define FPS 30
 const long min_time_per_frame = 24*1000*1000/FPS;
 
 static void run_game() {

@@ -19,7 +19,7 @@ static struct point ROCKET_POINTS_TEMPLATE[ROCKET_NUM_POINTS] = {
     { -10,  11 }, //3
     {  10,  11 }, //4
     {  13,  20 }, //5
-    {   0, -20 }  //6
+    {   0, -20 }  //6 (same as 1)
 };
 
 // Starts off as the same as ROCKET_POINTS_TEMPLATE
@@ -108,7 +108,10 @@ void rocket_rotate_radians(double theta) {
 // Draws the rocket
 void render_rocket() {
     if (rocket_is_exploding) {
-        gl_draw_pixel(rocket_mechanics.x, rocket_mechanics.y, GL_WHITE);
+        // gl_draw_pixel(rocket_mechanics.x, rocket_mechanics.y, GL_WHITE);
+
+        // Draw three lines: /, \, and _
+        
     } else {
         // Normal rocket
         draw_points(rotated_rocket_points, ROCKET_NUM_POINTS, rocket_mechanics.x, rocket_mechanics.y, GL_WHITE);
@@ -116,7 +119,7 @@ void render_rocket() {
 }
 
 
-void explode_rocket() {
+void rocket_explode() {
     rocket_is_exploding = true;
     num_frames_after_rocket_exploded = 0;
 }
@@ -250,6 +253,10 @@ void rocket_update_mechanics() {
         }
     }
     update_mechanics(&rocket_mechanics, true);
+
+    if (rocket_is_exploding) {
+        num_frames_after_rocket_exploded++;
+    }
 }
 
 

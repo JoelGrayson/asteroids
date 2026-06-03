@@ -118,7 +118,10 @@ void rotate_right_released_listener() {
 
 void hyperspace_pressed_listener() {
     printf("Button pressed: hyperspace\n");
-    rocket_hyperspace();
+    
+    // Use hyper button to test exploding
+    // rocket_hyperspace();
+    rocket_explode();
 
     gpio_interrupt_clear(HYPERSPACE_BUTTON);
 }
