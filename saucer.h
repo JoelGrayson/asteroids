@@ -4,6 +4,7 @@
 #include "mechanics.h"
 #include <stdbool.h>
 #include "printf.h"
+#include "rand.h"
 
 enum saucer_state {
     NO_SAUCER, //no saucer on screen
@@ -12,5 +13,6 @@ enum saucer_state {
 };
 
 void render_saucer();
-void saucer_frame_call(frame_number); //renders the saucer and decides whether to spawn another saucer
+/** Should be called once in each run_one_frame of game. Renders the saucer and decides whether to spawn another saucer */
+void saucer_frame_call(frame_number);
 

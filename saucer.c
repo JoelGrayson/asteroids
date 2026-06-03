@@ -66,7 +66,42 @@ int frames_until_saucer_respawns = FPS * 10; //takes 10 seconds for a new saucer
 static int frame_when_saucer_last_despawned = 0; //when saucer dies, set this to the frame number. If 
 
 
-void saucer_frame_call(frame_number) {
+static void spawn_saucer(enum saucer_state new_saucer_state) {
+    if (new_saucer_state == BIG_SAUCER) {
+        saucer_state = new_saucer_state;
+    }
+    if (new_saucer_state == SMALL_SAUCER) {
+        saucer_state = new_saucer_state;
+    }
 
+    int corner_where_saucer_spawns = rand() % 4; //0 means N, 1 means E, 2 means S, 3 means W
+    switch (corner_where_saucer_spawns) {
+        case 0: //top
+            saucer_mechanics.x = rand() % MONITOR_WIDTH;
+            saucer_mechanics.y = 0;
+            saucer_mechanics.vy = 10;
+            saucer_mechanics.vx = 0;
+            break;
+        case 1: //right
+            break;
+        case 2: //left
+            break;
+        case 3: //right
+            break;
+    }
+}
+
+void saucer_frame_call(frame_number) {
+    render_saucer();
+
+    if (saucer_state == NO_SAUCER && (frame_number - frame_when_saucer_last_despawned) > frames_until_saucer_respawns) {
+        // spawn saucer
+        frame_when_saucer_last_despawned = frame_number;
+        if (rand() % 2 == 0) { //50-50 chance
+            spawn_saucer(BIG_SAUCER);
+        } else {
+            spawn_saucer(SMALL_SAUCER);
+        }
+    }
 }
 
