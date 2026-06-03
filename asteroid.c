@@ -8,7 +8,7 @@
 #include "printf.h"
 
 // Maximum asteroid speed global variable -- should increase as game progresses in time (and thereby difficulty).
-unsigned int MAX_ASTEROID_SPEED = 10;
+unsigned int MAX_ASTEROID_SPEED = 15;
 
 // List of asteroids tracked in program
 static struct asteroid_list_t list[MAX_NUM_ASTEROIDS];
@@ -17,7 +17,7 @@ static int list_size = MAX_NUM_ASTEROIDS;
 static int CUR_NUM_ASTEROIDS = 9; // Number of asteroids to actively draw, update, and check collisions for.
 
 // Minimum asteroid speed define
-#define MIN_ASTEROID_SPEED 2
+#define MIN_ASTEROID_SPEED 3
 
 // Gets the asteroid polygon points
 struct point *get_points_of_asteroid(struct asteroid ast) {

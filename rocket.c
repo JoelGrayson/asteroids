@@ -8,7 +8,7 @@
 #include "bullets.h"
 #include "asteroid.h"
 
-#define ROCKET_DECELERATION 0.15
+#define ROCKET_DECELERATION 0.22
 
 // Points of a rocket facing north
 static struct point ROCKET_POINTS_TEMPLATE[ROCKET_NUM_POINTS] = {
@@ -59,16 +59,22 @@ void rocket_rotate_right() {
 
 /** Creates a bullet */
 void rocket_fire() {
-    struct mechanics mech = {
-        .x = rocket_mechanics.x,
-        .y = rocket_mechanics.y,
-        .vx = 10, //rocket_mechanics.vx * 2,
-        .vy = 0, //rocket_mechanics.vy * 2,
+    struct mechanics *mech = &rocket_mechanics;
+    // Calculates direction bullet should be heading in
+    struct vector dir = {0, -1.5};
+    rotate_vector(&dir, mech->rotation);
+
+    // Instantiates bullet in said direction.
+    struct mechanics mech_bullet = {
+        .x = mech->x,
+        .y = mech->y,
+        .vx = 10*dir.x,
+        .vy = 10*dir.y,
         .ax = 0,
         .ay = 0,
-        .rotation = rocket_mechanics.rotation
+        .rotation = mech->rotation
     };
-    new_bullet(mech, ROCKET);
+    new_bullet(mech_bullet, ROCKET);
 }
 
 void rocket_thrust() {
@@ -225,8 +231,8 @@ bool rocket_asteroid_collision() {
 void rocket_update_mechanics() {
     struct mechanics *mech = &rocket_mechanics;
     if(rocket_is_thrusting) {
-        // Rocket thrusts with magnitude 1 acceleration in the direction of its cone
-        struct vector dir = {0, -1};
+        // Rocket thrusts with magnitude 1.5 acceleration in the direction of its cone
+        struct vector dir = {0, -1.5};
         rotate_vector(&dir, mech->rotation);
         mech->ax = dir.x;
         mech->ay = dir.y;
