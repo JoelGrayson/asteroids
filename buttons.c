@@ -3,7 +3,7 @@
 
 typedef void (*click_fn_t)(void* aux_data);
 
-// #define JOEL
+#define JOEL
 
 #ifdef JOEL
 /*
@@ -13,15 +13,14 @@ Hyperspace
 Thrust - PB2
 Fire - PC0
 */
-#define NOT_YET GPIO_PB0 //TODO: remove these
-const gpio_id_t ROTATE_LEFT_BUTTON_PRESS = GPIO_PB12;
-const gpio_id_t ROTATE_LEFT_BUTTON_RELEASE = NOT_YET;
-const gpio_id_t ROTATE_RIGHT_BUTTON_PRESS = GPIO_PB10; //falling edge
-const gpio_id_t ROTATE_RIGHT_BUTTON_RELEASE = NOT_YET; //rising edge
-const gpio_id_t HYPERSPACE_BUTTON = NOT_YET;
-const gpio_id_t THRUST_BUTTON_PRESS = GPIO_PB2;
-const gpio_id_t THRUST_BUTTON_RELEASE = NOT_YET;
-const gpio_id_t FIRE_BUTTON = GPIO_PC0;
+const gpio_id_t ROTATE_LEFT_BUTTON_PRESS = GPIO_PB12;   //falling edge
+const gpio_id_t ROTATE_LEFT_BUTTON_RELEASE = GPIO_PB11; //rising edge
+const gpio_id_t ROTATE_RIGHT_BUTTON_PRESS = GPIO_PB10;
+const gpio_id_t ROTATE_RIGHT_BUTTON_RELEASE = GPIO_PE17;
+const gpio_id_t HYPERSPACE_BUTTON = GPIO_PD15;
+const gpio_id_t THRUST_BUTTON_PRESS = GPIO_PD13;
+const gpio_id_t THRUST_BUTTON_RELEASE = GPIO_PD12;
+const gpio_id_t FIRE_BUTTON = GPIO_PB0;
 #else
 // Sebastian's button configuration
 const gpio_id_t ROTATE_LEFT_BUTTON_PRESS = GPIO_PD11;
@@ -121,8 +120,7 @@ void hyperspace_pressed_listener() {
     printf("Button pressed: hyperspace\n");
     
     // Use hyper button to test exploding
-    // rocket_hyperspace();
-    rocket_explode();
+    rocket_hyperspace();
 
     gpio_interrupt_clear(HYPERSPACE_BUTTON);
 }
