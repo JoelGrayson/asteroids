@@ -11,7 +11,7 @@
 #define ROCKET_DECELERATION 0.15
 
 // Points of a rocket facing north
-static struct point ROCKET_POINTS_TEMPLATE[ROCKET_NUM_POINTS] = {
+struct point ROCKET_POINTS_TEMPLATE[ROCKET_NUM_POINTS] = {
     {   0, -20 }, //1
     //    /
     { -13,  20 }, //2

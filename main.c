@@ -6,7 +6,6 @@
 #include "gpio_interrupt.h"
 
 #include "asteroid.h"
-// #include "bullet.h"
 #include "rocket.h"
 #include "gpio.h"
 #include "libmango/gpio_extra.h"
@@ -20,6 +19,7 @@
 #include "timer.h"
 #include "bullets.h"
 #include "fps.h"
+#include "score_and_lives.h"
 
 #define TICKS_EXPLOSION_DISAPPEAR 2000000*TICKS_PER_USEC
 
@@ -49,6 +49,7 @@ int main() {
     trig_init(3);
     gl_init(MONITOR_WIDTH, MONITOR_HEIGHT, FB_DOUBLEBUFFER);
     buttons_init();
+    score_and_lives_init();
 
     run_game();
 }
@@ -94,6 +95,7 @@ static void run_one_frame() {
     
     render_asteroids();
     render_rocket();
+    render_score_and_lives();
     draw_bullets();
 
 
@@ -141,7 +143,8 @@ check if rocket touching asteroid
     }*/
     if(rocket_asteroid_collision()) {
         rocket_explode();
-        num_lives--;
+        decrease_lives();
+        render_score_and_lives();
     }
 }
 

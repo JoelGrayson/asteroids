@@ -1,6 +1,7 @@
 #include "score_and_lives.h"
 #include "strings.h"
-#include "libmango/num_to_string.h"
+#include "printf.h"
+#include "rocket.h"
 
 #define MAX_SCORE_STRING_SIZE 1024
 
@@ -16,17 +17,31 @@ int get_num_lives() {
     return num_lives;
 }
 
+#define LEFT_OFFSET 100
+#define ROCKET_WIDTH 40
+
 static void render_score() {
-    num_to_string(score, 10, score_string);
-    gl_draw_string(0, 0, score_string, GL_WHITE);
+    snprintf(score_string, MAX_SCORE_STRING_SIZE, "%d", score);
+    gl_draw_string(LEFT_OFFSET, 100, score_string, GL_WHITE);
+    
 }
 
 static void render_lives() {
     
+    // Draw num_lives number of rockets
+    for (int i = 0; i < num_lives; i++) {
+        int x = i * ROCKET_WIDTH + LEFT_OFFSET;
+        draw_points(ROCKET_POINTS_TEMPLATE, ROCKET_NUM_POINTS, x, 150, GL_WHITE);
+    }
 }
 
 void render_score_and_lives() {
-    
+    render_score();
+    render_lives();
+}
+
+void decrease_lives() {
+    num_lives--;
 }
 
 

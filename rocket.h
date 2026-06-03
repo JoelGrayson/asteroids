@@ -15,6 +15,8 @@
 
 #define ROCKET_NUM_POINTS 6
 
+extern struct point ROCKET_POINTS_TEMPLATE[ROCKET_NUM_POINTS];
+
 
 // The five arcade buttons
 void rocket_rotate_left(); // = rotate_rocket_theta(-1)
