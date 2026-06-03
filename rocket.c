@@ -68,6 +68,8 @@ void rocket_rotate_right() {
 
 /** Creates a bullet */
 void rocket_fire() {
+    unsigned long present_tick = timer_get_ticks();
+    if(present_tick-last_fire_sound_tick <= FIRE_SOUND_TICK_DURATION) return; // Refuse to fire faster than sound play!
     struct mechanics *mech = &rocket_mechanics;
     // Calculates direction bullet should be heading in
     struct vector dir = {0, -1.5};
@@ -84,7 +86,7 @@ void rocket_fire() {
         .rotation = mech->rotation
     };
     new_bullet(mech_bullet, ROCKET);
-    unsigned long present_tick = timer_get_ticks();
+    present_tick = timer_get_ticks();
     if(present_tick-last_fire_sound_tick > FIRE_SOUND_TICK_DURATION && present_tick-last_thrust_sound_tick > THRUST_SOUND_TICK_DURATION && present_tick-last_explosion_sound_tick > EXPLOSION_SOUND_TICK_DURATION) {
         play_fire();
         last_fire_sound_tick = timer_get_ticks();
