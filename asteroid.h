@@ -9,6 +9,8 @@
 #define MAX_NUM_ASTEROIDS 1000
 extern unsigned int MAX_ASTEROID_SPEED;
 
+#define EXPLOSION_SOUND_TICK_DURATION 1500000*TICKS_PER_USEC
+
 enum asteroid_type {
     A,
     B,

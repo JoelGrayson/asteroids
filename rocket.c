@@ -7,8 +7,15 @@
 #include "rand.h"
 #include "bullets.h"
 #include "asteroid.h"
+#include "audio/sounds.h"
 
 #define ROCKET_DECELERATION 0.22
+
+// Sound timing tracking variables for I2S non-blocking play:
+unsigned long last_fire_sound_tick;
+unsigned long last_thrust_sound_tick;
+
+extern unsigned long last_explosion_sound_tick;
 
 // Points of a rocket facing north
 static struct point ROCKET_POINTS_TEMPLATE[ROCKET_NUM_POINTS] = {
@@ -77,6 +84,11 @@ void rocket_fire() {
         .rotation = mech->rotation
     };
     new_bullet(mech_bullet, ROCKET);
+    unsigned long present_tick = timer_get_ticks();
+    if(present_tick-last_fire_sound_tick > FIRE_SOUND_TICK_DURATION && present_tick-last_thrust_sound_tick > THRUST_SOUND_TICK_DURATION && present_tick-last_explosion_sound_tick > EXPLOSION_SOUND_TICK_DURATION) {
+        play_fire();
+        last_fire_sound_tick = timer_get_ticks();
+    }
 }
 
 void rocket_thrust() {
@@ -239,6 +251,11 @@ void rocket_update_mechanics() {
         rotate_vector(&dir, mech->rotation);
         mech->ax = dir.x;
         mech->ay = dir.y;
+        unsigned long present_tick = timer_get_ticks();
+        if(present_tick-last_fire_sound_tick > FIRE_SOUND_TICK_DURATION && present_tick-last_thrust_sound_tick > THRUST_SOUND_TICK_DURATION && present_tick-last_explosion_sound_tick > EXPLOSION_SOUND_TICK_DURATION) {
+            play_thrust();
+            last_thrust_sound_tick = timer_get_ticks();
+        }
     } else {
         // If the rocket isn't thrusting, set acceleration to zero and manually decelerate using the if blocks below, since we don't want deceleration to
         // accidentally push the rocket into negative acceleration of its previous heading.

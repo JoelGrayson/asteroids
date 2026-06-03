@@ -5,7 +5,7 @@
 #include "graphics/out_of_bounds.h"
 
 /* Represents who shot the bullet */
-#define MAX_NUM_BULLETS 1024
+#define MAX_NUM_BULLETS 40
 
 enum bullet_owner {
     ROCKET,
@@ -36,4 +36,10 @@ void draw_bullets();
 void bullets_update_mechanics();
 
 struct point *get_bullet_points();
+
+// Collision handling function for when bullet collides with an asteroid.
+void bullets_asteroid_collision();
+
+// Deallocates a bullet from our list on command, given a pointer to it.
+void delete_bullet(struct bullet **bullet);
 

@@ -5,7 +5,10 @@
 #include "graphics/geometry.h"
 #include "graphics/draw_points.h"
 #include "rand.h"
+#include "timer.h"
 #include "printf.h"
+#include "audio/sounds.c"
+#include "rocket.h"
 
 // Maximum asteroid speed global variable -- should increase as game progresses in time (and thereby difficulty).
 unsigned int MAX_ASTEROID_SPEED = 15;
@@ -15,6 +18,12 @@ static struct asteroid_list_t list[MAX_NUM_ASTEROIDS];
 // Number of asteroids to be tracked
 static int list_size = MAX_NUM_ASTEROIDS;
 static int CUR_NUM_ASTEROIDS = 9; // Number of asteroids to actively draw, update, and check collisions for.
+
+// Asteroid explosion audio playback tracking to make sure we don't have silly playback issues.
+unsigned long last_explosion_sound_tick;
+
+extern unsigned long last_fire_sound_tick;
+extern unsigned long last_thrust_sound_tick;
 
 // Minimum asteroid speed define
 #define MIN_ASTEROID_SPEED 3
@@ -193,6 +202,21 @@ struct asteroid_list_t *get_asteroid_collision(struct mechanics obj, struct poin
 
 void asteroid_explode(struct asteroid_list_t *ast) {
     ast->allocated = false;
+    unsigned long present_tick = timer_get_ticks();
+    if(present_tick-last_fire_sound_tick > FIRE_SOUND_TICK_DURATION && present_tick-last_thrust_sound_tick > THRUST_SOUND_TICK_DURATION && present_tick-last_explosion_sound_tick > EXPLOSION_SOUND_TICK_DURATION) {
+        switch(ast->ast.size) {
+            case BIG:
+                play_bangLarge();
+                break;
+            case MEDIUM:
+                play_bangMedium();
+                break;
+            case SMALL:
+                play_bangSmall();
+                break;
+        }
+        last_explosion_sound_tick = timer_get_ticks();
+    }
     /* 
     *  TODO: IMPLEMENT PARTICLE EXPLOSION EFFECT!
     */

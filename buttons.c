@@ -1,4 +1,5 @@
 #include "buttons.h"
+#include "audio/sounds.h"
 
 typedef void (*click_fn_t)(void* aux_data);
 

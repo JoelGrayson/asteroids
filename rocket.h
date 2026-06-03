@@ -12,7 +12,8 @@
 
 
 #define ROCKET_NUM_POINTS 6
-
+#define FIRE_SOUND_TICK_DURATION 400000*TICKS_PER_USEC
+#define THRUST_SOUND_TICK_DURATION 5000*TICKS_PER_USEC
 
 // The five arcade buttons
 void rocket_rotate_left(); // = rotate_rocket_theta(-1)
