@@ -49,3 +49,10 @@ bool are_colliding(struct mechanics obj1, struct mechanics obj2, struct point *p
     return false;
 }
 
+struct point mechanics_to_point(struct mechanics mech) {
+    return (struct point) {
+        .x = mech.x,
+        .y = mech.y
+    };
+}
+
