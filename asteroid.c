@@ -1,14 +1,4 @@
 #include "asteroid.h"
-#include "mechanics.h"
-#include "constants.h"
-#include "graphics/point.h"
-#include "graphics/geometry.h"
-#include "graphics/draw_points.h"
-#include "rand.h"
-#include "timer.h"
-#include "printf.h"
-#include "audio/sounds.c"
-#include "rocket.h"
 
 // Maximum asteroid speed global variable -- should increase as game progresses in time (and thereby difficulty).
 unsigned int MAX_ASTEROID_SPEED = 15;
@@ -27,8 +17,25 @@ extern unsigned long last_thrust_sound_tick;
 // Minimum asteroid speed define
 #define MIN_ASTEROID_SPEED 3
 
+static long frame_when_asteroid_last_spawned = 0;
+static int num_frames_between_spawn = 3 * FPS; //every 3 seconds spawn a new asteroid. This time decreases as the score increases
+static int noisy_num_frames_between_spawn = 3 * FPS; //±80% of num_frames_between_spawn. Updated every time a new asteroid is spawned
+
+static void spawn_asteroids_if_necessary();
+static void asteroid_spawn();
+static void asteroid_despawn(struct asteroid_list_t* ast);
+static struct asteroid_list_t *get_next_spawnable_asteroid();
+
+void setup_asteroids() {
+    // Spawn 9 asteroids at the start of the game
+    for(int i = 0; i < 9; i++) {
+        asteroid_spawn();
+        frame_when_asteroid_last_spawned = 0;
+    }
+}
+
 // Gets the asteroid polygon points
-struct point *get_points_of_asteroid(struct asteroid ast) {
+static struct point *get_points_of_asteroid(struct asteroid ast) {
     if (ast.type == A) {
         if (ast.size == BIG)    return ASTEROID_A_BIG_POINTS;
         if (ast.size == MEDIUM) return ASTEROID_A_MEDIUM_POINTS;
@@ -86,7 +93,7 @@ static void asteroids_update_mechanics() {
 }
 
 // Respawns asteroid at a random point along the edge of the screen
-void asteroid_spawn() {
+static void asteroid_spawn() {
     // Locates next spawnable asteroid from our list -- just returns function if there is no space for any more asteroids.
     struct asteroid_list_t *ast = get_next_spawnable_asteroid(list, list_size);
     if(ast == NULL) return;
@@ -169,15 +176,12 @@ void asteroid_spawn() {
 }
 
 // Despawns asteroid by setting it to "deallocated."
-void asteroid_despawn(struct asteroid_list_t* ast) {
+static void asteroid_despawn(struct asteroid_list_t* ast) {
     ast->allocated = false;
 }
 
-int get_num_asteroid_points() {
-    return ASTEROID_NUM_POINTS;
-}
-
-struct asteroid_list_t *get_next_spawnable_asteroid() {
+// Finds the pointer of the next asteroid which can be allocated out of the list of asteroids.
+static struct asteroid_list_t *get_next_spawnable_asteroid() {
     // Return the location of the next unallocated asteroid in the list if it can be found, null otherwise.
     for(int i = 0; i < list_size; i++) {
         if(!list[i].allocated) return &list[i];
@@ -204,6 +208,22 @@ static void render_asteroids() {
 void loop_asteroids(long frame) {
     render_asteroids();
     asteroids_update_mechanics();
+    spawn_asteroids_if_necessary(frame);
+}
+
+static void spawn_asteroids_if_necessary(long frame) {
+    // Spawns new asteroid at regularly spaced intervals
+    if (frame - frame_when_asteroid_last_spawned > noisy_num_frames_between_spawn) {
+        asteroid_spawn();
+
+        
+        frame_when_asteroid_last_spawned = frame;
+        
+        int one_to_ten = (rand() % 10); //random number from 1 to 10
+        double noise_ratio = 0.5 + one_to_ten / 10; //0.5 to 1.5
+
+        noisy_num_frames_between_spawn = frame_when_asteroid_last_spawned * noise_ratio;
+    }
 }
 
 struct asteroid_list_t *get_asteroid_collision(struct mechanics obj, struct point *points_obj, int num_points_obj) {

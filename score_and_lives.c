@@ -14,6 +14,7 @@ void score_and_lives_init() {
     score_string = malloc(MAX_SCORE_STRING_SIZE);
 }
 
+// Resets the number of lives
 void setup_score_and_lives() {
     num_lives = 4;
     score = 0;

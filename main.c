@@ -23,15 +23,6 @@
 #include "score_and_lives.h"
 #include "saucer.h"
 
-// Variable which controls the spawning interval of asteroids
-static unsigned long SPAWN_INTERVAL_TICKS = 500000*TICKS_PER_USEC;
-// Variable which tracks the last tick an asteroid was spawned
-static unsigned long last_spawn_tick;
-
-
-static int CUR_NUM_ASTEROIDS = 9; // Number of asteroids to actively draw, te, and check collisions for.
-
-
 static void one_time_setup();
 static void run_game();
 static void setup_game();
@@ -44,6 +35,7 @@ int main() {
     run_game();
 }
 
+// For the inits
 static void one_time_setup() {
     uart_init();
     printf("One time setup\n");
@@ -75,22 +67,15 @@ static void run_game() {
 }
 
 static void setup_game() {
-    for(int i = 0; i < CUR_NUM_ASTEROIDS; i++) {
-        asteroid_spawn();
-    }
-    last_spawn_tick = timer_get_ticks();
+    setup_asteroids();
+    setup_score_and_lives();
+    setup_rocket();
 }
 
 // Runs one frame of the game
 static void loop(long frame) {
     // Clear frame to blank black frame
     gl_clear(GL_BLACK);
-
-    // Spawns new asteroid at regularly spaced intervals
-    if(timer_get_ticks() - last_spawn_tick > SPAWN_INTERVAL_TICKS) {
-        asteroid_spawn();
-        last_spawn_tick = timer_get_ticks();
-    }
     
     loop_asteroids(frame);
     loop_rocket(frame);

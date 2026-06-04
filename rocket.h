@@ -19,7 +19,7 @@
 
 extern struct point ROCKET_POINTS_TEMPLATE[ROCKET_NUM_POINTS];
 
-void reset_rocket();
+void setup_rocket();
 
 
 // The five arcade buttons

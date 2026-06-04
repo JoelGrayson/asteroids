@@ -64,6 +64,27 @@ static bool is_rotating_left = false;
 static bool is_rotating_right = false;
 
 
+static void reset_rocket_mechanics() {
+    // Mechanics
+    rocket_mechanics.x = MONITOR_WIDTH / 2;
+    rocket_mechanics.y = MONITOR_HEIGHT / 2;
+    rocket_mechanics.vx = 0;
+    rocket_mechanics.vy = 0;
+    rocket_mechanics.ax = 0;
+    rocket_mechanics.ay = 0;
+    rocket_mechanics.rotation = 0;
+}
+
+void setup_rocket() {
+    reset_rocket_mechanics();
+
+    is_rotating_left = false;
+    is_rotating_right = false;
+    rocket_is_exploding = false;
+    rocket_is_thrusting = false;
+    num_frames_after_rocket_exploded = 0;
+}
+
 void rocket_rotate_left_press() {
     is_rotating_left = true;
 }
@@ -81,15 +102,8 @@ void rocket_rotate_right_release() {
 }
 
 
-void reset_rocket(long frame) {
-    // Mechanics
-    rocket_mechanics.x = MONITOR_WIDTH / 2;
-    rocket_mechanics.y = MONITOR_HEIGHT / 2;
-    rocket_mechanics.vx = 0;
-    rocket_mechanics.vy = 0;
-    rocket_mechanics.ax = 0;
-    rocket_mechanics.ay = 0;
-    rocket_mechanics.rotation = 0;
+static void reset_rocket(long frame) {
+    reset_rocket_mechanics();
 
     // Invincible
     is_invincible = true;
