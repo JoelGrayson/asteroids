@@ -22,7 +22,10 @@
 #include "fps.h"
 #include "score_and_lives.h"
 #include "saucer.h"
+#include "start_game_screen.h"
+#include "game_over_screen.h"
 
+static void game_manager();
 static void one_time_setup();
 static void run_game();
 static void setup_game();
@@ -30,9 +33,27 @@ static void run_one_frame();
 static void loop(long frame);
 static void collision_detection();
 
+enum game_manager_state {
+    START_GAME_SCREEN, //on first boot
+    GAME_IN_PLAY,
+    GAME_OVER_SCREEN, //asks you to input your name
+};
+
+enum game_manager_state game_manager_state = START_GAME_SCREEN;
+
 int main() {
     one_time_setup();
-    run_game();
+    game_manager();
+}
+
+static void game_manager() {
+    // Start game screen (on first boot)
+    start_game_screen();
+
+    while (true) {
+        run_game();
+        game_over_screen();
+    }
 }
 
 // For the inits

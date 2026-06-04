@@ -11,7 +11,7 @@ RUN_PROGRAM = main.bin
 LIBMANGO_SOURCES = libmango/gpio.o libmango/gpio_extra.o libmango/malloc.o libmango/ccu.o libmango/i2s.o libmango/dma.o #TODO: libmango/printf.o
 GRAPHICS_SOURCES = graphics/draw_line.o graphics/draw_points.o graphics/geometry.o graphics/rotate_points.o graphics/rotate_vector.o #graphics/draw_saucer.o
 
-OTHER_SOURCES = maths.o asteroid.o rocket.o mechanics.o buttons.o bullets.o explosion.o score_and_lives.o audio/sounds.o saucer.o
+OTHER_SOURCES = maths.o asteroid.o rocket.o mechanics.o buttons.o bullets.o explosion.o score_and_lives.o audio/sounds.o saucer.o start_game_screen.o game_over_screen.o
 
 run: $(RUN_PROGRAM)
 	mango-run $<

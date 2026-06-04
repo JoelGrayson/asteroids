@@ -8,6 +8,8 @@
 #include "gpio_interrupt.h"
 #include "printf.h"
 #include "rocket.h"
+#include "audio/sounds.h"
+#include "start_game_screen.h"
 
 #define NUM_BUTTONS 8
 

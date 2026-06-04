@@ -214,7 +214,6 @@ void loop_asteroids(long frame) {
 static void spawn_asteroids_if_necessary(long frame) {
     // Spawns new asteroid at regularly spaced intervals
     int frames_since_spawn = frame - frame_when_asteroid_last_spawned;
-    printf("Frames since spawn = %10ld, noisy_num_frames_between_spawn = %d, num_frames_between_spawn = %d\n", frame, noisy_num_frames_between_spawn, num_frames_between_spawn);
     if (frames_since_spawn > noisy_num_frames_between_spawn) {
         asteroid_spawn();
 
