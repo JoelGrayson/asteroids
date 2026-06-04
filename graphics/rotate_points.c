@@ -17,3 +17,4 @@ void rotate_template_points(struct point *points_dst, struct point *points_templ
         points_dst[i].y = sine(theta) * to_rotate.x + cosine(theta) * to_rotate.y;
     }
 }
+

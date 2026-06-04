@@ -4,6 +4,6 @@
 
 void rotate_vector(struct vector *vec, double theta) {
     struct vector to_rotate = *vec;
-    vec->x = (cosine(theta) * to_rotate.x) + (sine(theta) * to_rotate.y);
-    vec->y = (-1*sine(theta) * to_rotate.x) + (cosine(theta) * to_rotate.y);
+    vec->x = cosine(theta) * to_rotate.x - sine(theta) * to_rotate.y;
+    vec->y = sine(theta) * to_rotate.x + cosine(theta) * to_rotate.y;
 }
