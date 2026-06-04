@@ -213,16 +213,18 @@ void loop_asteroids(long frame) {
 
 static void spawn_asteroids_if_necessary(long frame) {
     // Spawns new asteroid at regularly spaced intervals
-    if (frame - frame_when_asteroid_last_spawned > noisy_num_frames_between_spawn) {
+    int frames_since_spawn = frame - frame_when_asteroid_last_spawned;
+    printf("Frames since spawn = %10ld, noisy_num_frames_between_spawn = %d, num_frames_between_spawn = %d\n", frame, noisy_num_frames_between_spawn, num_frames_between_spawn);
+    if (frames_since_spawn > noisy_num_frames_between_spawn) {
         asteroid_spawn();
 
         
         frame_when_asteroid_last_spawned = frame;
         
         int one_to_ten = (rand() % 10); //random number from 1 to 10
-        double noise_ratio = 0.5 + one_to_ten / 10; //0.5 to 1.5
+        double noise_ratio = 0.5 + (double)one_to_ten / 10.0; //0.5 to 1.5
 
-        noisy_num_frames_between_spawn = frame_when_asteroid_last_spawned * noise_ratio;
+        noisy_num_frames_between_spawn = num_frames_between_spawn * noise_ratio;
     }
 }
 

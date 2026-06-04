@@ -77,18 +77,11 @@ static void loop(long frame) {
     // Clear frame to blank black frame
     gl_clear(GL_BLACK);
 
-    printf("Loop %ld\n", frame);
-    
     loop_asteroids(frame);
-    printf("a");
     loop_rocket(frame);
-    printf("r");
     loop_score_and_lives(frame);
-    printf("l");
     loop_bullets(frame);
-    printf("b");
     // loop_saucer(frame);
-    printf("s\n");
 
     collision_detection();
     
