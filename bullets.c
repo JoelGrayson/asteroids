@@ -4,7 +4,7 @@
 #include <stdbool.h>
 
 struct bullet *bullets[MAX_NUM_BULLETS] = { 0 }; //zero out so all are NULL
-static int CUR_NUM_BULLETS = 0; // number of allocated bullets starts out at zero
+static int curr_num_bullets = 0; // number of allocated bullets starts out at zero
 
 // A square. More visible than a single point
 static struct point BULLET_POINTS[BULLET_NUM_POINTS] = {
@@ -31,7 +31,7 @@ void new_bullet(struct mechanics mechanics, enum bullet_owner owner) {
             bullets[i] = malloc(sizeof(struct bullet));
             bullets[i]->mechanics = mechanics;
             bullets[i]->owner = owner;
-            CUR_NUM_BULLETS++; // Increase total count of allocated bullets
+            curr_num_bullets++; // Increase total count of allocated bullets
             return;
         }
         i++;
@@ -82,7 +82,7 @@ void clean_up_out_of_bounds_bullets() {
         if (bullet && out_of_bounds(mechanics_to_point(bullet->mechanics))) {
             free(bullet);
             bullets[i] = NULL;
-            CUR_NUM_BULLETS--; // Decrease total count of allocated bullets
+            curr_num_bullets--; // Decrease total count of allocated bullets
         }
     }
 }
@@ -90,7 +90,7 @@ void clean_up_out_of_bounds_bullets() {
 void delete_bullet(struct bullet **bullet) {
     free(*bullet);
     *bullet = NULL;
-    CUR_NUM_BULLETS--; // Decrease total count of allocated bullets
+    curr_num_bullets--; // Decrease total count of allocated bullets
 }
 
 struct point *get_bullet_points() {
@@ -98,13 +98,12 @@ struct point *get_bullet_points() {
 }
 
 void bullets_asteroid_collision() {
-    //printf("Current number of bullets is %d\n", CUR_NUM_BULLETS);
-    int BULLETS_TO_CHECK = CUR_NUM_BULLETS;
+    int num_remaining_bullets = curr_num_bullets; //number of remaining bullets to check
     struct bullet **bullet;
     int i = 0;
 
     // Until we run out of allocated bullets to check collisions for, keep iterating to check collisions.
-    while(BULLETS_TO_CHECK > 0) {
+    while(num_remaining_bullets > 0) {
         bullet = &bullets[i];
         // If the bullet is actually allocated, check for collisions with asteroids:
         if(*bullet != NULL) {
@@ -117,7 +116,7 @@ void bullets_asteroid_collision() {
                     delete_bullet(bullet);
                 }
             }
-            BULLETS_TO_CHECK--;
+            num_remaining_bullets--;
         }
         i++;
     }

@@ -28,17 +28,23 @@ static unsigned long SPAWN_INTERVAL_TICKS = 500000*TICKS_PER_USEC;
 // Variable which tracks the last tick an asteroid was spawned
 static unsigned long last_spawn_tick;
 
-static void setup_game();
-static void run_game();
-static void run_one_frame();
 
 static int CUR_NUM_ASTEROIDS = 9; // Number of asteroids to actively draw, te, and check collisions for.
 
 
-void collision_detection();
+static void one_time_setup();
+static void run_game();
+static void setup_game();
+static void run_one_frame();
+static void loop(long frame);
+static void collision_detection();
 
+int main() {
+    one_time_setup();
+    run_game();
+}
 
-void one_time_setup() {
+static void one_time_setup() {
     uart_init();
     printf("One time setup\n");
     trig_init(3);
@@ -48,18 +54,11 @@ void one_time_setup() {
     score_and_lives_init();
 }
 
-int main() {
-    one_time_setup();
-    run_game();
-}
-
-
-static void loop(long frame);
 static void run_game() {
     // Setup
     setup_game();
 
-    // Loop
+    // Loop surrounded by checks to throttle fps if necessary
     long ticks_at_start_of_loop = timer_get_ticks();
     long frame = 0;
     while (true) {
@@ -82,7 +81,6 @@ static void setup_game() {
     last_spawn_tick = timer_get_ticks();
 }
 
-
 // Runs one frame of the game
 static void loop(long frame) {
     // Clear frame to blank black frame
@@ -98,10 +96,12 @@ static void loop(long frame) {
     loop_rocket(frame);
     loop_score_and_lives(frame);
     loop_bullets(frame);
+    loop_saucer(frame);
 
     collision_detection();
-    fb_swap_buffer(); //show the frame
-    loop_saucer(frame);
+    
+    // Show the frame
+    fb_swap_buffer();
 }
 
 
@@ -110,7 +110,6 @@ void collision_detection() {
     if(rocket_asteroid_collision()) {
         rocket_explode();
         decrease_lives();
-        loop_score_and_lives();
     }
 }
 
