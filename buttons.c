@@ -94,7 +94,7 @@ void rotate_left_pressed_listener() {
 }
 
 void rotate_left_released_listener() {
-    printf("Button release: left\n");
+    printf("Button released: left\n");
     rocket_rotate_left_release();
     gpio_interrupt_clear(ROTATE_LEFT_BUTTON_RELEASE);
 }

@@ -185,10 +185,20 @@ bool rocket_asteroid_collision() {
 void rocket_update_mechanics() {
     struct mechanics *mech = &rocket_mechanics;
 
+    const double ROTATION_AMOUNT = 0.25;
     if (is_rotating_left) {
-        mech->rotation--;
+        mech->rotation -= ROTATION_AMOUNT;
     } else if (is_rotating_right) {
-        mech->rotation++;
+        mech->rotation += ROTATION_AMOUNT;
+    }
+    // Update how the rocket appears according to rotation
+    if (is_rotating_left || is_rotating_right) {
+        rotate_template_points(
+            rotated_rocket_points,
+            ROCKET_POINTS_TEMPLATE,
+            ROCKET_NUM_POINTS,
+            rocket_mechanics.rotation
+        );
     }
     
     
