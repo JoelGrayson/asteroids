@@ -29,6 +29,19 @@ struct point ROCKET_POINTS_TEMPLATE[ROCKET_NUM_POINTS] = {
     {   0, -20 }  //6 (same as 1)
 };
 
+#define MINI_ROCKET_RATIO 0.6
+// Points of a rocket facing north
+struct point MINI_ROCKET_POINTS[ROCKET_NUM_POINTS] = {
+    {   0 * MINI_ROCKET_RATIO, -20 * MINI_ROCKET_RATIO }, //1
+    //    /
+    { -13 * MINI_ROCKET_RATIO,  20 * MINI_ROCKET_RATIO }, //2
+    // 
+    { -10 * MINI_ROCKET_RATIO,  11 * MINI_ROCKET_RATIO }, //3
+    {  10 * MINI_ROCKET_RATIO,  11 * MINI_ROCKET_RATIO }, //4
+    {  13 * MINI_ROCKET_RATIO,  20 * MINI_ROCKET_RATIO }, //5
+    {   0 * MINI_ROCKET_RATIO, -20 * MINI_ROCKET_RATIO }  //6 (same as 1)
+};
+
 // Starts off as the same as ROCKET_POINTS_TEMPLATE
 static struct point rotated_rocket_points[ROCKET_NUM_POINTS] = {
     {   0, -20 },

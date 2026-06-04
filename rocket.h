@@ -18,6 +18,7 @@
 #define THRUST_SOUND_TICK_DURATION 400000*TICKS_PER_USEC
 
 extern struct point ROCKET_POINTS_TEMPLATE[ROCKET_NUM_POINTS];
+extern struct point MINI_ROCKET_POINTS[ROCKET_NUM_POINTS];
 
 void setup_rocket();
 

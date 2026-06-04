@@ -27,7 +27,7 @@ int get_num_lives() {
 }
 
 #define LEFT_OFFSET 100
-#define ROCKET_WIDTH 40
+#define ROCKET_WIDTH 30
 
 int get_score() {
     return score;
@@ -40,15 +40,15 @@ void increase_score_by(int amount) {
 
 static void render_score() {
     snprintf(score_string, MAX_SCORE_STRING_SIZE, "%d", score);
-    gl_draw_string(LEFT_OFFSET, 100, score_string, GL_WHITE);
+    gl_draw_string(LEFT_OFFSET, 50, score_string, GL_WHITE);
     
 }
 
 static void render_lives() {
     // Draw num_lives number of rockets
     for (int i = 0; i < num_lives; i++) {
-        int x = i * ROCKET_WIDTH + LEFT_OFFSET;
-        draw_points(ROCKET_POINTS_TEMPLATE, ROCKET_NUM_POINTS, x, 150, GL_WHITE);
+        int x = i * ROCKET_WIDTH + LEFT_OFFSET + 8;
+        draw_points(MINI_ROCKET_POINTS, ROCKET_NUM_POINTS, x, 90, GL_WHITE);
     }
 }
 
