@@ -26,14 +26,14 @@ struct point explosion_points[NUM_EXPLOSION_POINTS] = {
     {  10.1,  19.2 },
 };
 
-void render_explosion(struct point position, int frame_number) {
-    if (frame_number > NUM_FRAMES_OF_EXPLOSION) {
+void render_explosion(struct point position, int frame) {
+    if (frame > NUM_FRAMES_OF_EXPLOSION) {
         return; //nothing to draw
     }
 
-    double ratio_complete = (double)frame_number / (double)NUM_FRAMES_OF_EXPLOSION;
+    double ratio_complete = (double)frame / (double)NUM_FRAMES_OF_EXPLOSION;
 
-    printf("drawing explosion with frame_number = %d and ratio = %f\n", frame_number, ratio_complete);
+    printf("drawing explosion with frame = %d and ratio = %f\n", frame, ratio_complete);
 
     for (int i = 0; i < NUM_EXPLOSION_POINTS; i++) {
         gl_draw_pixel(

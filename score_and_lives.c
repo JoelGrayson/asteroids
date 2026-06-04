@@ -7,6 +7,7 @@
 
 static int num_lives = 4;
 static int score = 0;
+// String version of score which is displayed
 static char *score_string;
 
 void score_and_lives_init() {
@@ -19,6 +20,15 @@ int get_num_lives() {
 
 #define LEFT_OFFSET 100
 #define ROCKET_WIDTH 40
+
+int get_score() {
+    return score;
+}
+
+void increase_score_by(int amount) {
+    score += amount;
+}
+
 
 static void render_score() {
     snprintf(score_string, MAX_SCORE_STRING_SIZE, "%d", score);

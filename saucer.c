@@ -91,12 +91,12 @@ static void spawn_saucer(enum saucer_state new_saucer_state) {
     }
 }
 
-void saucer_frame_call(int frame_number) {
+void saucer_frame_call(int frame) {
     render_saucer();
 
-    if (saucer_state == NO_SAUCER && (frame_number - frame_when_saucer_last_despawned) > frames_until_saucer_respawns) {
+    if (saucer_state == NO_SAUCER && (frame - frame_when_saucer_last_despawned) > frames_until_saucer_respawns) {
         // spawn saucer
-        frame_when_saucer_last_despawned = frame_number;
+        frame_when_saucer_last_despawned = frame;
         if (rand() % 2 == 0) { //50-50 chance
             spawn_saucer(BIG_SAUCER);
         } else {

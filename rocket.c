@@ -52,6 +52,9 @@ static struct mechanics rocket_mechanics = {
 
 static bool rocket_is_exploding = false;
 static bool rocket_is_thrusting = false;
+static bool is_invincible = true;
+static int frame_when_first_invincible = 0;
+const int num_invincible_frames = FPS * 2; //2 seconds
 
 // Increases when rocket_is_exploding == true. Determines how far off the rocket segments are from each other when rendering
 static int num_frames_after_rocket_exploded = 0;
@@ -139,7 +142,7 @@ void rocket_rotate_radians(double theta) {
 }
 
 // Draws the rocket
-void render_rocket() {
+void render_rocket(int frame) {
     if (rocket_is_exploding) {
         // gl_draw_pixel(rocket_mechanics.x, rocket_mechanics.y, GL_WHITE);
 
@@ -153,6 +156,9 @@ void render_rocket() {
         }
     } else {
         // Normal rocket
+        if (is_invincible && frame % 30 > 15) {
+            return; //don't show rocket half the time when invincible
+        }
         draw_points(rotated_rocket_points, ROCKET_NUM_POINTS, rocket_mechanics.x, rocket_mechanics.y, GL_WHITE);
     }
 }

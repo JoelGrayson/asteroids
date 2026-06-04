@@ -104,6 +104,7 @@ static void run_one_frame() {
     collision_detection();
     update_mechanics_main();
     fb_swap_buffer(); //show the frame
+    saucer_frame_call(frame);
 }
 
 
