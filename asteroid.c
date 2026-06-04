@@ -15,11 +15,11 @@ extern unsigned long last_fire_sound_tick;
 extern unsigned long last_thrust_sound_tick;
 
 // Minimum asteroid speed define
-#define MIN_ASTEROID_SPEED 3
+#define MIN_ASTEROID_SPEED 2
 
 static long frame_when_asteroid_last_spawned = 0;
-static int num_frames_between_spawn = 3 * FPS; //every 3 seconds spawn a new asteroid. This time decreases as the score increases
-static int noisy_num_frames_between_spawn = 3 * FPS; //±80% of num_frames_between_spawn. Updated every time a new asteroid is spawned
+static int num_frames_between_spawn = 2 * FPS; //every 3 seconds spawn a new asteroid. This time decreases as the score increases
+static int noisy_num_frames_between_spawn = 2 * FPS; //±80% of num_frames_between_spawn. Updated every time a new asteroid is spawned
 
 static void spawn_asteroids_if_necessary();
 static void asteroid_spawn();
