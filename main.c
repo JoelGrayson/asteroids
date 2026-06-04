@@ -96,7 +96,7 @@ static void run_one_frame() {
     }
     
     render_asteroids();
-    render_rocket();
+    render_rocket(frame);
     render_score_and_lives();
     draw_bullets();
 

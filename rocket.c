@@ -156,7 +156,9 @@ void render_rocket(int frame) {
         }
     } else {
         // Normal rocket
-        if (is_invincible && frame % 30 > 15) {
+        const double num_blinks_per_second = 3.0;
+        const double frames_per_blink = FPS / num_blinks_per_second;
+        if (is_invincible && frame % (int)frames_per_blink > frames_per_blink / 2.0) {
             return; //don't show rocket half the time when invincible
         }
         draw_points(rotated_rocket_points, ROCKET_NUM_POINTS, rocket_mechanics.x, rocket_mechanics.y, GL_WHITE);
