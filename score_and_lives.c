@@ -5,7 +5,9 @@
 
 #define MAX_SCORE_STRING_SIZE 1024
 
-static int num_lives = 4;
+#define DEFAULT_NUM_LIVES 3
+
+static int num_lives = DEFAULT_NUM_LIVES;
 static int score = 0;
 // String version of score which is displayed
 static char *score_string;
@@ -16,7 +18,7 @@ void score_and_lives_init() {
 
 // Resets the number of lives
 void setup_score_and_lives() {
-    num_lives = 4;
+    num_lives = DEFAULT_NUM_LIVES;
     score = 0;
 }
 

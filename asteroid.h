@@ -15,6 +15,7 @@
 #include "printf.h"
 #include "audio/sounds.c"
 #include "rocket.h"
+#include "score_and_lives.h"
 
 #define MAX_NUM_ASTEROIDS 1000
 extern unsigned int MAX_ASTEROID_SPEED;
