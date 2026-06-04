@@ -17,7 +17,6 @@ unsigned int MAX_ASTEROID_SPEED = 15;
 static struct asteroid_list_t list[MAX_NUM_ASTEROIDS];
 // Number of asteroids to be tracked
 static int list_size = MAX_NUM_ASTEROIDS;
-static int CUR_NUM_ASTEROIDS = 9; // Number of asteroids to actively draw, update, and check collisions for.
 
 // Asteroid explosion audio playback tracking to make sure we don't have silly playback issues.
 unsigned long last_explosion_sound_tick;
@@ -49,10 +48,25 @@ struct point *get_points_of_asteroid(struct asteroid ast) {
     return ASTEROID_A_BIG_POINTS; //should not happen
 }
 
+// Returns position of asteroid in a more convenient way
+static struct point asteroid_get_pos(struct asteroid ast) {
+    return mechanics_to_point(ast.mechanics);
+}
+
+// Sets position of asteroid in a more convenient way
+static void asteroid_set_pos(struct asteroid* ast, struct point new_pos) {
+    ast->mechanics.x = new_pos.x;
+    ast->mechanics.y = new_pos.y;
+}
+
 // Mechanics function for asteroids during game loop
-void asteroids_update_mechanics() {
-     for(int i = 0; i < list_size; i++) {
+static void asteroids_update_mechanics() {
+    for(int i = 0; i < list_size; i++) {
         if(list[i].allocated) { // Only update mechanics
+            // If exploding, increment the exploding frame so animation precedes
+            if (list[i].ast.is_exploding) {
+                list[i].ast.exploding_frame++;
+            }
             // Done exploding animation
             if (list[i].ast.exploding_frame > NUM_FRAMES_OF_EXPLOSION) {
                 list[i].ast.exploding_frame = 0;
@@ -68,19 +82,7 @@ void asteroids_update_mechanics() {
                 asteroid_despawn(&list[i]);
             }
         }
-     }
-}
-
-// Returns position of asteroid in a more convenient way
-struct point asteroid_get_pos(struct asteroid ast) {
-    struct point ret = {ast.mechanics.x, ast.mechanics.y};
-    return ret;
-}
-
-// Sets position of asteroid in a more convenient way
-void asteroid_set_pos(struct asteroid* ast, struct point new_pos) {
-    ast->mechanics.x = new_pos.x;
-    ast->mechanics.y = new_pos.y;
+    }
 }
 
 // Respawns asteroid at a random point along the edge of the screen
@@ -183,16 +185,25 @@ struct asteroid_list_t *get_next_spawnable_asteroid() {
     return NULL;
 }
 
-void render_asteroids() {
+static void render_asteroids() {
     // Draws all allocated asteroids
     for(int i = 0; i < list_size; i++) {
         if(list[i].allocated) {
             //printf("something is allocated\n");
             struct asteroid a = list[i].ast;
-            struct point *points = get_points_of_asteroid(a);
-            draw_points(points, ASTEROID_NUM_POINTS, a.mechanics.x, a.mechanics.y, GL_WHITE);
+            if (a.is_exploding) {
+                render_explosion(mechanics_to_point(a.mechanics), a.exploding_frame);
+            } else {
+                struct point *points = get_points_of_asteroid(a);
+                draw_points(points, ASTEROID_NUM_POINTS, a.mechanics.x, a.mechanics.y, GL_WHITE);
+            }
         }
     }
+}
+
+void loop_asteroids(long frame) {
+    render_asteroids();
+    asteroids_update_mechanics();
 }
 
 struct asteroid_list_t *get_asteroid_collision(struct mechanics obj, struct point *points_obj, int num_points_obj) {

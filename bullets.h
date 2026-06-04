@@ -33,8 +33,6 @@ void draw_bullet(struct bullet *bullet) ;
 
 void loop_bullets();
 
-void bullets_update_mechanics();
-
 struct point *get_bullet_points();
 
 // Collision handling function for when bullet collides with an asteroid.

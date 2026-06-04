@@ -143,8 +143,7 @@ struct mechanics get_rocket_mechanics() {
     return rocket_mechanics;
 }
 
-// Draws the rocket
-void loop_rocket(long frame) {
+static void render_rocket(long frame) {
     if (rocket_is_exploding) {
         // Draw three lines: /, \, and _
         render_explosion(mechanics_to_point(rocket_mechanics), num_frames_after_rocket_exploded);
@@ -162,7 +161,6 @@ void loop_rocket(long frame) {
     }
 
     // Normal rocket
-
     const double num_blinks_per_second = 3.0;
     const double frames_per_blink = FPS / num_blinks_per_second;
     if (is_invincible && frame % (int)frames_per_blink > frames_per_blink / 2.0) {
@@ -177,6 +175,13 @@ void loop_rocket(long frame) {
         // No longer invincible
         is_invincible = false;
     }
+} 
+static void rocket_update_mechanics();
+
+// Draws the rocket
+void loop_rocket(long frame) {
+    render_rocket(frame);
+    rocket_update_mechanics();
 }
 
 
@@ -204,7 +209,7 @@ bool rocket_asteroid_collision() {
     return false; // No asteroid collision, return false.
 }
 
-void rocket_update_mechanics() {
+static void rocket_update_mechanics() {
     struct mechanics *mech = &rocket_mechanics;
 
     const double ROTATION_AMOUNT = 0.25;

@@ -32,11 +32,10 @@ static void setup_game();
 static void run_game();
 static void run_one_frame();
 
-static int CUR_NUM_ASTEROIDS = 9; // Number of asteroids to actively draw, update, and check collisions for.
+static int CUR_NUM_ASTEROIDS = 9; // Number of asteroids to actively draw, te, and check collisions for.
 
 
 void collision_detection();
-void update_mechanics_main();
 
 
 void one_time_setup() {
@@ -95,14 +94,12 @@ static void loop(long frame) {
         last_spawn_tick = timer_get_ticks();
     }
     
-    render_asteroids();
+    loop_asteroids(frame);
     loop_rocket(frame);
     loop_score_and_lives(frame);
     loop_bullets(frame);
 
-
     collision_detection();
-    update_mechanics_main();
     fb_swap_buffer(); //show the frame
     loop_saucer(frame);
 }
@@ -117,9 +114,3 @@ void collision_detection() {
     }
 }
 
-// Updates the position of all asteroids, rocket, and bullets using velocity and position
-void update_mechanics_main() {
-    asteroids_update_mechanics();
-    rocket_update_mechanics();
-    bullets_update_mechanics();
-}

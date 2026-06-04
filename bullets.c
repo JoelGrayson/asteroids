@@ -48,13 +48,19 @@ void draw_bullet(struct bullet *bullet) {
     gl_draw_pixel(mech.x + 1, mech.y + 1, GL_WHITE);
 }
 
-void loop_bullets() {
+void render_bullets() {
     for (int i = 0; i < MAX_NUM_BULLETS; i++) {
         struct bullet *bullet = bullets[i];
         if (bullet) {
             draw_bullet(bullet);
         }
     }
+}
+
+void bullets_update_mechanics();
+void loop_bullets() {
+    render_bullets();
+    bullets_update_mechanics();
 }
 
 void clean_up_out_of_bounds_bullets();
