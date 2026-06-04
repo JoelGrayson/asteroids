@@ -53,8 +53,8 @@ static struct mechanics rocket_mechanics = {
 static bool rocket_is_exploding = false;
 static bool rocket_is_thrusting = false;
 static bool is_invincible = true;
-static int frame_when_first_invincible = 0;
-const int num_invincible_frames = FPS * 2; //2 seconds
+static long frame_when_first_invincible = 0;
+const int NUM_INVINCIBLE_FRAMES = FPS * 2; //2 seconds
 
 // Increases when rocket_is_exploding == true. Determines how far off the rocket segments are from each other when rendering
 static int num_frames_after_rocket_exploded = 0;
@@ -81,7 +81,8 @@ void rocket_rotate_right_release() {
 }
 
 
-void reset_rocket_mechanics() {
+void reset_rocket(long frame) {
+    // Mechanics
     rocket_mechanics.x = MONITOR_WIDTH / 2;
     rocket_mechanics.y = MONITOR_HEIGHT / 2;
     rocket_mechanics.vx = 0;
@@ -89,6 +90,10 @@ void reset_rocket_mechanics() {
     rocket_mechanics.ax = 0;
     rocket_mechanics.ay = 0;
     rocket_mechanics.rotation = 0;
+
+    // Invincible
+    is_invincible = true;
+    frame_when_first_invincible = frame;
 }
 
 /** Creates a bullet */
@@ -150,17 +155,27 @@ void loop_rocket(long frame) {
                 // Explosion over
                 rocket_is_exploding = false;
                 num_frames_after_rocket_exploded = 0;
-                reset_rocket_mechanics();
+                reset_rocket(frame);
             }
         }
+        return;
+    }
+
+    // Normal rocket
+
+    const double num_blinks_per_second = 3.0;
+    const double frames_per_blink = FPS / num_blinks_per_second;
+    if (is_invincible && frame % (int)frames_per_blink > frames_per_blink / 2.0) {
+        //don't show rocket half the time when invincible
     } else {
-        // Normal rocket
-        const double num_blinks_per_second = 3.0;
-        const double frames_per_blink = FPS / num_blinks_per_second;
-        if (is_invincible && frame % (int)frames_per_blink > frames_per_blink / 2.0) {
-            return; //don't show rocket half the time when invincible
-        }
+        // Show the rocket
         draw_points(rotated_rocket_points, ROCKET_NUM_POINTS, rocket_mechanics.x, rocket_mechanics.y, GL_WHITE);
+    }
+
+    // Only invincible for NUM_INVINCIBLE_FRAMES
+    if (is_invincible && frame - frame_when_first_invincible > NUM_INVINCIBLE_FRAMES) {
+        // No longer invincible
+        is_invincible = false;
     }
 }
 
