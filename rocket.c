@@ -81,6 +81,15 @@ void rocket_rotate_right_release() {
 }
 
 
+void reset_rocket_mechanics() {
+    rocket_mechanics.x = MONITOR_WIDTH / 2;
+    rocket_mechanics.y = MONITOR_HEIGHT / 2;
+    rocket_mechanics.vx = 0;
+    rocket_mechanics.vy = 0;
+    rocket_mechanics.ax = 0;
+    rocket_mechanics.ay = 0;
+    rocket_mechanics.rotation = 0;
+}
 
 /** Creates a bullet */
 void rocket_fire() {
@@ -129,30 +138,20 @@ struct mechanics get_rocket_mechanics() {
     return rocket_mechanics;
 }
 
-
-void rocket_rotate_radians(double theta) {
-    rocket_mechanics.rotation += theta;
-
-    rotate_template_points(
-        rotated_rocket_points,
-        ROCKET_POINTS_TEMPLATE,
-        ROCKET_NUM_POINTS,
-        rocket_mechanics.rotation
-    );
-}
-
 // Draws the rocket
-void render_rocket(int frame) {
+void loop_rocket(long frame) {
     if (rocket_is_exploding) {
-        // gl_draw_pixel(rocket_mechanics.x, rocket_mechanics.y, GL_WHITE);
-
         // Draw three lines: /, \, and _
         render_explosion(mechanics_to_point(rocket_mechanics), num_frames_after_rocket_exploded);
 
         if (num_frames_after_rocket_exploded >= NUM_FRAMES_OF_EXPLOSION) {
-            // Explosion over
-            rocket_is_exploding = 0;
-            num_frames_after_rocket_exploded = 0;
+            // For a second after the explosion is done, just don't do anything. Wait a second until explosion is done to create a new rocket. This gives the user time to rest.
+            if (num_frames_after_rocket_exploded >= NUM_FRAMES_OF_EXPLOSION + FPS) {
+                // Explosion over
+                rocket_is_exploding = false;
+                num_frames_after_rocket_exploded = 0;
+                reset_rocket_mechanics();
+            }
         }
     } else {
         // Normal rocket

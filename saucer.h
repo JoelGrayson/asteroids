@@ -15,5 +15,5 @@ enum saucer_state {
 
 void render_saucer();
 /** Should be called once in each run_one_frame of game. Renders the saucer and decides whether to spawn another saucer */
-void saucer_frame_call(int frame);
+void loop_saucer(int frame);
 

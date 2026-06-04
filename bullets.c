@@ -48,7 +48,7 @@ void draw_bullet(struct bullet *bullet) {
     gl_draw_pixel(mech.x + 1, mech.y + 1, GL_WHITE);
 }
 
-void draw_bullets() {
+void loop_bullets() {
     for (int i = 0; i < MAX_NUM_BULLETS; i++) {
         struct bullet *bullet = bullets[i];
         if (bullet) {

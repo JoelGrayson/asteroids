@@ -14,6 +14,11 @@ void score_and_lives_init() {
     score_string = malloc(MAX_SCORE_STRING_SIZE);
 }
 
+void setup_score_and_lives() {
+    num_lives = 4;
+    score = 0;
+}
+
 int get_num_lives() {
     return num_lives;
 }
@@ -44,7 +49,7 @@ static void render_lives() {
     }
 }
 
-void render_score_and_lives() {
+void loop_score_and_lives() {
     render_score();
     render_lives();
 }

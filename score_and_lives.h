@@ -10,6 +10,6 @@ int get_num_lives();
 int get_score();
 void increase_score_by(int);
 
-void render_score_and_lives();
+void loop_score_and_lives();
 void decrease_lives();
 

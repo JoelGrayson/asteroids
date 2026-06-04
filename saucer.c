@@ -91,7 +91,7 @@ static void spawn_saucer(enum saucer_state new_saucer_state) {
     }
 }
 
-void saucer_frame_call(int frame) {
+void loop_saucer(int frame) {
     render_saucer();
 
     if (saucer_state == NO_SAUCER && (frame - frame_when_saucer_last_despawned) > frames_until_saucer_respawns) {

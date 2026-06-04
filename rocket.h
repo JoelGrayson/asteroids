@@ -19,6 +19,8 @@
 
 extern struct point ROCKET_POINTS_TEMPLATE[ROCKET_NUM_POINTS];
 
+void reset_rocket_mechanics();
+
 
 // The five arcade buttons
 void rocket_rotate_left_press();
@@ -31,7 +33,7 @@ void rocket_unthrust();
 void rocket_hyperspace();
 
 // Increases the rotation of the rocket by theta. Then, changes the internal rotated_rocket_points to ROCKET_POINTS_TEMPLATE rotated by an amount (so only recomputes rotation when the rotation changes)
-void render_rocket(int frame);
+void loop_rocket(long frame);
 void rocket_explode();
 struct mechanics get_rocket_mechanics();
 void rocket_update_mechanics(); //called once every cycle to update the position based on speed

@@ -2,18 +2,18 @@
 #include "uart.h"
 #include <stdbool.h>
 #include "constants.h"
+#include "gpio.h"
+#include "libmango/gpio_extra.h"
 #include "interrupts.h"
 #include "gpio_interrupt.h"
+#include "fb.h"
+#include "gl.h"
+
+#include "graphics/draw_points.h"
+#include "graphics/geometry.h"
 
 #include "asteroid.h"
 #include "rocket.h"
-#include "gpio.h"
-#include "libmango/gpio_extra.h"
-
-#include "fb.h"
-#include "gl.h"
-#include "graphics/draw_points.h"
-#include "graphics/geometry.h"
 #include "maths.h"
 #include "buttons.h"
 #include "timer.h"
@@ -22,8 +22,6 @@
 #include "fps.h"
 #include "score_and_lives.h"
 #include "saucer.h"
-
-#define TICKS_EXPLOSION_DISAPPEAR 2000000*TICKS_PER_USEC
 
 // Variable which controls the spawning interval of asteroids
 static unsigned long SPAWN_INTERVAL_TICKS = 500000*TICKS_PER_USEC;
@@ -37,43 +35,44 @@ static void run_one_frame();
 static int CUR_NUM_ASTEROIDS = 9; // Number of asteroids to actively draw, update, and check collisions for.
 
 
-static int frame = 0;
-
-static void configure_button_interrupts();
 void collision_detection();
 void update_mechanics_main();
 
 
-int main() {
+void one_time_setup() {
     uart_init();
-    printf("Hello from main()\n");
-
+    printf("One time setup\n");
     trig_init(3);
     gl_init(MONITOR_WIDTH, MONITOR_HEIGHT, FB_DOUBLEBUFFER);
     sounds_init();
     buttons_init();
     score_and_lives_init();
+}
 
+int main() {
+    one_time_setup();
     run_game();
 }
 
-const long min_time_per_frame = 24*1000*1000/FPS;
 
+static void loop(long frame);
 static void run_game() {
-    printf("Starting game\n");
+    // Setup
     setup_game();
-    printf("Setup done\n");
-    
 
+    // Loop
     long ticks_at_start_of_loop = timer_get_ticks();
+    long frame = 0;
     while (true) {
-        run_one_frame();
-        frame++;
+        loop(frame);
 
+        // If the frame finishes super fast, throttle it to FPS
+        const long min_time_per_frame = 24*1000*1000/FPS;
         while (timer_get_ticks() - ticks_at_start_of_loop < min_time_per_frame)
             ; // SPIN!
-
+        
         ticks_at_start_of_loop = timer_get_ticks();
+        frame++;
     }
 }
 
@@ -85,7 +84,8 @@ static void setup_game() {
 }
 
 
-static void run_one_frame() {
+// Runs one frame of the game
+static void loop(long frame) {
     // Clear frame to blank black frame
     gl_clear(GL_BLACK);
 
@@ -96,15 +96,15 @@ static void run_one_frame() {
     }
     
     render_asteroids();
-    render_rocket(frame);
-    render_score_and_lives();
-    draw_bullets();
+    loop_rocket(frame);
+    loop_score_and_lives(frame);
+    loop_bullets(frame);
 
 
     collision_detection();
     update_mechanics_main();
     fb_swap_buffer(); //show the frame
-    saucer_frame_call(frame);
+    loop_saucer(frame);
 }
 
 
@@ -113,7 +113,7 @@ void collision_detection() {
     if(rocket_asteroid_collision()) {
         rocket_explode();
         decrease_lives();
-        render_score_and_lives();
+        loop_score_and_lives();
     }
 }
 
