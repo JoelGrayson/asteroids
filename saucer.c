@@ -63,6 +63,7 @@ void render_saucer() {
 
 
 int frames_until_saucer_respawns = FPS * 10; //takes 10 seconds for a new saucer to spawn
+static long frame_when_saucer_last_spawned = 0; //when saucer dies, set this to the frame number. If 
 static long frame_when_saucer_last_despawned = 0; //when saucer dies, set this to the frame number. If 
 
 
@@ -77,6 +78,8 @@ void setup_saucer() {
 
     saucer_state = NO_SAUCER;
 }
+
+static double saucer_speed = 5.0;
 
 static void spawn_saucer(enum saucer_state new_saucer_state) {
     if (new_saucer_state == BIG_SAUCER) {
@@ -93,7 +96,7 @@ static void spawn_saucer(enum saucer_state new_saucer_state) {
         case 0: //top
             saucer_mechanics.x = rand() % (int)MONITOR_WIDTH;
             saucer_mechanics.y = 0;
-            saucer_mechanics.vy = 2;
+            saucer_mechanics.vy = saucer_speed;
             saucer_mechanics.vx = 0;
             break;
         case 1: //right
@@ -110,18 +113,32 @@ static void spawn_saucer(enum saucer_state new_saucer_state) {
 void loop_saucer(long frame) {
     render_saucer();
 
-    update_mechanics(&saucer_mechanics, false);
+    if (saucer_state == NO_SAUCER) {
+        // Spawn saucer if no saucer and it's been a while
+        // printf("frame=%10ld, frame_when_saucer_last_despawned=%10ld, diff=%10ld, until=%10d\n", frame, frame_when_saucer_last_despawned, (frame - frame_when_saucer_last_despawned), frames_until_saucer_respawns);
 
-    // Spawn saucer if no saucer and it's been a while
-    // printf("frame=%10ld, frame_when_saucer_last_despawned=%10ld, diff=%10ld, until=%10d\n", frame, frame_when_saucer_last_despawned, (frame - frame_when_saucer_last_despawned), frames_until_saucer_respawns);
-    if (saucer_state == NO_SAUCER && (frame - frame_when_saucer_last_despawned) > frames_until_saucer_respawns) {
-        // spawn saucer
-        frame_when_saucer_last_despawned = frame;
-        if (rand() % 2 == 0) { //50-50 chance of being big or small
-            spawn_saucer(BIG_SAUCER);
-        } else {
-            spawn_saucer(SMALL_SAUCER);
+        if ((frame - frame_when_saucer_last_despawned) > frames_until_saucer_respawns) {
+            // spawn saucer
+            frame_when_saucer_last_spawned = frame;
+            if (rand() % 2 == 0) { //50-50 chance of being big or small
+                spawn_saucer(BIG_SAUCER);
+            } else {
+                spawn_saucer(SMALL_SAUCER);
+            }
         }
+    } else {
+        // There is a saucer
+        update_mechanics(&saucer_mechanics, false);
+        int saucer_frame = frame - frame_when_saucer_last_spawned;
+        if (saucer_frame % FPS == 0) { //every second
+            double angle_of_motion = (rand() % 628) / 100; //0 to 2pi
+            saucer_mechanics.vx = saucer_speed * cosine(angle_of_motion);
+            saucer_mechanics.vy = saucer_speed * sine(angle_of_motion);
+        }
+
+        // if (saucer_state == BIG_SAUCER) {
+            
+        // }
     }
 }
 
