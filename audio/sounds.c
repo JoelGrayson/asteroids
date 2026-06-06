@@ -1,11 +1,4 @@
-#include "assert.h"
-#include "../libmango/dma.h"
-#include "../libmango/i2s.h"
 #include "sounds.h"
-#include "sounds_wav.h"
-#include "ringbuffer.h"
-#include "timer.h"
-#include <stdint.h>
 
 /*static unsigned long last_sound_tick;
 static unsigned long last_sound_duration_ticks;

@@ -133,7 +133,7 @@ void loop_saucer(long frame) {
         // There is a saucer  
 
         int saucer_frame = frame - frame_when_saucer_last_spawned;
-        if (saucer_frame % (int)(FPS * 1.5) == 0) { //every 1.5 seconds
+        if (saucer_frame > FPS * 3 && saucer_frame % (int)(FPS * 1.5) == 0) { //every 1.5 seconds after 3 seconds passed (to make it toward the center of the screen)
             face_toward(random_angle());
         }
         if (saucer_frame % (int)(FPS * .6666) == 0) { //every 2/3 seconds
@@ -151,6 +151,9 @@ void loop_saucer(long frame) {
         }
 
         update_mechanics(&saucer_mechanics, false);
+        if (out_of_bounds(mechanics_to_point(saucer_mechanics))) {
+            saucer_state = NO_SAUCER; //remove saucer
+        }
     }
 }
 
