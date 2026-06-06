@@ -194,9 +194,8 @@ void loop_saucer() {
                 struct mechanics new_bullet_mechanics = {
                     .x = saucer_mechanics.x,
                     .y = saucer_mechanics.y,
-                    // TODO: make vx/vy face you
-                    .vx = 3 * cosine(angle),
-                    .vy = 3 * sine(angle),
+                    .vx = 3 * sine(angle),
+                    .vy = 3 * cosine(angle),
                     .ax = 0,
                     .ay = 0,
                     .rotation = 0
