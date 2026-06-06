@@ -24,6 +24,7 @@
 #include "saucer.h"
 #include "start_game_screen.h"
 #include "game_over_screen.h"
+#include "collision_detection.h"
 
 #define NUM_FRAMES_TIL_SPEEDUP 24*40
 
@@ -33,7 +34,6 @@ static void run_game();
 static void setup_game();
 static void run_one_frame();
 static void loop(long frame);
-static void collision_detection();
 
 extern int num_frames_between_spawn;
 static bool beat1;
@@ -139,14 +139,5 @@ static void loop(long frame) {
     fb_swap_buffer();
     // Play sounds!
     sounds_play();
-}
-
-
-void collision_detection() {
-    bullets_asteroid_collision();
-    if(rocket_asteroid_collision()) {
-        rocket_explode();
-        decrease_lives();
-    }
 }
 

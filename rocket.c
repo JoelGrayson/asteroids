@@ -43,7 +43,7 @@ struct point MINI_ROCKET_POINTS[ROCKET_NUM_POINTS] = {
 };
 
 // Starts off as the same as ROCKET_POINTS_TEMPLATE
-static struct point rotated_rocket_points[ROCKET_NUM_POINTS] = {
+struct point rotated_rocket_points[ROCKET_NUM_POINTS] = {
     {   0, -20 },
     { -13,  20 },
     { -10,  11 },
@@ -213,6 +213,7 @@ void loop_rocket(long frame) {
 void rocket_explode() {
     rocket_is_exploding = true;
     num_frames_after_rocket_exploded = 0;
+    decrease_lives();
 }
 
 struct point *get_points_of_rocket() {

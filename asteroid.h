@@ -13,7 +13,7 @@
 #include "rand.h"
 #include "timer.h"
 #include "printf.h"
-#include "audio/sounds.c"
+#include "audio/sounds.h"
 #include "rocket.h"
 #include "score_and_lives.h"
 
@@ -58,6 +58,7 @@ struct asteroid_list_t *get_asteroid_collision(struct mechanics obj, struct poin
 void asteroid_explode(struct asteroid_list_t *ast); // Explodes a particular asteroid (with particle effects! and deallocates it).
 void asteroid_increase_score_by(enum asteroid_size asteroid_size);
 
+extern struct asteroid_list_t asteroid_list[MAX_NUM_ASTEROIDS];
 
 #define ASTEROID_NUM_POINTS 13
 // Extern means not a declaration but rather telling compiler that it is there somewhere and linker will find it

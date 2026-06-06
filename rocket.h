@@ -20,6 +20,8 @@
 extern struct point ROCKET_POINTS_TEMPLATE[ROCKET_NUM_POINTS];
 extern struct point MINI_ROCKET_POINTS[ROCKET_NUM_POINTS];
 
+extern struct point rotated_rocket_points[ROCKET_NUM_POINTS]; //exported for collision_detection
+
 void setup_rocket();
 
 
