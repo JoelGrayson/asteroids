@@ -18,6 +18,8 @@ enum saucer_state {
     BIG_SAUCER //the clumsy big saucer
 };
 
+enum saucer_state saucer_state;
+
 void setup_saucer();
 void render_saucer();
 /** Should be called once in each run_one_frame of game. Renders the saucer and decides whether to spawn another saucer */
