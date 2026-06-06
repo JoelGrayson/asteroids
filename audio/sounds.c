@@ -39,6 +39,8 @@ void sounds_play() {
 }
 
 static void play_sound(const struct wav_file_t *gwav) {
+    i2s_await(); //prevents glitch
+
     //rb_enqueue(sounds_to_play, (int)gwav);
     assert(gwav->bits_per_sample == 16); // DAC support only tested for 16-bit
     // int sample_freq = gwav->frames_per_sec;
