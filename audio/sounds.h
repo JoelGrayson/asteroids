@@ -2,6 +2,8 @@
 
 // Initializes all sounds by attenuating amplitudes to playable amounts.
 void sounds_init();
+// Plays sounds if I2S transfer completed
+void sounds_play();
 void play_fire();
 void play_thrust();
 void play_beat1();
