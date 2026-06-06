@@ -25,6 +25,8 @@
 #include "start_game_screen.h"
 #include "game_over_screen.h"
 
+#define NUM_FRAMES_TIL_SPEEDUP 24*40
+
 static void game_manager();
 static void one_time_setup();
 static void run_game();
@@ -32,6 +34,9 @@ static void setup_game();
 static void run_one_frame();
 static void loop(long frame);
 static void collision_detection();
+
+extern int num_frames_between_spawn;
+static bool beat1;
 
 enum game_manager_state {
     START_GAME_SCREEN, //on first boot
@@ -70,6 +75,7 @@ static void one_time_setup() {
 static void run_game() {
     // Setup
     setup_game();
+    beat1 = true;
 
     // Loop surrounded by checks to throttle fps if necessary
     long ticks_at_start_of_loop = timer_get_ticks();
@@ -86,6 +92,22 @@ static void run_game() {
         if (get_num_lives() <= 0) {
             return;
         }
+
+        // Plays game beat every num_frames_between_spawn-th frame!
+        if(frame % num_frames_between_spawn == 0) {
+            if(beat1) { 
+                play_beat1();
+                beat1 = false;
+            } else {
+                play_beat2();
+                beat1 = true;
+            }
+        }
+
+        // Game very slowly speeds up in difficulty and song beat as num_frames_between_spawn decreases:
+        if(frame % NUM_FRAMES_TIL_SPEEDUP == 0) {
+            if(num_frames_between_spawn > 4) num_frames_between_spawn--;
+        }
             
         ticks_at_start_of_loop = timer_get_ticks();
         frame++;
@@ -93,6 +115,7 @@ static void run_game() {
 }
 
 static void setup_game() {
+    num_frames_between_spawn = 2 * FPS; // Sets number of seconds between asteroid spawns to default at 2.
     setup_asteroids();
     setup_score_and_lives();
     setup_rocket();
