@@ -108,10 +108,7 @@ static void loop(long frame) {
     loop_rocket(frame);
     loop_score_and_lives(frame);
     loop_bullets(frame);
-    setup_saucer();
-    
-    render_saucer(BIG_SAUCER);
-    // loop_saucer(frame);
+    loop_saucer(frame);
 
     collision_detection();
     

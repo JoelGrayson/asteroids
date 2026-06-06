@@ -52,7 +52,6 @@ void render_saucer() {
         draw_points(BIG_SAUCER_EXTERIOR_POINTS, NUM_SAUCER_EXTERIOR_POINTS, saucer_mechanics.x, saucer_mechanics.y, GL_WHITE);
         draw_points(BIG_SAUCER_TOP_LINE_POINTS, 2, saucer_mechanics.x, saucer_mechanics.y, GL_WHITE);
         draw_points(BIG_SAUCER_BOTTOM_LINE_POINTS, 2, saucer_mechanics.x, saucer_mechanics.y, GL_WHITE);
-        printf("Drawing big saucer\n");
     } else if (saucer_state == SMALL_SAUCER) {
         draw_points(SMALL_SAUCER_EXTERIOR_POINTS, NUM_SAUCER_EXTERIOR_POINTS, saucer_mechanics.x, saucer_mechanics.y, GL_WHITE);
         draw_points(SMALL_SAUCER_TOP_LINE_POINTS, 2, saucer_mechanics.x, saucer_mechanics.y, GL_WHITE);
@@ -76,8 +75,7 @@ void setup_saucer() {
     saucer_mechanics.ay = 0;
     saucer_mechanics.rotation = 0;
 
-    // saucer_state = NO_SAUCER;
-    saucer_state = BIG_SAUCER;
+    saucer_state = NO_SAUCER;
 }
 
 static void spawn_saucer(enum saucer_state new_saucer_state) {
@@ -90,12 +88,12 @@ static void spawn_saucer(enum saucer_state new_saucer_state) {
         saucer_state = new_saucer_state;
     }
 
-    int corner_where_saucer_spawns = rand() % 4; //0 means N, 1 means E, 2 means S, 3 means W
+    int corner_where_saucer_spawns = 0;// rand() % 4; //0 means N, 1 means E, 2 means S, 3 means W
     switch (corner_where_saucer_spawns) {
         case 0: //top
             saucer_mechanics.x = rand() % (int)MONITOR_WIDTH;
             saucer_mechanics.y = 0;
-            saucer_mechanics.vy = 10;
+            saucer_mechanics.vy = 2;
             saucer_mechanics.vx = 0;
             break;
         case 1: //right
@@ -112,8 +110,10 @@ static void spawn_saucer(enum saucer_state new_saucer_state) {
 void loop_saucer(long frame) {
     render_saucer();
 
-    printf("frame=%10ld, frame_when_saucer_last_despawned=%10ld, diff=%10ld, until=%10d\n", frame, frame_when_saucer_last_despawned, (frame - frame_when_saucer_last_despawned), frames_until_saucer_respawns);
+    update_mechanics(&saucer_mechanics, false);
 
+    // Spawn saucer if no saucer and it's been a while
+    // printf("frame=%10ld, frame_when_saucer_last_despawned=%10ld, diff=%10ld, until=%10d\n", frame, frame_when_saucer_last_despawned, (frame - frame_when_saucer_last_despawned), frames_until_saucer_respawns);
     if (saucer_state == NO_SAUCER && (frame - frame_when_saucer_last_despawned) > frames_until_saucer_respawns) {
         // spawn saucer
         frame_when_saucer_last_despawned = frame;
