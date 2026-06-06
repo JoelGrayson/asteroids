@@ -256,6 +256,20 @@ struct asteroid_list_t *get_asteroid_collision(struct mechanics obj, struct poin
     return NULL; // No asteroids found colliding with our object.
 }
 
+void asteroid_increase_score_by(enum asteroid_size asteroid_size) {
+    switch (asteroid_size) {
+        case BIG:
+            increase_score_by(20);
+            break;
+        case MEDIUM:
+            increase_score_by(50);
+            break;
+        case SMALL:
+            increase_score_by(100);
+            break;
+    }
+}
+
 void asteroid_explode(struct asteroid_list_t *ast) {
     // Explosion sound-playing code:
     unsigned long present_tick = timer_get_ticks();

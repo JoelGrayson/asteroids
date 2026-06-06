@@ -56,6 +56,7 @@ void loop_asteroids(long frame);
 // If any of the allocated asteroids collides with said object, return a pointer to that asteroid; otherwise return NULL.
 struct asteroid_list_t *get_asteroid_collision(struct mechanics obj, struct point *points_obj, int num_points_obj);
 void asteroid_explode(struct asteroid_list_t *ast); // Explodes a particular asteroid (with particle effects! and deallocates it).
+void asteroid_increase_score_by(enum asteroid_size asteroid_size);
 
 
 #define ASTEROID_NUM_POINTS 13
