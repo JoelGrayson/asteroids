@@ -189,12 +189,14 @@ void loop_saucer() {
 
             if (saucer_frame % (int)(FPS / 2) == 0) { //twice a second
                 // Shoot!
+                double angle = angle_from(mechanics_to_point(saucer_mechanics), mechanics_to_point(get_rocket_mechanics()));
+                
                 struct mechanics new_bullet_mechanics = {
                     .x = saucer_mechanics.x,
                     .y = saucer_mechanics.y,
                     // TODO: make vx/vy face you
-                    .vx = saucer_mechanics.vx * 3,
-                    .vy = saucer_mechanics.vy * 3,
+                    .vx = saucer_mechanics.vx * 3 * cosine(angle),
+                    .vy = saucer_mechanics.vy * 3 * sine(angle),
                     .ax = 0,
                     .ay = 0,
                     .rotation = 0

@@ -12,6 +12,8 @@
 #include "bullets.h"
 #include "frame.h"
 #include "explosion.h"
+#include "angle_from.h"
+#include "rocket.h"
 
 enum saucer_state {
     NO_SAUCER, //no saucer on screen
