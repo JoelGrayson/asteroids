@@ -3,13 +3,14 @@
 static void check_if_bullet_touching_objs(struct bullet **bullet) {
     // # Bullet <-> Asteroid
     struct asteroid_list_t *asteroid_to_explode = get_asteroid_collision((*bullet)->mechanics, BULLET_COLLISION_POINTS, BULLET_NUM_POINTS);
-    // Only increase score if rocket destroyed it, not saucer
-    if ((*bullet)->owner == ROCKET) {
-        asteroid_increase_score_by(asteroid_to_explode->ast.size);
-    }
 
     // If an asteroid has collided with our bullet, remove it (explode it!) alongside our bullet, and then return true (there has been a collision).
     if (asteroid_to_explode != NULL) {
+        // Only increase score if rocket destroyed it, not saucer
+        if ((*bullet)->owner == ROCKET) {
+            asteroid_increase_score_by(asteroid_to_explode->ast.size);
+        }
+
         printf("asteroid touching bullet \n");
         asteroid_explode(asteroid_to_explode);
         delete_bullet(bullet);
