@@ -82,7 +82,7 @@ void bullets_update_mechanics() {
 void clean_up_out_of_bounds_bullets() {
     for (int i = 0; i < MAX_NUM_BULLETS; i++) {
         struct bullet *bullet = bullets[i];
-        if (bullet && out_of_bounds(mechanics_to_point(bullet->mechanics))) {
+        if (bullet && out_of_bounds(mechanics_to_point(bullet->mechanics), 1, 1)) {
             free(bullet);
             bullets[i] = NULL;
             curr_num_bullets--; // Decrease total count of allocated bullets

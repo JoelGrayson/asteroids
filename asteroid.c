@@ -277,16 +277,13 @@ void asteroid_explode(struct asteroid_list_t *ast) {
     //if(present_tick-last_fire_sound_tick > FIRE_SOUND_TICK_DURATION && present_tick-last_thrust_sound_tick > THRUST_SOUND_TICK_DURATION && present_tick-last_explosion_sound_tick > EXPLOSION_SOUND_TICK_DURATION) {
     switch(ast->ast.size) {
         case BIG:
-            increase_score_by(20);
             play_bangLarge();
             break;
         case MEDIUM:
             play_bangMedium();
-            increase_score_by(50);
             break;
         case SMALL:
             play_bangSmall();
-            increase_score_by(100);
             break;
     }
     //last_explosion_sound_tick = timer_get_ticks();
