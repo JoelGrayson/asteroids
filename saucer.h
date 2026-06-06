@@ -19,6 +19,7 @@ void setup_saucer();
 void render_saucer();
 /** Should be called once in each run_one_frame of game. Renders the saucer and decides whether to spawn another saucer */
 void loop_saucer(long frame);
+void despawn_saucer(long frame);
 
 /*
 Saucer moves around erratically. Every two seconds, it changes direction though at the same speed.

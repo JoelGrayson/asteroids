@@ -152,7 +152,7 @@ void loop_saucer(long frame) {
 
         update_mechanics(&saucer_mechanics, false);
         if (out_of_bounds(mechanics_to_point(saucer_mechanics))) {
-            saucer_state = NO_SAUCER; //remove saucer
+            despawn_saucer(frame);
         }
     }
 }
@@ -165,5 +165,10 @@ static double random_angle() {
 static void face_toward(double angle) {
     saucer_mechanics.vx = saucer_speed * cosine(angle);
     saucer_mechanics.vy = saucer_speed * sine(angle);
+}
+
+void despawn_saucer(long frame) {
+    saucer_state = NO_SAUCER; //remove saucer
+    frame_when_saucer_last_despawned = frame;
 }
 
