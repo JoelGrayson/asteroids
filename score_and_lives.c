@@ -5,7 +5,7 @@
 
 #define MAX_SCORE_STRING_SIZE 1024
 
-#define DEFAULT_NUM_LIVES 3
+#define DEFAULT_NUM_LIVES 4
 
 static int num_lives = DEFAULT_NUM_LIVES;
 static int score = 0;

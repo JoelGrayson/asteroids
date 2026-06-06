@@ -48,6 +48,9 @@ enum saucer_state saucer_state = NO_SAUCER;
 static int num_frames_after_saucer_explode = 0;
 static bool saucer_is_exploding = false;
 
+const double big_saucer_bullet_speed = 4;
+const double small_saucer_bullet_speed = 5;
+
 void render_saucer() {
     if (saucer_state == NO_SAUCER) {
         if (saucer_is_exploding) {
@@ -146,6 +149,7 @@ void loop_saucer() {
         if ((frame - frame_when_saucer_last_despawned) > frames_until_saucer_respawns) {
             // spawn saucer
             frame_when_saucer_last_spawned = frame;
+            // spawn_saucer(BIG_SAUCER);
             if (rand() % 2 == 0) { //50-50 chance of being big or small
                 spawn_saucer(BIG_SAUCER);
             } else {
@@ -168,11 +172,13 @@ void loop_saucer() {
 
             if (saucer_frame % (int)FPS == 0) { //every second
                 // Shoot!
+                double angle = random_angle();
+
                 struct mechanics new_bullet_mechanics = {
                     .x = saucer_mechanics.x,
                     .y = saucer_mechanics.y,
-                    .vx = saucer_mechanics.vx * 2,
-                    .vy = saucer_mechanics.vy * 2,
+                    .vx = big_saucer_bullet_speed * cosine(angle),
+                    .vy = big_saucer_bullet_speed * sine(angle),
                     .ax = 0,
                     .ay = 0,
                     .rotation = 0
@@ -194,8 +200,8 @@ void loop_saucer() {
                 struct mechanics new_bullet_mechanics = {
                     .x = saucer_mechanics.x,
                     .y = saucer_mechanics.y,
-                    .vx = 3 * sine(angle),
-                    .vy = 3 * cosine(angle),
+                    .vx = small_saucer_bullet_speed * sine(angle),
+                    .vy = small_saucer_bullet_speed * cosine(angle),
                     .ax = 0,
                     .ay = 0,
                     .rotation = 0
