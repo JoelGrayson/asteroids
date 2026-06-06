@@ -18,10 +18,10 @@ static void check_if_bullet_touching_objs(struct bullet **bullet) {
 
 
     // # Bullet <-> Rocket
-    if((*bullet)->owner == SAUCER) {
+    if((*bullet)->owner == SAUCER && !rocket_is_invincible()) {
         if (are_colliding((*bullet)->mechanics, get_rocket_mechanics(), BULLET_COLLISION_POINTS, rotated_rocket_points, BULLET_NUM_POINTS, ROCKET_NUM_POINTS)) {
             delete_bullet(bullet);
-            if(!rocket_is_invincible()) rocket_explode();
+            rocket_explode();
         }
     }
 
@@ -87,10 +87,12 @@ void collision_detection() {
             despawn_saucer(true);
         } else {
 
+            if (!rocket_is_invincible()) {
+                // # Rocket <-> Saucer (saucer just destroys rocket but is not itself destroyed)
 
-            // # Rocket <-> Saucer (saucer just destroys rocket but is not itself destroyed)
-            if (are_colliding(get_rocket_mechanics(), get_saucer_mechanics(), rotated_rocket_points, get_saucer_points(), ROCKET_NUM_POINTS, get_num_saucer_exterior_points())) {
-                rocket_explode();
+                if (are_colliding(get_rocket_mechanics(), get_saucer_mechanics(), rotated_rocket_points, get_saucer_points(), ROCKET_NUM_POINTS, get_num_saucer_exterior_points())) {
+                    rocket_explode();
+                }
             }
         }
     }
