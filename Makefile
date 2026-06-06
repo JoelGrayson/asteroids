@@ -53,6 +53,11 @@ tests/draw_asteroid_test: tests/draw_asteroid_test.bin
 tests/audio_test: tests/audio_test.bin
 	mango-run $<
 
+
+tests/atan2: tests/atan2.bin
+	mango-run $<
+
+
 # .PRECIOUS: %.o %.elf %.bin
 
 

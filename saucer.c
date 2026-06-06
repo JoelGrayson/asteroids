@@ -49,7 +49,7 @@ static int num_frames_after_saucer_explode = 0;
 static bool saucer_is_exploding = false;
 
 const double big_saucer_bullet_speed = 4;
-const double small_saucer_bullet_speed = 5;
+const double small_saucer_bullet_speed = 8;
 
 void render_saucer() {
     if (saucer_state == NO_SAUCER) {
