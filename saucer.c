@@ -50,7 +50,9 @@ static bool saucer_is_exploding = false;
 
 void render_saucer() {
     if (saucer_state == NO_SAUCER) {
-
+        if (saucer_is_exploding) {
+            render_explosion(mechanics_to_point(saucer_mechanics), num_frames_after_saucer_explode);
+        }
     } else if (saucer_state == BIG_SAUCER) {
         draw_points(BIG_SAUCER_EXTERIOR_POINTS, NUM_SAUCER_EXTERIOR_POINTS, saucer_mechanics.x, saucer_mechanics.y, GL_WHITE);
         draw_points(BIG_SAUCER_TOP_LINE_POINTS, 2, saucer_mechanics.x, saucer_mechanics.y, GL_WHITE);
@@ -137,6 +139,10 @@ void loop_saucer() {
         // Spawn saucer if no saucer and it's been a while
         // printf("frame=%10ld, frame_when_saucer_last_despawned=%10ld, diff=%10ld, until=%10d\n", frame, frame_when_saucer_last_despawned, (frame - frame_when_saucer_last_despawned), frames_until_saucer_respawns);
 
+        if (saucer_is_exploding) {
+            num_frames_after_saucer_explode++;
+        }
+        
         if ((frame - frame_when_saucer_last_despawned) > frames_until_saucer_respawns) {
             // spawn saucer
             frame_when_saucer_last_spawned = frame;
@@ -169,7 +175,8 @@ void loop_saucer() {
 
         update_mechanics(&saucer_mechanics, false);
         if (out_of_bounds(mechanics_to_point(saucer_mechanics), get_saucer_width(), get_saucer_height())) {
-            despawn_saucer(frame);
+            // printf("Saucer out of bounds\n");
+            despawn_saucer(false);
         }
     }
 }

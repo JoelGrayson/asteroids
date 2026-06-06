@@ -33,7 +33,7 @@ static void check_if_bullet_touching_objs(struct bullet **bullet) {
             if (are_colliding((*bullet)->mechanics, get_saucer_mechanics(), BULLET_COLLISION_POINTS, get_saucer_points(), BULLET_NUM_POINTS, get_num_saucer_exterior_points())) {
                 // Bullet touching saucer
                 delete_bullet(bullet);
-                despawn_saucer();
+                despawn_saucer(true);
                 // TODO: proper point increment count
                 increase_score_by(100);
             }
