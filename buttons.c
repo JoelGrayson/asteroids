@@ -1,5 +1,4 @@
 #include "buttons.h"
-#include "audio/sounds.h"
 
 typedef void (*click_fn_t)(void* aux_data);
 
@@ -89,18 +88,20 @@ void buttons_init() {
 // Rotate left and right have pressed and released listeners. Hyperspace, thrust, and fire only have pressed listeners
 void rotate_left_pressed_listener() {
     printf("Button pressed: left\n");
+    waiting = false;
     rocket_rotate_left_press();
     gpio_interrupt_clear(ROTATE_LEFT_BUTTON_PRESS);
 }
 
 void rotate_left_released_listener() {
-    printf("Button release: left\n");
+    printf("Button released: left\n");
     rocket_rotate_left_release();
     gpio_interrupt_clear(ROTATE_LEFT_BUTTON_RELEASE);
 }
 
 void rotate_right_pressed_listener() {
     printf("Button pressed: right\n");
+    waiting = false;
     rocket_rotate_right_press();
     gpio_interrupt_clear(ROTATE_RIGHT_BUTTON_PRESS);
 }
@@ -113,6 +114,7 @@ void rotate_right_released_listener() {
 
 void hyperspace_pressed_listener() {
     printf("Button pressed: hyperspace\n");
+    waiting = false;
     
     // Use hyper button to test exploding
     rocket_hyperspace();
@@ -122,6 +124,7 @@ void hyperspace_pressed_listener() {
 
 void thrust_pressed_listener() {
     printf("Button pressed: thrust\n");
+    waiting = false;
     rocket_thrust();
 
     gpio_interrupt_clear(THRUST_BUTTON_PRESS);
@@ -136,6 +139,7 @@ void thrust_released_listener() {
 
 void fire_pressed_listener() {
     printf("Button pressed: fire\n");
+    waiting = false;
     rocket_fire();
 
     gpio_interrupt_clear(FIRE_BUTTON);

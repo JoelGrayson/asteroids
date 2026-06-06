@@ -1,11 +1,21 @@
-#ifndef ASTEROID_H
-#define ASTEROID_H
+#pragma once
 
 #include "mechanics.h"
 #include "graphics/point.h"
 #include "printf.h"
 #include <stdbool.h>
 #include "explosion.h"
+#include "mechanics.h"
+#include "constants.h"
+#include "graphics/point.h"
+#include "graphics/geometry.h"
+#include "graphics/draw_points.h"
+#include "rand.h"
+#include "timer.h"
+#include "printf.h"
+#include "audio/sounds.c"
+#include "rocket.h"
+#include "score_and_lives.h"
 
 #define MAX_NUM_ASTEROIDS 1000
 extern unsigned int MAX_ASTEROID_SPEED;
@@ -37,6 +47,17 @@ struct asteroid_list_t {
     bool allocated;
 };
 
+
+void setup_asteroids();
+
+// Draws asteroid list and calculates if you need to spawn any new asteroids
+void loop_asteroids(long frame); 
+
+// If any of the allocated asteroids collides with said object, return a pointer to that asteroid; otherwise return NULL.
+struct asteroid_list_t *get_asteroid_collision(struct mechanics obj, struct point *points_obj, int num_points_obj);
+void asteroid_explode(struct asteroid_list_t *ast); // Explodes a particular asteroid (with particle effects! and deallocates it).
+
+
 #define ASTEROID_NUM_POINTS 13
 // Extern means not a declaration but rather telling compiler that it is there somewhere and linker will find it
 extern struct point ASTEROID_A_SMALL_POINTS[ASTEROID_NUM_POINTS];
@@ -50,18 +71,4 @@ extern struct point ASTEROID_C_MEDIUM_POINTS[ASTEROID_NUM_POINTS];
 extern struct point ASTEROID_A_BIG_POINTS[ASTEROID_NUM_POINTS];
 extern struct point ASTEROID_B_BIG_POINTS[ASTEROID_NUM_POINTS];
 extern struct point ASTEROID_C_BIG_POINTS[ASTEROID_NUM_POINTS];
-
-struct point *get_points_of_asteroid(struct asteroid ast);
-void asteroids_update_mechanics();
-struct point asteroid_get_pos(struct asteroid ast);
-void asteroid_set_pos(struct asteroid* ast, struct point new_pos);
-void asteroid_spawn();
-void asteroid_despawn(struct asteroid_list_t* ast);
-int get_num_asteroid_points(); // returns the total count of points forming asteroid polygon
-struct asteroid_list_t *get_next_spawnable_asteroid(); // Finds the pointer of the next asteroid which can be allocated out of the list of asteroids.
-void render_asteroids(); // draws asteroid list
-// If any of the allocated asteroids collides with said object, return a pointer to that asteroid; otherwise return NULL.
-struct asteroid_list_t *get_asteroid_collision(struct mechanics obj, struct point *points_obj, int num_points_obj);
-void asteroid_explode(struct asteroid_list_t *ast); // Explodes a particular asteroid (with particle effects! and deallocates it).
-#endif
 

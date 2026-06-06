@@ -31,9 +31,7 @@ extern struct bullet *bullets[MAX_NUM_BULLETS];
 
 void draw_bullet(struct bullet *bullet) ;
 
-void draw_bullets();
-
-void bullets_update_mechanics();
+void loop_bullets();
 
 struct point *get_bullet_points();
 

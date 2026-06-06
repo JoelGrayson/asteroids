@@ -29,6 +29,19 @@ struct point ROCKET_POINTS_TEMPLATE[ROCKET_NUM_POINTS] = {
     {   0, -20 }  //6 (same as 1)
 };
 
+#define MINI_ROCKET_RATIO 0.6
+// Points of a rocket facing north
+struct point MINI_ROCKET_POINTS[ROCKET_NUM_POINTS] = {
+    {   0 * MINI_ROCKET_RATIO, -20 * MINI_ROCKET_RATIO }, //1
+    //    /
+    { -13 * MINI_ROCKET_RATIO,  20 * MINI_ROCKET_RATIO }, //2
+    // 
+    { -10 * MINI_ROCKET_RATIO,  11 * MINI_ROCKET_RATIO }, //3
+    {  10 * MINI_ROCKET_RATIO,  11 * MINI_ROCKET_RATIO }, //4
+    {  13 * MINI_ROCKET_RATIO,  20 * MINI_ROCKET_RATIO }, //5
+    {   0 * MINI_ROCKET_RATIO, -20 * MINI_ROCKET_RATIO }  //6 (same as 1)
+};
+
 // Starts off as the same as ROCKET_POINTS_TEMPLATE
 static struct point rotated_rocket_points[ROCKET_NUM_POINTS] = {
     {   0, -20 },
@@ -52,6 +65,9 @@ static struct mechanics rocket_mechanics = {
 
 static bool rocket_is_exploding = false;
 static bool rocket_is_thrusting = false;
+static bool is_invincible = true;
+static long frame_when_first_invincible = 0;
+const int NUM_INVINCIBLE_FRAMES = FPS * 2; //2 seconds
 
 // Increases when rocket_is_exploding == true. Determines how far off the rocket segments are from each other when rendering
 static int num_frames_after_rocket_exploded = 0;
@@ -60,6 +76,27 @@ static int num_frames_after_rocket_exploded = 0;
 static bool is_rotating_left = false;
 static bool is_rotating_right = false;
 
+
+static void reset_rocket_mechanics() {
+    // Mechanics
+    rocket_mechanics.x = MONITOR_WIDTH / 2;
+    rocket_mechanics.y = MONITOR_HEIGHT / 2;
+    rocket_mechanics.vx = 0;
+    rocket_mechanics.vy = 0;
+    rocket_mechanics.ax = 0;
+    rocket_mechanics.ay = 0;
+    rocket_mechanics.rotation = 0;
+}
+
+void setup_rocket() {
+    reset_rocket_mechanics();
+
+    is_rotating_left = false;
+    is_rotating_right = false;
+    rocket_is_exploding = false;
+    rocket_is_thrusting = false;
+    num_frames_after_rocket_exploded = 0;
+}
 
 void rocket_rotate_left_press() {
     is_rotating_left = true;
@@ -78,6 +115,13 @@ void rocket_rotate_right_release() {
 }
 
 
+static void reset_rocket(long frame) {
+    reset_rocket_mechanics();
+
+    // Invincible
+    is_invincible = true;
+    frame_when_first_invincible = frame;
+}
 
 /** Creates a bullet */
 void rocket_fire() {
@@ -126,35 +170,45 @@ struct mechanics get_rocket_mechanics() {
     return rocket_mechanics;
 }
 
-
-void rocket_rotate_radians(double theta) {
-    rocket_mechanics.rotation += theta;
-
-    rotate_template_points(
-        rotated_rocket_points,
-        ROCKET_POINTS_TEMPLATE,
-        ROCKET_NUM_POINTS,
-        rocket_mechanics.rotation
-    );
-}
-
-// Draws the rocket
-void render_rocket() {
+static void render_rocket(long frame) {
     if (rocket_is_exploding) {
-        // gl_draw_pixel(rocket_mechanics.x, rocket_mechanics.y, GL_WHITE);
-
         // Draw three lines: /, \, and _
         render_explosion(mechanics_to_point(rocket_mechanics), num_frames_after_rocket_exploded);
 
         if (num_frames_after_rocket_exploded >= NUM_FRAMES_OF_EXPLOSION) {
-            // Explosion over
-            rocket_is_exploding = 0;
-            num_frames_after_rocket_exploded = 0;
+            // For a second after the explosion is done, just don't do anything. Wait a second until explosion is done to create a new rocket. This gives the user time to rest.
+            if (num_frames_after_rocket_exploded >= NUM_FRAMES_OF_EXPLOSION + FPS) {
+                // Explosion over
+                rocket_is_exploding = false;
+                num_frames_after_rocket_exploded = 0;
+                reset_rocket(frame);
+            }
         }
+        return;
+    }
+
+    // Normal rocket
+    const double num_blinks_per_second = 3.0;
+    const double frames_per_blink = FPS / num_blinks_per_second;
+    if (is_invincible && frame % (int)frames_per_blink > frames_per_blink / 2.0) {
+        //don't show rocket half the time when invincible
     } else {
-        // Normal rocket
+        // Show the rocket
         draw_points(rotated_rocket_points, ROCKET_NUM_POINTS, rocket_mechanics.x, rocket_mechanics.y, GL_WHITE);
     }
+
+    // Only invincible for NUM_INVINCIBLE_FRAMES
+    if (is_invincible && frame - frame_when_first_invincible > NUM_INVINCIBLE_FRAMES) {
+        // No longer invincible
+        is_invincible = false;
+    }
+} 
+static void rocket_update_mechanics();
+
+// Draws the rocket
+void loop_rocket(long frame) {
+    render_rocket(frame);
+    rocket_update_mechanics();
 }
 
 
@@ -182,13 +236,23 @@ bool rocket_asteroid_collision() {
     return false; // No asteroid collision, return false.
 }
 
-void rocket_update_mechanics() {
+static void rocket_update_mechanics() {
     struct mechanics *mech = &rocket_mechanics;
 
+    const double ROTATION_AMOUNT = 0.25;
     if (is_rotating_left) {
-        mech->rotation -= 0.3;
+        mech->rotation -= ROTATION_AMOUNT;
     } else if (is_rotating_right) {
-        mech->rotation += 0.3;
+        mech->rotation += ROTATION_AMOUNT;
+    }
+    // Update how the rocket appears according to rotation
+    if (is_rotating_left || is_rotating_right) {
+        rotate_template_points(
+            rotated_rocket_points,
+            ROCKET_POINTS_TEMPLATE,
+            ROCKET_NUM_POINTS,
+            rocket_mechanics.rotation
+        );
     }
     rotate_template_points(
         rotated_rocket_points,

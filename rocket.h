@@ -18,6 +18,10 @@
 #define THRUST_SOUND_TICK_DURATION 400000*TICKS_PER_USEC
 
 extern struct point ROCKET_POINTS_TEMPLATE[ROCKET_NUM_POINTS];
+extern struct point MINI_ROCKET_POINTS[ROCKET_NUM_POINTS];
+
+void setup_rocket();
+
 
 // The five arcade buttons
 void rocket_rotate_left_press();
@@ -30,11 +34,9 @@ void rocket_unthrust();
 void rocket_hyperspace();
 
 // Increases the rotation of the rocket by theta. Then, changes the internal rotated_rocket_points to ROCKET_POINTS_TEMPLATE rotated by an amount (so only recomputes rotation when the rotation changes)
-void rocket_rotate_radians(double theta);
-void render_rocket(); //just draws the rocket
+void loop_rocket(long frame);
 void rocket_explode();
 struct mechanics get_rocket_mechanics();
-void rocket_update_mechanics(); //called once every cycle to update the position based on speed
 struct point *get_points_of_rocket(); // returns rockets' points (as currently rendered in rotation)
 int get_num_rocket_points(); // returns the total count of points forming rocket polygon
 bool rocket_asteroid_collision();

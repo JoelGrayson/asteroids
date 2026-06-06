@@ -2,18 +2,18 @@
 #include "uart.h"
 #include <stdbool.h>
 #include "constants.h"
+#include "gpio.h"
+#include "libmango/gpio_extra.h"
 #include "interrupts.h"
 #include "gpio_interrupt.h"
+#include "fb.h"
+#include "gl.h"
+
+#include "graphics/draw_points.h"
+#include "graphics/geometry.h"
 
 #include "asteroid.h"
 #include "rocket.h"
-#include "gpio.h"
-#include "libmango/gpio_extra.h"
-
-#include "fb.h"
-#include "gl.h"
-#include "graphics/draw_points.h"
-#include "graphics/geometry.h"
 #include "maths.h"
 #include "buttons.h"
 #include "timer.h"
@@ -22,89 +22,92 @@
 #include "fps.h"
 #include "score_and_lives.h"
 #include "saucer.h"
+#include "start_game_screen.h"
+#include "game_over_screen.h"
 
-#define TICKS_EXPLOSION_DISAPPEAR 2000000*TICKS_PER_USEC
-
-// Variable which controls the spawning interval of asteroids
-static unsigned long SPAWN_INTERVAL_TICKS = 500000*TICKS_PER_USEC;
-// Variable which tracks the last tick an asteroid was spawned
-static unsigned long last_spawn_tick;
-
-static void setup_game();
+static void game_manager();
+static void one_time_setup();
 static void run_game();
+static void setup_game();
 static void run_one_frame();
+static void loop(long frame);
+static void collision_detection();
 
-static int CUR_NUM_ASTEROIDS = 9; // Number of asteroids to actively draw, update, and check collisions for.
+enum game_manager_state {
+    START_GAME_SCREEN, //on first boot
+    GAME_IN_PLAY,
+    GAME_OVER_SCREEN, //asks you to input your name
+};
 
-
-static int frame = 0;
-
-static void configure_button_interrupts();
-void collision_detection();
-void update_mechanics_main();
-
+enum game_manager_state game_manager_state = START_GAME_SCREEN;
 
 int main() {
-    uart_init();
-    printf("Hello from main()\n");
+    one_time_setup();
+    game_manager();
+}
 
+static void game_manager() {
+    // Start game screen (on first boot)
+    start_game_screen();
+
+    while (true) {
+        run_game();
+        game_over_screen();
+    }
+}
+
+// For the inits
+static void one_time_setup() {
+    uart_init();
+    printf("One time setup\n");
     trig_init(3);
     gl_init(MONITOR_WIDTH, MONITOR_HEIGHT, FB_DOUBLEBUFFER);
     sounds_init();
     buttons_init();
     score_and_lives_init();
-
-    run_game();
 }
 
-const long min_time_per_frame = 24*1000*1000/FPS;
-
 static void run_game() {
-    printf("Starting game\n");
+    // Setup
     setup_game();
-    printf("Setup done\n");
-    
 
+    // Loop surrounded by checks to throttle fps if necessary
     long ticks_at_start_of_loop = timer_get_ticks();
+    long frame = 0;
     while (true) {
-        run_one_frame();
-        frame++;
+        loop(frame);
 
+        // If the frame finishes super fast, throttle it to FPS
+        const long min_time_per_frame = 24*1000*1000/FPS;
         while (timer_get_ticks() - ticks_at_start_of_loop < min_time_per_frame)
             ; // SPIN!
-
+        
         ticks_at_start_of_loop = timer_get_ticks();
+        frame++;
     }
 }
 
 static void setup_game() {
-    for(int i = 0; i < CUR_NUM_ASTEROIDS; i++) {
-        asteroid_spawn();
-    }
-    last_spawn_tick = timer_get_ticks();
+    setup_asteroids();
+    setup_score_and_lives();
+    setup_rocket();
 }
 
-
-static void run_one_frame() {
+// Runs one frame of the game
+static void loop(long frame) {
     // Clear frame to blank black frame
     gl_clear(GL_BLACK);
 
-    // Spawns new asteroid at regularly spaced intervals
-    if(timer_get_ticks() - last_spawn_tick > SPAWN_INTERVAL_TICKS) {
-        asteroid_spawn();
-        last_spawn_tick = timer_get_ticks();
-    }
-    
-    render_asteroids();
-    render_rocket();
-    render_score_and_lives();
-    draw_bullets();
-
+    loop_asteroids(frame);
+    loop_rocket(frame);
+    loop_score_and_lives(frame);
+    loop_bullets(frame);
+    // loop_saucer(frame);
 
     collision_detection();
-    update_mechanics_main();
-    fb_swap_buffer(); //show the frame
-    sounds_play(); //play next queued sound
+    
+    // Show the frame
+    fb_swap_buffer();
 }
 
 
@@ -113,13 +116,6 @@ void collision_detection() {
     if(rocket_asteroid_collision()) {
         rocket_explode();
         decrease_lives();
-        render_score_and_lives();
     }
 }
 
-// Updates the position of all asteroids, rocket, and bullets using velocity and position
-void update_mechanics_main() {
-    asteroids_update_mechanics();
-    rocket_update_mechanics();
-    bullets_update_mechanics();
-}
