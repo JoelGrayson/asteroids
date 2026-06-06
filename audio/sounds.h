@@ -1,3 +1,14 @@
+#pragma once
+
+#include "assert.h"
+#include "../libmango/dma.h"
+#include "../libmango/i2s.h"
+#include "sounds_wav.h"
+#include "ringbuffer.h"
+#include "timer.h"
+#include <stdint.h>
+#include <stdbool.h>
+
 #define AMP_ATTENUATION 8
 
 // Initializes all sounds by attenuating amplitudes to playable amounts.

@@ -1,3 +1,5 @@
+#pragma once
+
 #include "mechanics.h"
 #include "printf.h"
 #include "gl.h"

@@ -33,7 +33,7 @@ void render_explosion(struct point position, int frame) {
 
     double ratio_complete = (double)frame / (double)NUM_FRAMES_OF_EXPLOSION;
 
-    printf("drawing explosion with frame = %d and ratio = %f\n", frame, ratio_complete);
+    // printf("drawing explosion with frame = %d and ratio = %f\n", frame, ratio_complete);
 
     for (int i = 0; i < NUM_EXPLOSION_POINTS; i++) {
         gl_draw_pixel(

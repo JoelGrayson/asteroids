@@ -1,6 +1,3 @@
-#include "assert.h"
-#include "../libmango/dma.h"
-#include "../libmango/i2s.h"
 #include "sounds.h"
 #include "sounds_wav.h"
 #include "ringbuffer.h"
@@ -9,15 +6,7 @@
 #include "strings.h"
 #include "../fps.h"
 
-/*static unsigned long last_sound_tick;
-static unsigned long last_sound_duration_ticks;
-#define FIRE_SOUND_TICK_DURATION 400000*TICKS_PER_USEC
-#define THRUST_SOUND_TICK_DURATION 400000*TICKS_PER_USEC
-#define EXPLOSION_SOUND_TICK_DURATION 2000000*TICKS_PER_USEC
-*/
-
 static unsigned long last_sound_tick;
-
 static int16_t cur_buf[SAMP_PER_FRAME];
 
 #define NUM_SIMULTANEOUS_SAME_SOUND 2

@@ -82,6 +82,11 @@ static void run_game() {
         while (timer_get_ticks() - ticks_at_start_of_loop < min_time_per_frame)
             ; // SPIN!
         
+        // Game over
+        if (get_num_lives() <= 0) {
+            return;
+        }
+            
         ticks_at_start_of_loop = timer_get_ticks();
         frame++;
     }
@@ -91,6 +96,7 @@ static void setup_game() {
     setup_asteroids();
     setup_score_and_lives();
     setup_rocket();
+    setup_saucer();
 }
 
 // Runs one frame of the game
@@ -102,7 +108,7 @@ static void loop(long frame) {
     loop_rocket(frame);
     loop_score_and_lives(frame);
     loop_bullets(frame);
-    // loop_saucer(frame);
+    loop_saucer(frame);
 
     collision_detection();
     

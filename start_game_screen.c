@@ -13,7 +13,8 @@ void start_game_screen() {
     gl_swap_buffer();
 
     while (waiting) {
-        printf("Waiting in start screen\n");
+        // printf("Waiting in start screen\n");
+        // SPIN!
     }
     // Seeds random number generation upon start screen end.
     unsigned int ticks = (unsigned int)timer_get_ticks();

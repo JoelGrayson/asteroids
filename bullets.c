@@ -34,6 +34,7 @@ void new_bullet(struct mechanics mechanics, enum bullet_owner owner) {
             bullets[i]->mechanics = mechanics;
             bullets[i]->owner = owner;
             curr_num_bullets++; // Increase total count of allocated bullets
+            play_fire();
             return;
         }
         i++;
@@ -109,14 +110,18 @@ void bullets_asteroid_collision() {
         bullet = &bullets[i];
         // If the bullet is actually allocated, check for collisions with asteroids:
         if(*bullet != NULL) {
-            if((*bullet)->owner == ROCKET) {
-                // Tries to find an asteroid which has collided with our bullet:
-                struct asteroid_list_t *to_explode = get_asteroid_collision((*bullet)->mechanics, BULLET_COLLISION_POINTS, 4);
-                // If an asteroid has collided with our bullet, remove it (explode it!) alongside our bullet, and then return true (there has been a collision).
-                if(to_explode != NULL) {
-                    asteroid_explode(to_explode);
-                    delete_bullet(bullet);
-                }
+            // Tries to find an asteroid which has collided with our bullet:
+            struct asteroid_list_t *to_explode = get_asteroid_collision((*bullet)->mechanics, BULLET_COLLISION_POINTS, 4);
+
+            // Only increase score if rocket destroyed it, not saucer
+            if ((*bullet)->owner == ROCKET) {
+                asteroid_increase_score_by(to_explode->ast.size);
+            }
+
+            // If an asteroid has collided with our bullet, remove it (explode it!) alongside our bullet, and then return true (there has been a collision).
+            if(to_explode != NULL) {
+                asteroid_explode(to_explode);
+                delete_bullet(bullet);
             }
             num_remaining_bullets--;
         }

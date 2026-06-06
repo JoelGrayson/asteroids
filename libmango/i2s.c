@@ -222,7 +222,8 @@ bool i2s_transfer_completed(void) {
 
 // Blocks until the current I2S transaction has completed
 void i2s_await(void) {
-    if (!module.is_active) error("must call a playback/capture before calling i2s_await()\n");
+    // if (!module.is_active) error("must call a playback/capture before calling i2s_await()\n");
+    if (!module.is_active) printf("Warning: call a playback/capture before calling i2s_await()\n");
     while (!dma_transfer_completed(module.current_transfer.id)) {}
 }
 
