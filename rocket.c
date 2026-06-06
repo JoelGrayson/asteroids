@@ -71,7 +71,7 @@ bool is_rocket_exploding() {
 static bool rocket_is_thrusting = false;
 static bool is_invincible = true;
 bool rocket_is_invincible() {
-    return is_invincible;
+    return is_invincible || rocket_is_exploding;
 }
 
 static long frame_when_first_invincible = 0;
@@ -223,8 +223,25 @@ void loop_rocket() {
 
 
 void rocket_explode() {
+    static long frame_when_rocket_last_exploded = 0;
+    
+    printf("frame_when_rocket_last_exploded = %10ld, frame = %10ld\n", frame_when_rocket_last_exploded, frame);
+    if (frame_when_rocket_last_exploded == frame) { //cannot explode on the same frame
+        return;
+    }
+    
     rocket_is_exploding = true;
     num_frames_after_rocket_exploded = 0;
+    
+    frame_when_rocket_last_exploded = frame;
+
+    // Make sure the explosion doesn't drift
+    rocket_mechanics.vx = 0;
+    rocket_mechanics.vy = 0;
+    rocket_mechanics.ax = 0;
+    rocket_mechanics.ay = 0;
+
+
     decrease_lives();
 }
 
