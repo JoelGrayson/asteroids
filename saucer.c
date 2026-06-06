@@ -156,21 +156,51 @@ void loop_saucer() {
         // There is a saucer  
 
         int saucer_frame = frame - frame_when_saucer_last_spawned;
-        if (saucer_frame > FPS * 3 && saucer_frame % (int)(FPS * 1.5) == 0) { //every 1.5 seconds after 3 seconds passed (to make it toward the center of the screen)
-            face_toward(random_angle());
-        }
-        if (saucer_frame % (int)(FPS * .6666) == 0) { //every 2/3 seconds
-            // Shoot!
-            struct mechanics new_bullet_mechanics = {
-                .x = saucer_mechanics.x,
-                .y = saucer_mechanics.y,
-                .vx = saucer_mechanics.vx * 2,
-                .vy = saucer_mechanics.vy * 2,
-                .ax = 0,
-                .ay = 0,
-                .rotation = 0
-            };
-            new_bullet(new_bullet_mechanics, SAUCER);
+
+
+        if (saucer_state == BIG_SAUCER) {
+            // Big saucer is clumsy. Just shoots once per second and it is in a random direction
+
+            // Move in random direction every 3 seconds after 3 seconds passed (to make it toward the center of the screen)
+            if (saucer_frame >= FPS * 3 && saucer_frame % (int)(FPS * 3) == 0) {
+                face_toward(random_angle());
+            }
+
+            if (saucer_frame % (int)FPS == 0) { //every second
+                // Shoot!
+                struct mechanics new_bullet_mechanics = {
+                    .x = saucer_mechanics.x,
+                    .y = saucer_mechanics.y,
+                    .vx = saucer_mechanics.vx * 2,
+                    .vy = saucer_mechanics.vy * 2,
+                    .ax = 0,
+                    .ay = 0,
+                    .rotation = 0
+                };
+                new_bullet(new_bullet_mechanics, SAUCER);
+            }
+        } else {
+            // Small saucer shoots at you with a random offset and shoots twice per second. The bullets are faster too.
+
+            // Move in random direction every 1.5 seconds after 3 seconds passed (to make it toward the center of the screen)
+            if (saucer_frame >= FPS * 3 && saucer_frame % (int)(FPS * 1.5) == 0) {
+                face_toward(random_angle());
+            }
+
+            if (saucer_frame % (int)(FPS / 2) == 0) { //twice a second
+                // Shoot!
+                struct mechanics new_bullet_mechanics = {
+                    .x = saucer_mechanics.x,
+                    .y = saucer_mechanics.y,
+                    // TODO: make vx/vy face you
+                    .vx = saucer_mechanics.vx * 3,
+                    .vy = saucer_mechanics.vy * 3,
+                    .ax = 0,
+                    .ay = 0,
+                    .rotation = 0
+                };
+                new_bullet(new_bullet_mechanics, SAUCER);
+            }
         }
 
         update_mechanics(&saucer_mechanics, false);
