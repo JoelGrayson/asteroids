@@ -96,6 +96,7 @@ static void setup_game() {
     setup_asteroids();
     setup_score_and_lives();
     setup_rocket();
+    setup_saucer();
 }
 
 // Runs one frame of the game
@@ -107,6 +108,9 @@ static void loop(long frame) {
     loop_rocket(frame);
     loop_score_and_lives(frame);
     loop_bullets(frame);
+    setup_saucer();
+    
+    render_saucer(BIG_SAUCER);
     // loop_saucer(frame);
 
     collision_detection();

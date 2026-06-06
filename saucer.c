@@ -50,12 +50,13 @@ void render_saucer() {
 
     } else if (saucer_state == BIG_SAUCER) {
         draw_points(BIG_SAUCER_EXTERIOR_POINTS, NUM_SAUCER_EXTERIOR_POINTS, saucer_mechanics.x, saucer_mechanics.y, GL_WHITE);
-        draw_points(BIG_SAUCER_TOP_LINE_POINTS, NUM_SAUCER_EXTERIOR_POINTS, saucer_mechanics.x, saucer_mechanics.y, GL_WHITE);
-        draw_points(BIG_SAUCER_BOTTOM_LINE_POINTS, NUM_SAUCER_EXTERIOR_POINTS, saucer_mechanics.x, saucer_mechanics.y, GL_WHITE);
+        draw_points(BIG_SAUCER_TOP_LINE_POINTS, 2, saucer_mechanics.x, saucer_mechanics.y, GL_WHITE);
+        draw_points(BIG_SAUCER_BOTTOM_LINE_POINTS, 2, saucer_mechanics.x, saucer_mechanics.y, GL_WHITE);
+        printf("Drawing big saucer\n");
     } else if (saucer_state == SMALL_SAUCER) {
         draw_points(SMALL_SAUCER_EXTERIOR_POINTS, NUM_SAUCER_EXTERIOR_POINTS, saucer_mechanics.x, saucer_mechanics.y, GL_WHITE);
-        draw_points(SMALL_SAUCER_TOP_LINE_POINTS, NUM_SAUCER_EXTERIOR_POINTS, saucer_mechanics.x, saucer_mechanics.y, GL_WHITE);
-        draw_points(SMALL_SAUCER_BOTTOM_LINE_POINTS, NUM_SAUCER_EXTERIOR_POINTS, saucer_mechanics.x, saucer_mechanics.y, GL_WHITE);
+        draw_points(SMALL_SAUCER_TOP_LINE_POINTS, 2, saucer_mechanics.x, saucer_mechanics.y, GL_WHITE);
+        draw_points(SMALL_SAUCER_BOTTOM_LINE_POINTS, 2, saucer_mechanics.x, saucer_mechanics.y, GL_WHITE);
     } else {
         printf("Error: invalid saucer state %d\n", saucer_state);
     }
@@ -63,14 +64,29 @@ void render_saucer() {
 
 
 int frames_until_saucer_respawns = FPS * 10; //takes 10 seconds for a new saucer to spawn
-static int frame_when_saucer_last_despawned = 0; //when saucer dies, set this to the frame number. If 
+static long frame_when_saucer_last_despawned = 0; //when saucer dies, set this to the frame number. If 
 
+
+void setup_saucer() {
+    saucer_mechanics.x = 300;
+    saucer_mechanics.y = 300;
+    saucer_mechanics.vx = 0;
+    saucer_mechanics.vy = 0;
+    saucer_mechanics.ax = 0;
+    saucer_mechanics.ay = 0;
+    saucer_mechanics.rotation = 0;
+
+    // saucer_state = NO_SAUCER;
+    saucer_state = BIG_SAUCER;
+}
 
 static void spawn_saucer(enum saucer_state new_saucer_state) {
     if (new_saucer_state == BIG_SAUCER) {
+        printf("Spawning big saucer\n");
         saucer_state = new_saucer_state;
     }
     if (new_saucer_state == SMALL_SAUCER) {
+        printf("Spawning smol saucer\n");
         saucer_state = new_saucer_state;
     }
 
@@ -88,16 +104,20 @@ static void spawn_saucer(enum saucer_state new_saucer_state) {
             break;
         case 3: //right
             break;
+        default:
+            printf("Error: undefined corner\n");
     }
 }
 
-void loop_saucer(int frame) {
+void loop_saucer(long frame) {
     render_saucer();
+
+    printf("frame=%10ld, frame_when_saucer_last_despawned=%10ld, diff=%10ld, until=%10d\n", frame, frame_when_saucer_last_despawned, (frame - frame_when_saucer_last_despawned), frames_until_saucer_respawns);
 
     if (saucer_state == NO_SAUCER && (frame - frame_when_saucer_last_despawned) > frames_until_saucer_respawns) {
         // spawn saucer
         frame_when_saucer_last_despawned = frame;
-        if (rand() % 2 == 0) { //50-50 chance
+        if (rand() % 2 == 0) { //50-50 chance of being big or small
             spawn_saucer(BIG_SAUCER);
         } else {
             spawn_saucer(SMALL_SAUCER);
