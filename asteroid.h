@@ -16,6 +16,7 @@
 #include "audio/sounds.h"
 #include "rocket.h"
 #include "score_and_lives.h"
+#include "frame.h"
 
 #define MAX_NUM_ASTEROIDS 1000
 extern unsigned int MAX_ASTEROID_SPEED;
@@ -51,7 +52,7 @@ struct asteroid_list_t {
 void setup_asteroids();
 
 // Draws asteroid list and calculates if you need to spawn any new asteroids
-void loop_asteroids(long frame); 
+void loop_asteroids(); 
 
 // If any of the allocated asteroids collides with said object, return a pointer to that asteroid; otherwise return NULL.
 struct asteroid_list_t *get_asteroid_collision(struct mechanics obj, struct point *points_obj, int num_points_obj);

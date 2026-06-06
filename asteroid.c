@@ -222,13 +222,13 @@ static void render_asteroids() {
     }
 }
 
-void loop_asteroids(long frame) {
+void loop_asteroids() {
     render_asteroids();
     asteroids_update_mechanics();
-    spawn_asteroids_if_necessary(frame);
+    spawn_asteroids_if_necessary();
 }
 
-static void spawn_asteroids_if_necessary(long frame) {
+static void spawn_asteroids_if_necessary() {
     // Spawns new asteroid at regularly spaced intervals
     int frames_since_spawn = frame - frame_when_asteroid_last_spawned;
     if (frames_since_spawn > noisy_num_frames_between_spawn) {

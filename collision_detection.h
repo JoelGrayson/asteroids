@@ -18,6 +18,7 @@
 #include "rocket.h"
 #include "score_and_lives.h"
 #include "bullets.h"
+#include "saucer.h"
 
 void collision_detection();
 
