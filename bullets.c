@@ -14,9 +14,11 @@ static struct point BULLET_POINTS[BULLET_NUM_POINTS] = {
     { -0.5, 0.5 }
 };
 
-static struct point BULLET_COLLISION_POINTS[2] = {
+static struct point BULLET_COLLISION_POINTS[4] = {
     { -5, -5 },
-    { 5, 5 },
+    {  5, -5 },
+    { -5,  5 },
+    {  5,  5 }
 };
 
 void new_bullet(struct mechanics mechanics, enum bullet_owner owner) {
@@ -109,7 +111,7 @@ void bullets_asteroid_collision() {
         if(*bullet != NULL) {
             if((*bullet)->owner == ROCKET) {
                 // Tries to find an asteroid which has collided with our bullet:
-                struct asteroid_list_t *to_explode = get_asteroid_collision((*bullet)->mechanics, BULLET_COLLISION_POINTS, 2);
+                struct asteroid_list_t *to_explode = get_asteroid_collision((*bullet)->mechanics, BULLET_COLLISION_POINTS, 4);
                 // If an asteroid has collided with our bullet, remove it (explode it!) alongside our bullet, and then return true (there has been a collision).
                 if(to_explode != NULL) {
                     asteroid_explode(to_explode);

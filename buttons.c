@@ -15,10 +15,10 @@ const gpio_id_t THRUST_BUTTON_RELEASE = GPIO_PD12;
 const gpio_id_t FIRE_BUTTON = GPIO_PB0;
 #else
 // Sebastian's button configuration
-const gpio_id_t ROTATE_LEFT_BUTTON_PRESS = GPIO_PD11;
-const gpio_id_t ROTATE_LEFT_BUTTON_RELEASE = GPIO_PE17;
-const gpio_id_t ROTATE_RIGHT_BUTTON_PRESS = GPIO_PD12; //falling edge
-const gpio_id_t ROTATE_RIGHT_BUTTON_RELEASE = GPIO_PD13; //rising edge
+const gpio_id_t ROTATE_LEFT_BUTTON_PRESS = GPIO_PD12;
+const gpio_id_t ROTATE_LEFT_BUTTON_RELEASE = GPIO_PD13;
+const gpio_id_t ROTATE_RIGHT_BUTTON_PRESS = GPIO_PD11; //falling edge
+const gpio_id_t ROTATE_RIGHT_BUTTON_RELEASE = GPIO_PE17; //rising edge
 const gpio_id_t HYPERSPACE_BUTTON = GPIO_PB10;
 const gpio_id_t THRUST_BUTTON_PRESS = GPIO_PB11;
 const gpio_id_t THRUST_BUTTON_RELEASE = GPIO_PC0;
@@ -118,7 +118,6 @@ void hyperspace_pressed_listener() {
     
     // Use hyper button to test exploding
     rocket_hyperspace();
-
     gpio_interrupt_clear(HYPERSPACE_BUTTON);
 }
 

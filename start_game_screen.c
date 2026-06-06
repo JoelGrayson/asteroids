@@ -1,4 +1,6 @@
 #include "start_game_screen.h"
+#include "timer.h"
+#include "rand.h"
 
 bool waiting = true;
 
@@ -13,5 +15,8 @@ void start_game_screen() {
     while (waiting) {
         printf("Waiting in start screen\n");
     }
+    // Seeds random number generation upon start screen end.
+    unsigned int ticks = (unsigned int)timer_get_ticks();
+    srand(ticks);
 }
 

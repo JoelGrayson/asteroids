@@ -23,6 +23,7 @@ static int noisy_num_frames_between_spawn = 2 * FPS; //±80% of num_frames_betwe
 
 static void spawn_asteroids_if_necessary();
 static void asteroid_spawn();
+static void asteroid_custom_spawn(struct point loc, struct vector heading, enum asteroid_type type, enum asteroid_size size); // Allows us to spawn an asteroid with custom parameters.
 static void asteroid_despawn(struct asteroid_list_t* ast);
 static struct asteroid_list_t *get_next_spawnable_asteroid();
 
@@ -175,6 +176,22 @@ static void asteroid_spawn() {
     ast->allocated = true; // We have just spawned this asteroid, so it is now allocated in the asteroid list.
 }
 
+static void asteroid_custom_spawn(struct point loc, struct vector heading, enum asteroid_type type, enum asteroid_size size) {
+    // Locates next spawnable asteroid from our list -- just returns function if there is no space for any more asteroids.
+    struct asteroid_list_t *ast = get_next_spawnable_asteroid(list, list_size);
+    if(ast == NULL) return;
+
+    ast->ast.mechanics.x = loc.x;
+    ast->ast.mechanics.y = loc.y;
+
+    ast->ast.mechanics.vx = heading.x;
+    ast->ast.mechanics.vy = heading.y;
+
+    ast->ast.type = type;
+    ast->ast.size = size;
+    ast->allocated = true; // We have just spawned this asteroid, so it is now allocated in the asteroid list.
+}
+
 // Despawns asteroid by setting it to "deallocated."
 static void asteroid_despawn(struct asteroid_list_t* ast) {
     ast->allocated = false;
@@ -240,7 +257,7 @@ struct asteroid_list_t *get_asteroid_collision(struct mechanics obj, struct poin
 }
 
 void asteroid_explode(struct asteroid_list_t *ast) {
-    ast->allocated = false;
+    // Explosion sound-playing code:
     unsigned long present_tick = timer_get_ticks();
     if(present_tick-last_fire_sound_tick > FIRE_SOUND_TICK_DURATION && present_tick-last_thrust_sound_tick > THRUST_SOUND_TICK_DURATION && present_tick-last_explosion_sound_tick > EXPLOSION_SOUND_TICK_DURATION) {
         switch(ast->ast.size) {
@@ -259,9 +276,31 @@ void asteroid_explode(struct asteroid_list_t *ast) {
         }
         last_explosion_sound_tick = timer_get_ticks();
     }
-    
-    ast->ast.is_exploding = true;
-    ast->ast.exploding_frame = 0;
+    if(ast->ast.size == SMALL) { // Just blow up the asteroid into constituent particles.
+        ast->allocated = false;
+        ast->ast.is_exploding = true;
+        ast->ast.exploding_frame = 0;
+    } else {
+        ast->ast.size += 1; // Decrement asteroid size from BIG to MEDIUM, or from MEDIUM to SMALL.
+        struct point ast_loc = {ast->ast.mechanics.x, ast->ast.mechanics.y};
+
+        /*
+        // Adds a bit of random variation into our explosions, to keep them interesting!
+        double headingvx_dev = (double)((rand() % 5) - 2);
+        double headingvy_dev = (double)((rand() % 5) - 2);
+
+        double new_headingvx_dev = (double)((rand() % 5) - 3);
+        double new_headingvy_dev = (double)((rand() % 5) - 3);
+        */
+
+        struct vector new_heading = {(-1*ast->ast.mechanics.vx)/*+new_headingvx_dev*/, (-1*ast->ast.mechanics.vy)/*+new_headingvy_dev*/};
+        /*ast->ast.mechanics.vx += headingvx_dev;
+        ast->ast.mechanics.vy += headingvy_dev;*/
+
+        // Randomizes spawned asteroid type.
+        enum asteroid_type type = A + (rand() % 3);
+        asteroid_custom_spawn(ast_loc, new_heading, type, ast->ast.size);
+    }
 }
 
 struct point ASTEROID_A_SMALL_POINTS[ASTEROID_NUM_POINTS] = {
