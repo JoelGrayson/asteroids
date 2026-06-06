@@ -34,6 +34,7 @@ void new_bullet(struct mechanics mechanics, enum bullet_owner owner) {
             bullets[i]->mechanics = mechanics;
             bullets[i]->owner = owner;
             curr_num_bullets++; // Increase total count of allocated bullets
+            play_fire();
             return;
         }
         i++;

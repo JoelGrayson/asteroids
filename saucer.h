@@ -7,6 +7,7 @@
 #include "rand.h"
 #include "constants.h"
 #include "maths.h"
+#include "bullets.h"
 
 enum saucer_state {
     NO_SAUCER, //no saucer on screen

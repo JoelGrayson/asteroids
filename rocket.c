@@ -145,7 +145,6 @@ void rocket_fire() {
     new_bullet(mech_bullet, ROCKET);
     present_tick = timer_get_ticks();
     if(present_tick-last_fire_sound_tick > FIRE_SOUND_TICK_DURATION && present_tick-last_thrust_sound_tick > THRUST_SOUND_TICK_DURATION && present_tick-last_explosion_sound_tick > EXPLOSION_SOUND_TICK_DURATION) {
-        play_fire();
         last_fire_sound_tick = timer_get_ticks();
     }
 }

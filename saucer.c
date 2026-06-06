@@ -110,6 +110,9 @@ static void spawn_saucer(enum saucer_state new_saucer_state) {
     }
 }
 
+static double random_angle();
+static void face_toward(double angle);
+
 void loop_saucer(long frame) {
     render_saucer();
 
@@ -127,18 +130,37 @@ void loop_saucer(long frame) {
             }
         }
     } else {
-        // There is a saucer
-        update_mechanics(&saucer_mechanics, false);
+        // There is a saucer  
+
         int saucer_frame = frame - frame_when_saucer_last_spawned;
-        if (saucer_frame % FPS == 0) { //every second
-            double angle_of_motion = (rand() % 628) / 100; //0 to 2pi
-            saucer_mechanics.vx = saucer_speed * cosine(angle_of_motion);
-            saucer_mechanics.vy = saucer_speed * sine(angle_of_motion);
+        if (saucer_frame % (int)(FPS * 1.5) == 0) { //every 1.5 seconds
+            face_toward(random_angle());
+        }
+        if (saucer_frame % (int)(FPS * .6666) == 0) { //every 2/3 seconds
+            // Shoot!
+            struct mechanics new_bullet_mechanics = {
+                .x = saucer_mechanics.x,
+                .y = saucer_mechanics.y,
+                .vx = saucer_mechanics.vx * 2,
+                .vy = saucer_mechanics.vy * 2,
+                .ax = 0,
+                .ay = 0,
+                .rotation = 0
+            };
+            new_bullet(new_bullet_mechanics, SAUCER);
         }
 
-        // if (saucer_state == BIG_SAUCER) {
-            
-        // }
+        update_mechanics(&saucer_mechanics, false);
     }
+}
+
+/** @returns 0 to 2pi */
+static double random_angle() {
+    return (rand() % 628) / 100;
+}
+
+static void face_toward(double angle) {
+    saucer_mechanics.vx = saucer_speed * cosine(angle);
+    saucer_mechanics.vy = saucer_speed * sine(angle);
 }
 
