@@ -28,6 +28,8 @@ static void asteroid_despawn(struct asteroid_list_t* ast);
 static struct asteroid_list_t *get_next_spawnable_asteroid();
 
 void setup_asteroids() {
+    if (DISABLE_ASTEROIDS) return;
+
     // Spawn 9 asteroids at the start of the game
     for(int i = 0; i < 9; i++) {
         asteroid_spawn();
@@ -229,6 +231,8 @@ void loop_asteroids() {
 }
 
 static void spawn_asteroids_if_necessary() {
+    if (DISABLE_ASTEROIDS) return;
+
     // Spawns new asteroid at regularly spaced intervals
     int frames_since_spawn = frame - frame_when_asteroid_last_spawned;
     if (frames_since_spawn > noisy_num_frames_between_spawn) {
