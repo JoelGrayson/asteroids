@@ -26,6 +26,7 @@
 #include "game_over_screen.h"
 #include "collision_detection.h"
 #include "frame.h"
+#include "game_manager_state.h"
 
 #define NUM_FRAMES_TIL_SPEEDUP 24*40
 
@@ -39,13 +40,7 @@ static void loop();
 extern int num_frames_between_spawn;
 static bool beat1;
 
-enum game_manager_state {
-    START_GAME_SCREEN, //on first boot
-    GAME_IN_PLAY,
-    GAME_OVER_SCREEN, //asks you to input your name
-};
-
-enum game_manager_state game_manager_state = START_GAME_SCREEN;
+enum game_manager_state game_manager_state;
 
 int main() {
     one_time_setup();
@@ -58,7 +53,9 @@ static void game_manager() {
 
     while (true) {
         run_game();
-        game_over_screen();
+        while(game_manager_state == GAME_OVER_SCREEN) {
+            game_over_screen();
+        }
     }
 }
 
@@ -68,6 +65,7 @@ static void one_time_setup() {
     printf("One time setup\n");
     trig_init(3);
     gl_init(MONITOR_WIDTH, MONITOR_HEIGHT, FB_DOUBLEBUFFER);
+    game_manager_state = START_GAME_SCREEN; // Always at start screen upon initial boot!
     sounds_init();
     buttons_init();
     score_and_lives_init();

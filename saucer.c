@@ -141,8 +141,8 @@ void loop_saucer() {
             struct mechanics new_bullet_mechanics = {
                 .x = saucer_mechanics.x,
                 .y = saucer_mechanics.y,
-                .vx = saucer_mechanics.vx * 2,
-                .vy = saucer_mechanics.vy * 2,
+                .vx = saucer_mechanics.vx * 3,
+                .vy = saucer_mechanics.vy * 3,
                 .ax = 0,
                 .ay = 0,
                 .rotation = 0

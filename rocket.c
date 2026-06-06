@@ -75,7 +75,7 @@ bool rocket_is_invincible() {
 }
 
 static long frame_when_first_invincible = 0;
-const int NUM_INVINCIBLE_FRAMES = FPS * 20; //2 seconds
+const int NUM_INVINCIBLE_FRAMES = FPS * 2; //2 seconds
 
 // Increases when rocket_is_exploding == true. Determines how far off the rocket segments are from each other when rendering
 static int num_frames_after_rocket_exploded = 0;
