@@ -108,6 +108,8 @@ static void loop(long frame) {
     
     // Show the frame
     fb_swap_buffer();
+    // Play sounds!
+    sounds_play();
 }
 
 
