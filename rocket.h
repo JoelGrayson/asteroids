@@ -42,6 +42,8 @@ struct mechanics get_rocket_mechanics();
 struct point *get_points_of_rocket(); // returns rockets' points (as currently rendered in rotation)
 int get_num_rocket_points(); // returns the total count of points forming rocket polygon
 bool rocket_asteroid_collision();
+bool rocket_is_invincible(); // returns whether the rocket is currently invincible or not.
+bool is_rocket_exploding(); // returns whether the rocket is currently exploding or not.
 
 #endif
 

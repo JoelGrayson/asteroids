@@ -90,6 +90,7 @@ static void run_game() {
         
         // Game over
         if (get_num_lives() <= 0) {
+            game_manager_state = GAME_OVER_SCREEN;
             return;
         }
 

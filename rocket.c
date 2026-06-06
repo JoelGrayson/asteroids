@@ -64,10 +64,18 @@ static struct mechanics rocket_mechanics = {
 
 
 static bool rocket_is_exploding = false;
+bool is_rocket_exploding() {
+    return rocket_is_exploding;
+}
+
 static bool rocket_is_thrusting = false;
 static bool is_invincible = true;
+bool rocket_is_invincible() {
+    return is_invincible;
+}
+
 static long frame_when_first_invincible = 0;
-const int NUM_INVINCIBLE_FRAMES = FPS * 2; //2 seconds
+const int NUM_INVINCIBLE_FRAMES = FPS * 20; //2 seconds
 
 // Increases when rocket_is_exploding == true. Determines how far off the rocket segments are from each other when rendering
 static int num_frames_after_rocket_exploded = 0;
@@ -99,7 +107,7 @@ void setup_rocket() {
 }
 
 void rocket_rotate_left_press() {
-    is_rotating_left = true;
+    if(!rocket_is_exploding) is_rotating_left = true;
 }
 
 void rocket_rotate_left_release() {
@@ -107,7 +115,7 @@ void rocket_rotate_left_release() {
 }
 
 void rocket_rotate_right_press() {
-    is_rotating_right = true;
+    if(!rocket_is_exploding) is_rotating_right = true;
 }
 
 void rocket_rotate_right_release() {
@@ -125,33 +133,35 @@ static void reset_rocket(long frame) {
 
 /** Creates a bullet */
 void rocket_fire() {
-    unsigned long present_tick = timer_get_ticks();
-    if(present_tick-last_fire_sound_tick <= FIRE_SOUND_TICK_DURATION) return; // Refuse to fire faster than sound play!
-    struct mechanics *mech = &rocket_mechanics;
-    // Calculates direction bullet should be heading in
-    struct vector dir = {0, -3};
-    rotate_vector(&dir, mech->rotation);
+    if(!rocket_is_exploding) {
+        unsigned long present_tick = timer_get_ticks();
+        if(present_tick-last_fire_sound_tick <= FIRE_SOUND_TICK_DURATION) return; // Refuse to fire faster than sound play!
+        struct mechanics *mech = &rocket_mechanics;
+        // Calculates direction bullet should be heading in
+        struct vector dir = {0, -1.5};
+        rotate_vector(&dir, mech->rotation);
 
-    // Instantiates bullet in said direction.
-    struct mechanics mech_bullet = {
-        .x = mech->x,
-        .y = mech->y,
-        .vx = 10*dir.x,
-        .vy = 10*dir.y,
-        .ax = 0,
-        .ay = 0,
-        .rotation = mech->rotation
-    };
-    new_bullet(mech_bullet, ROCKET);
-    //present_tick = timer_get_ticks();
-    //if(present_tick-last_fire_sound_tick > FIRE_SOUND_TICK_DURATION && present_tick-last_thrust_sound_tick > THRUST_SOUND_TICK_DURATION && present_tick-last_explosion_sound_tick > EXPLOSION_SOUND_TICK_DURATION) {
-    //play_fire();
-    last_fire_sound_tick = timer_get_ticks();
-    //}
+        // Instantiates bullet in said direction.
+        struct mechanics mech_bullet = {
+            .x = mech->x,
+            .y = mech->y,
+            .vx = 10*dir.x,
+            .vy = 10*dir.y,
+            .ax = 0,
+            .ay = 0,
+            .rotation = mech->rotation
+        };
+        new_bullet(mech_bullet, ROCKET);
+        //present_tick = timer_get_ticks();
+        //if(present_tick-last_fire_sound_tick > FIRE_SOUND_TICK_DURATION && present_tick-last_thrust_sound_tick > THRUST_SOUND_TICK_DURATION && present_tick-last_explosion_sound_tick > EXPLOSION_SOUND_TICK_DURATION) {
+        //play_fire();
+        last_fire_sound_tick = timer_get_ticks();
+        //}
+    }
 }
 
 void rocket_thrust() {
-    rocket_is_thrusting = true;
+    if(!rocket_is_exploding) rocket_is_thrusting = true;
 }
 
 void rocket_unthrust() {
@@ -159,9 +169,11 @@ void rocket_unthrust() {
 }
 
 void rocket_hyperspace() {
-    // Teleports to a "random" location within the screen bounds.
-    rocket_mechanics.x = (double)(22 + (rand() % (unsigned int)(MONITOR_WIDTH-44))); // offset of 22 from edges to ensure rocket is fully rendered within screen.
-    rocket_mechanics.y = (double)(22 + (rand() % (unsigned int)(MONITOR_HEIGHT-44)));
+    if(!rocket_is_exploding) {
+        // Teleports to a "random" location within the screen bounds.
+        rocket_mechanics.x = (double)(22 + (rand() % (unsigned int)(MONITOR_WIDTH-44))); // offset of 22 from edges to ensure rocket is fully rendered within screen.
+        rocket_mechanics.y = (double)(22 + (rand() % (unsigned int)(MONITOR_HEIGHT-44)));
+    }
 }
 
 struct mechanics get_rocket_mechanics() {

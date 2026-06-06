@@ -16,9 +16,11 @@ static void check_if_bullet_touching_objs(struct bullet **bullet) {
 
 
     // # Bullet <-> Rocket
-    if (are_colliding((*bullet)->mechanics, get_rocket_mechanics(), BULLET_COLLISION_POINTS, rotated_rocket_points, BULLET_NUM_POINTS, ROCKET_NUM_POINTS)) {
-        delete_bullet(bullet);
-        rocket_explode();
+    if((*bullet)->owner == SAUCER) {
+        if (are_colliding((*bullet)->mechanics, get_rocket_mechanics(), BULLET_COLLISION_POINTS, rotated_rocket_points, BULLET_NUM_POINTS, ROCKET_NUM_POINTS)) {
+            delete_bullet(bullet);
+            if(!rocket_is_invincible()) rocket_explode();
+        }
     }
 
 
@@ -54,7 +56,7 @@ void collision_detection() {
 
     // Rocket collision saucer
     
-    if(rocket_asteroid_collision()) {
+    if(rocket_asteroid_collision() && !rocket_is_invincible()) {
         rocket_explode();
     }
 }
