@@ -34,6 +34,7 @@ extern struct bullet *bullets[MAX_NUM_BULLETS];
 void draw_bullet(struct bullet *bullet) ;
 
 void loop_bullets();
+int get_curr_num_bullets();
 
 struct point *get_bullet_points();
 
@@ -42,4 +43,7 @@ void bullets_asteroid_collision();
 
 // Deallocates a bullet from our list on command, given a pointer to it.
 void delete_bullet(struct bullet **bullet);
+
+extern struct point BULLET_POINTS[BULLET_NUM_POINTS];
+extern struct point BULLET_COLLISION_POINTS[BULLET_NUM_POINTS];
 

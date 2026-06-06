@@ -24,6 +24,7 @@
 #include "saucer.h"
 #include "start_game_screen.h"
 #include "game_over_screen.h"
+#include "collision_detection.h"
 
 static void game_manager();
 static void one_time_setup();
@@ -31,7 +32,6 @@ static void run_game();
 static void setup_game();
 static void run_one_frame();
 static void loop(long frame);
-static void collision_detection();
 
 enum game_manager_state {
     START_GAME_SCREEN, //on first boot
@@ -116,14 +116,5 @@ static void loop(long frame) {
     fb_swap_buffer();
     // Play sounds!
     sounds_play();
-}
-
-
-void collision_detection() {
-    bullets_asteroid_collision();
-    if(rocket_asteroid_collision()) {
-        rocket_explode();
-        decrease_lives();
-    }
 }
 

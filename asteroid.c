@@ -4,7 +4,7 @@
 unsigned int MAX_ASTEROID_SPEED = 15;
 
 // List of asteroids tracked in program
-static struct asteroid_list_t list[MAX_NUM_ASTEROIDS];
+struct asteroid_list_t asteroid_list[MAX_NUM_ASTEROIDS];
 // Number of asteroids to be tracked
 static int list_size = MAX_NUM_ASTEROIDS;
 
@@ -70,24 +70,24 @@ static void asteroid_set_pos(struct asteroid* ast, struct point new_pos) {
 // Mechanics function for asteroids during game loop
 static void asteroids_update_mechanics() {
     for(int i = 0; i < list_size; i++) {
-        if(list[i].allocated) { // Only update mechanics
+        if(asteroid_list[i].allocated) { // Only update mechanics
             // If exploding, increment the exploding frame so animation precedes
-            if (list[i].ast.is_exploding) {
-                list[i].ast.exploding_frame++;
+            if (asteroid_list[i].ast.is_exploding) {
+                asteroid_list[i].ast.exploding_frame++;
             }
             // Done exploding animation
-            if (list[i].ast.exploding_frame > NUM_FRAMES_OF_EXPLOSION) {
-                list[i].ast.exploding_frame = 0;
-                list[i].ast.is_exploding = false;
-                asteroid_despawn(&list[i]);
+            if (asteroid_list[i].ast.exploding_frame > NUM_FRAMES_OF_EXPLOSION) {
+                asteroid_list[i].ast.exploding_frame = 0;
+                asteroid_list[i].ast.is_exploding = false;
+                asteroid_despawn(&asteroid_list[i]);
             }
             
             // Asteroid continues on its present course
-            update_mechanics(&list[i].ast.mechanics, false); // Any object in motion at a certain velocity will remain in motion at that velocity (Newton's 1st Law).
+            update_mechanics(&asteroid_list[i].ast.mechanics, false); // Any object in motion at a certain velocity will remain in motion at that velocity (Newton's 1st Law).
             // Respawns asteroid if out-of-bounds
-            struct point pos = asteroid_get_pos(list[i].ast);
+            struct point pos = asteroid_get_pos(asteroid_list[i].ast);
             if(pos.x < -60 || pos.x > MONITOR_WIDTH+60 || pos.y < -60 || pos.y > MONITOR_HEIGHT+60) { // Asteroids ~ 60 radius max
-                asteroid_despawn(&list[i]);
+                asteroid_despawn(&asteroid_list[i]);
             }
         }
     }
@@ -96,7 +96,7 @@ static void asteroids_update_mechanics() {
 // Respawns asteroid at a random point along the edge of the screen
 static void asteroid_spawn() {
     // Locates next spawnable asteroid from our list -- just returns function if there is no space for any more asteroids.
-    struct asteroid_list_t *ast = get_next_spawnable_asteroid(list, list_size);
+    struct asteroid_list_t *ast = get_next_spawnable_asteroid(asteroid_list, list_size);
     if(ast == NULL) return;
 
     int edge_axis = rand() % 3;    // Selects the edge we respawn the asteroid on by random lot
@@ -178,7 +178,7 @@ static void asteroid_spawn() {
 
 static void asteroid_custom_spawn(struct point loc, struct vector heading, enum asteroid_type type, enum asteroid_size size) {
     // Locates next spawnable asteroid from our list -- just returns function if there is no space for any more asteroids.
-    struct asteroid_list_t *ast = get_next_spawnable_asteroid(list, list_size);
+    struct asteroid_list_t *ast = get_next_spawnable_asteroid(asteroid_list, list_size);
     if(ast == NULL) return;
 
     ast->ast.mechanics.x = loc.x;
@@ -201,7 +201,7 @@ static void asteroid_despawn(struct asteroid_list_t* ast) {
 static struct asteroid_list_t *get_next_spawnable_asteroid() {
     // Return the location of the next unallocated asteroid in the list if it can be found, null otherwise.
     for(int i = 0; i < list_size; i++) {
-        if(!list[i].allocated) return &list[i];
+        if(!asteroid_list[i].allocated) return &asteroid_list[i];
     }
     return NULL;
 }
@@ -209,9 +209,9 @@ static struct asteroid_list_t *get_next_spawnable_asteroid() {
 static void render_asteroids() {
     // Draws all allocated asteroids
     for(int i = 0; i < list_size; i++) {
-        if(list[i].allocated) {
+        if(asteroid_list[i].allocated) {
             //printf("something is allocated\n");
-            struct asteroid a = list[i].ast;
+            struct asteroid a = asteroid_list[i].ast;
             if (a.is_exploding) {
                 render_explosion(mechanics_to_point(a.mechanics), a.exploding_frame);
             } else {
@@ -244,13 +244,14 @@ static void spawn_asteroids_if_necessary(long frame) {
     }
 }
 
+/** Is asteroid touching anything */
 struct asteroid_list_t *get_asteroid_collision(struct mechanics obj, struct point *points_obj, int num_points_obj) {
     // Checks all allocated asteroids for collisions with object:
     for(int i = 0; i < list_size; i++) {
-        if(list[i].allocated) {
-            struct asteroid a = list[i].ast;
+        if(asteroid_list[i].allocated) {
+            struct asteroid a = asteroid_list[i].ast;
             struct point *points = get_points_of_asteroid(a);
-            if(are_colliding(a.mechanics, obj, points, points_obj, ASTEROID_NUM_POINTS, num_points_obj)) return &list[i];
+            if(are_colliding(a.mechanics, obj, points, points_obj, ASTEROID_NUM_POINTS, num_points_obj)) return &asteroid_list[i];
         }
     }
     return NULL; // No asteroids found colliding with our object.

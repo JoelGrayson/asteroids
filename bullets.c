@@ -7,14 +7,14 @@ struct bullet *bullets[MAX_NUM_BULLETS] = { 0 }; //zero out so all are NULL
 static int curr_num_bullets = 0; // number of allocated bullets starts out at zero
 
 // A square. More visible than a single point
-static struct point BULLET_POINTS[BULLET_NUM_POINTS] = {
+struct point BULLET_POINTS[BULLET_NUM_POINTS] = {
     { -0.5, -0.5 },
     { 0.5, -0.5 },
     { 0.5, 0.5 },
     { -0.5, 0.5 }
 };
 
-static struct point BULLET_COLLISION_POINTS[4] = {
+struct point BULLET_COLLISION_POINTS[BULLET_NUM_POINTS] = {
     { -5, -5 },
     {  5, -5 },
     { -5,  5 },
@@ -100,31 +100,7 @@ struct point *get_bullet_points() {
     return BULLET_POINTS;
 }
 
-void bullets_asteroid_collision() {
-    int num_remaining_bullets = curr_num_bullets; //number of remaining bullets to check
-    struct bullet **bullet;
-    int i = 0;
-
-    // Until we run out of allocated bullets to check collisions for, keep iterating to check collisions.
-    while(num_remaining_bullets > 0) {
-        bullet = &bullets[i];
-        // If the bullet is actually allocated, check for collisions with asteroids:
-        if(*bullet != NULL) {
-            // Tries to find an asteroid which has collided with our bullet:
-            struct asteroid_list_t *to_explode = get_asteroid_collision((*bullet)->mechanics, BULLET_COLLISION_POINTS, 4);
-
-            // Only increase score if rocket destroyed it, not saucer
-            if ((*bullet)->owner == ROCKET) {
-                asteroid_increase_score_by(to_explode->ast.size);
-            }
-
-            // If an asteroid has collided with our bullet, remove it (explode it!) alongside our bullet, and then return true (there has been a collision).
-            if(to_explode != NULL) {
-                asteroid_explode(to_explode);
-                delete_bullet(bullet);
-            }
-            num_remaining_bullets--;
-        }
-        i++;
-    }
+int get_curr_num_bullets() {
+    return curr_num_bullets;
 }
+
