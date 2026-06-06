@@ -63,7 +63,7 @@ static struct mechanics rocket_mechanics = {
 };
 
 
-static bool rocket_is_exploding = false;
+bool rocket_is_exploding = false;
 bool is_rocket_exploding() {
     return rocket_is_exploding;
 }

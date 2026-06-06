@@ -22,6 +22,8 @@ extern struct point MINI_ROCKET_POINTS[ROCKET_NUM_POINTS];
 
 extern struct point rotated_rocket_points[ROCKET_NUM_POINTS]; //exported for collision_detection
 
+extern bool rocket_is_exploding;
+
 void setup_rocket();
 
 
