@@ -24,7 +24,8 @@ void setup_saucer();
 void render_saucer();
 /** Should be called once in each run_one_frame of game. Renders the saucer and decides whether to spawn another saucer */
 void loop_saucer();
-void despawn_saucer();
+void despawn_saucer(bool explode);
+
 struct mechanics get_saucer_mechanics();
 struct point *get_saucer_points();
 int get_num_saucer_exterior_points();

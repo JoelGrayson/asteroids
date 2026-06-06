@@ -80,7 +80,7 @@ void collision_detection() {
         asteroid_to_explode = get_asteroid_collision(get_saucer_mechanics(), get_saucer_points(), get_num_saucer_exterior_points());
         if (asteroid_to_explode != NULL) {
             asteroid_explode(asteroid_to_explode);
-            despawn_saucer();
+            despawn_saucer(true);
         } else {
 
 
