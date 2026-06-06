@@ -123,7 +123,7 @@ void rocket_rotate_right_release() {
 }
 
 
-static void reset_rocket(long frame) {
+static void reset_rocket() {
     reset_rocket_mechanics();
 
     // Invincible
@@ -180,7 +180,7 @@ struct mechanics get_rocket_mechanics() {
     return rocket_mechanics;
 }
 
-static void render_rocket(long frame) {
+static void render_rocket() {
     if (rocket_is_exploding) {
         // Draw three lines: /, \, and _
         render_explosion(mechanics_to_point(rocket_mechanics), num_frames_after_rocket_exploded);
@@ -216,7 +216,7 @@ static void render_rocket(long frame) {
 static void rocket_update_mechanics();
 
 // Draws the rocket
-void loop_rocket(long frame) {
+void loop_rocket() {
     render_rocket(frame);
     rocket_update_mechanics();
 }

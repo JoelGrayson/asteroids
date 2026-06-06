@@ -43,7 +43,7 @@ struct point SMALL_SAUCER_BOTTOM_LINE_POINTS[] = {
 };
 
 static struct mechanics saucer_mechanics;
-static enum saucer_state saucer_state;
+enum saucer_state saucer_state = NO_SAUCER;
 
 void render_saucer() {
     if (saucer_state == NO_SAUCER) {
@@ -68,8 +68,8 @@ static long frame_when_saucer_last_despawned = 0; //when saucer dies, set this t
 
 
 void setup_saucer() {
-    saucer_mechanics.x = 300;
-    saucer_mechanics.y = 300;
+    saucer_mechanics.x = 0;
+    saucer_mechanics.y = 0;
     saucer_mechanics.vx = 0;
     saucer_mechanics.vy = 0;
     saucer_mechanics.ax = 0;
@@ -113,7 +113,7 @@ static void spawn_saucer(enum saucer_state new_saucer_state) {
 static double random_angle();
 static void face_toward(double angle);
 
-void loop_saucer(long frame) {
+void loop_saucer() {
     render_saucer();
 
     if (saucer_state == NO_SAUCER) {
@@ -167,8 +167,31 @@ static void face_toward(double angle) {
     saucer_mechanics.vy = saucer_speed * sine(angle);
 }
 
-void despawn_saucer(long frame) {
+void despawn_saucer() { //TODO: bool explode
     saucer_state = NO_SAUCER; //remove saucer
     frame_when_saucer_last_despawned = frame;
+    // TODO: add sound effect when saucer destroyed
+    // TODO: explode saucer at this point if 
+}
+
+struct mechanics get_saucer_mechanics() {
+    return saucer_mechanics;
+}
+
+struct point *get_saucer_points() {
+    switch (saucer_state) {
+        case SMALL_SAUCER:
+            return SMALL_SAUCER_EXTERIOR_POINTS;
+        case BIG_SAUCER:
+            return BIG_SAUCER_EXTERIOR_POINTS;
+        case NO_SAUCER:
+            return NULL;
+        default:
+            return NULL;
+    }
+}
+
+int get_num_saucer_exterior_points() {
+    return NUM_SAUCER_EXTERIOR_POINTS;
 }
 

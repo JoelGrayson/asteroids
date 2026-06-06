@@ -25,6 +25,7 @@
 #include "start_game_screen.h"
 #include "game_over_screen.h"
 #include "collision_detection.h"
+#include "frame.h"
 
 #define NUM_FRAMES_TIL_SPEEDUP 24*40
 
@@ -33,7 +34,7 @@ static void one_time_setup();
 static void run_game();
 static void setup_game();
 static void run_one_frame();
-static void loop(long frame);
+static void loop();
 
 extern int num_frames_between_spawn;
 static bool beat1;
@@ -79,7 +80,7 @@ static void run_game() {
 
     // Loop surrounded by checks to throttle fps if necessary
     long ticks_at_start_of_loop = timer_get_ticks();
-    long frame = 0;
+    frame = 0;
     while (true) {
         loop(frame);
 
@@ -124,7 +125,7 @@ static void setup_game() {
 }
 
 // Runs one frame of the game
-static void loop(long frame) {
+static void loop() {
     // Clear frame to blank black frame
     gl_clear(GL_BLACK);
 

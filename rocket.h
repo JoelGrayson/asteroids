@@ -36,7 +36,7 @@ void rocket_unthrust();
 void rocket_hyperspace();
 
 // Increases the rotation of the rocket by theta. Then, changes the internal rotated_rocket_points to ROCKET_POINTS_TEMPLATE rotated by an amount (so only recomputes rotation when the rotation changes)
-void loop_rocket(long frame);
+void loop_rocket();
 void rocket_explode();
 struct mechanics get_rocket_mechanics();
 struct point *get_points_of_rocket(); // returns rockets' points (as currently rendered in rotation)
