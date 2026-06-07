@@ -10,8 +10,6 @@ static int list_size = MAX_NUM_ASTEROIDS;
 
 // Asteroid explosion audio playback tracking to make sure we don't have silly playback issues.
 unsigned long last_explosion_sound_tick;
-
-extern unsigned long last_fire_sound_tick;
 extern unsigned long last_thrust_sound_tick;
 
 // Minimum asteroid speed define

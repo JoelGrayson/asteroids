@@ -3,7 +3,7 @@
 
 typedef void (*click_fn_t)(void* aux_data);
 
-#define JOEL
+//#define JOEL
 
 #ifdef JOEL
 const gpio_id_t ROTATE_LEFT_BUTTON_PRESS = GPIO_PB12;   //falling edge
