@@ -216,6 +216,7 @@ static void render_asteroids() {
             struct asteroid a = asteroid_list[i].ast;
             if (a.is_exploding) {
                 render_explosion(mechanics_to_point(a.mechanics), a.exploding_frame);
+                a.exploding_frame++;
             } else {
                 struct point *points = get_points_of_asteroid(a);
                 draw_points(points, ASTEROID_NUM_POINTS, a.mechanics.x, a.mechanics.y, GL_WHITE);
@@ -277,8 +278,6 @@ void asteroid_increase_score_by(enum asteroid_size asteroid_size) {
 
 void asteroid_explode(struct asteroid_list_t *ast) {
     // Explosion sound-playing code:
-    //unsigned long present_tick = timer_get_ticks();
-    //if(present_tick-last_fire_sound_tick > FIRE_SOUND_TICK_DURATION && present_tick-last_thrust_sound_tick > THRUST_SOUND_TICK_DURATION && present_tick-last_explosion_sound_tick > EXPLOSION_SOUND_TICK_DURATION) {
     switch(ast->ast.size) {
         case BIG:
             play_bangLarge();
@@ -290,32 +289,45 @@ void asteroid_explode(struct asteroid_list_t *ast) {
             play_bangSmall();
             break;
     }
-    //last_explosion_sound_tick = timer_get_ticks();
-    //}
-    if(ast->ast.size == SMALL) { // Just blow up the asteroid into constituent particles.
-        ast->allocated = false;
-        ast->ast.is_exploding = true;
-        ast->ast.exploding_frame = 0;
+
+    // Trigger explosion effect
+    ast->ast.is_exploding = true;
+    ast->ast.exploding_frame = 0;
+    
+    if(ast->ast.size == SMALL) {
+        // Just blow up the asteroid into constituent particles.
     } else {
-        ast->ast.size += 1; // Decrement asteroid size from BIG to MEDIUM, or from MEDIUM to SMALL.
+        // Create two new asteroids that are smaller
         struct point ast_loc = {ast->ast.mechanics.x, ast->ast.mechanics.y};
 
-        /*
-        // Adds a bit of random variation into our explosions, to keep them interesting!
-        double headingvx_dev = (double)((rand() % 5) - 2);
-        double headingvy_dev = (double)((rand() % 5) - 2);
+        struct vector v1 = {
+            .x = ast->ast.mechanics.vx,
+            .y = ast->ast.mechanics.vy,
+        };
+        struct vector v2 = v1; //copy over
+        rotate_vector(&v1, 0.2);
+        rotate_vector(&v2, -0.2);
+        enum asteroid_size new_asteroid_size = ast->ast.size + 1; // Decrement asteroid size from BIG to MEDIUM, or from MEDIUM to SMALL.
+        asteroid_custom_spawn(ast_loc, v1, ast->ast.type, new_asteroid_size);
+        asteroid_custom_spawn(ast_loc, v2, ast->ast.type, new_asteroid_size);
 
-        double new_headingvx_dev = (double)((rand() % 5) - 3);
-        double new_headingvy_dev = (double)((rand() % 5) - 3);
-        */
 
-        struct vector new_heading = {(-1*ast->ast.mechanics.vx)/*+new_headingvx_dev*/, (-1*ast->ast.mechanics.vy)/*+new_headingvy_dev*/};
-        /*ast->ast.mechanics.vx += headingvx_dev;
-        ast->ast.mechanics.vy += headingvy_dev;*/
+        // /*
+        // // Adds a bit of random variation into our explosions, to keep them interesting!
+        // double headingvx_dev = (double)((rand() % 5) - 2);
+        // double headingvy_dev = (double)((rand() % 5) - 2);
 
-        // Randomizes spawned asteroid type.
-        enum asteroid_type type = A + (rand() % 3);
-        asteroid_custom_spawn(ast_loc, new_heading, type, ast->ast.size);
+        // double new_headingvx_dev = (double)((rand() % 5) - 3);
+        // double new_headingvy_dev = (double)((rand() % 5) - 3);
+        // */
+
+        // struct vector new_heading = {(-1*ast->ast.mechanics.vx)/*+new_headingvx_dev*/, (-1*ast->ast.mechanics.vy)/*+new_headingvy_dev*/};
+        // /*ast->ast.mechanics.vx += headingvx_dev;
+        // ast->ast.mechanics.vy += headingvy_dev;*/
+
+        // // Randomizes spawned asteroid type.
+        // enum asteroid_type type = A + (rand() % 3);
+        // asteroid_custom_spawn(ast_loc, new_heading, type, ast->ast.size);
     }
 }
 

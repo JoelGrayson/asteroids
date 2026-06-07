@@ -4,10 +4,9 @@
 #include <stdbool.h>
 
 // Works with the Wuawei monitor
-static const double MONITOR_WIDTH = 1280;
-static const double MONITOR_HEIGHT = 720;
-
-static const bool DISABLE_ASTEROIDS = true;
+#define MONITOR_WIDTH 1280
+#define MONITOR_HEIGHT 720
+#define DISABLE_ASTEROIDS false
 
 #endif
 

@@ -1,13 +1,4 @@
-#include <stdbool.h>
 #include "rocket.h"
-#include "graphics/geometry.h"
-#include "graphics/rotate_vector.h"
-#include "maths.h"
-#include "timer.h"
-#include "rand.h"
-#include "bullets.h"
-#include "asteroid.h"
-#include "audio/sounds.h"
 
 #define ROCKET_DECELERATION 0.22
 

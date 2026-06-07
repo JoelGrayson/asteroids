@@ -11,7 +11,15 @@
 #include "graphics/draw_points.h"
 #include "rocket.h"
 #include "explosion.h"
-
+#include <stdbool.h>
+#include "graphics/geometry.h"
+#include "graphics/rotate_vector.h"
+#include "maths.h"
+#include "timer.h"
+#include "rand.h"
+#include "bullets.h"
+#include "asteroid.h"
+#include "audio/sounds.h"
 
 #define ROCKET_NUM_POINTS 6
 #define FIRE_SOUND_TICK_DURATION 400000*TICKS_PER_USEC

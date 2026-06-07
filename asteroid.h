@@ -17,6 +17,7 @@
 #include "rocket.h"
 #include "score_and_lives.h"
 #include "frame.h"
+#include "graphics/rotate_vector.h"
 
 #define MAX_NUM_ASTEROIDS 1000
 extern unsigned int MAX_ASTEROID_SPEED;
