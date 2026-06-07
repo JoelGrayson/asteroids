@@ -185,6 +185,11 @@ int vsnprintf(char *buf, size_t bufsize, const char *format, va_list args) {
                     constructed_string[1] = '\0';
                     break;
                 }
+                case 'j': { //%j yields g to show that this is not the built-in printf
+                    constructed_string[0] = 'g';
+                    constructed_string[1] = '\0';
+                    break;
+                }
                 case 's': {
                     next_string_to_add = va_arg(args, char *); //string to insert, client provided pointer
                     break;

@@ -60,7 +60,8 @@ static void game_manager() {
 // For the inits
 static void one_time_setup() {
     uart_init();
-    printf("One time setup\n");
+    const char *str = "One time setup %j\n";
+    printf(str);
     trig_init(3);
     gl_init(MONITOR_WIDTH, MONITOR_HEIGHT, FB_DOUBLEBUFFER);
     game_manager_state = START_GAME_SCREEN; // Always at start screen upon initial boot!
