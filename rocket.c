@@ -141,7 +141,11 @@ static void reset_rocket() {
 /** Creates a bullet */
 void rocket_fire() {
     if(!rocket_is_exploding) {
-        if(frame-last_fire_sound_frame <= FIRE_SOUND_TICK_DURATION) return; // Refuse to fire faster than sound play!
+        if(frame-last_fire_sound_frame <= FIRE_SOUND_TICK_DURATION) {
+            printf("rocket_fire: Can't fire faster than sound play. frame = %10ld, last_fire_sound_frame = %10ld\n", frame, last_fire_sound_frame);
+            return; // Refuse to fire faster than sound play!
+        }
+
         struct mechanics *mech = &rocket_mechanics;
         // Calculates direction bullet should be heading in
         struct vector dir = {0, -1.5};
@@ -163,6 +167,8 @@ void rocket_fire() {
         //play_fire();
         last_fire_sound_frame = frame;
         //}
+    } else {
+        printf("rocket_fire: can't shoot when rocket exploding");
     }
 }
 

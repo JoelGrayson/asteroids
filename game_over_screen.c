@@ -162,10 +162,7 @@ void letter_enter() {
         for(int i = 0; i < 3; i++) {
             if(name[i] == '_') name[i] = ' ';
         }
-        unsigned long start = timer_get_ticks();
-        while(timer_get_ticks() - start < 500000*TICKS_PER_USEC) {
-            game_over_screen();
-        }
+        
         restart_game();
     }
 }
