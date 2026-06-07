@@ -31,8 +31,8 @@ void setup_asteroids() {
     if (DISABLE_ASTEROIDS) return;
 
     // Spawn 9 asteroids at the start of the game
-    for(int i = 0; i < 9; i++) {
-        asteroid_spawn();
+    for(int i = 0; i < 5; i++) {
+        asteroid_spawn(-1, BIG);
         frame_when_asteroid_last_spawned = 0;
     }
 }
@@ -95,8 +95,9 @@ static void asteroids_update_mechanics() {
     }
 }
 
-// Respawns asteroid at a random point along the edge of the screen
-static void asteroid_spawn() {
+
+// Respawns asteroid at a random point along the edge of the screen. Specify type/size or set to -1 for it to be randomly generated
+static void asteroid_spawn(enum asteroid_type type, enum asteroid_size size) {
     // Locates next spawnable asteroid from our list -- just returns function if there is no space for any more asteroids.
     struct asteroid_list_t *ast = get_next_spawnable_asteroid(asteroid_list, list_size);
     if(ast == NULL) return;
@@ -168,12 +169,8 @@ static void asteroid_spawn() {
     ast->ast.mechanics.vx = respawn_heading.x;
     ast->ast.mechanics.vy = respawn_heading.y;
 
-    // Randomizes spawned asteroid type and size
-    enum asteroid_type type = A + (rand() % 3);
-    enum asteroid_size size = BIG + (rand() % 3);
-
-    ast->ast.type = type;
-    ast->ast.size = size;
+    ast->ast.type = type == -1 ? A + (rand() % 3) : type;
+    ast->ast.size = size == -1 ? BIG + (rand() % 3) : size;
 
     ast->allocated = true; // We have just spawned this asteroid, so it is now allocated in the asteroid list.
 }
@@ -237,7 +234,7 @@ static void spawn_asteroids_if_necessary() {
     // Spawns new asteroid at regularly spaced intervals
     int frames_since_spawn = frame - frame_when_asteroid_last_spawned;
     if (frames_since_spawn > noisy_num_frames_between_spawn) {
-        asteroid_spawn();
+        asteroid_spawn(-1, -1);
 
         
         frame_when_asteroid_last_spawned = frame;
@@ -310,25 +307,10 @@ void asteroid_explode(struct asteroid_list_t *ast) {
         enum asteroid_size new_asteroid_size = ast->ast.size + 1; // Decrement asteroid size from BIG to MEDIUM, or from MEDIUM to SMALL.
         asteroid_custom_spawn(ast_loc, v1, ast->ast.type, new_asteroid_size);
         asteroid_custom_spawn(ast_loc, v2, ast->ast.type, new_asteroid_size);
-
-
-        // /*
-        // // Adds a bit of random variation into our explosions, to keep them interesting!
-        // double headingvx_dev = (double)((rand() % 5) - 2);
-        // double headingvy_dev = (double)((rand() % 5) - 2);
-
-        // double new_headingvx_dev = (double)((rand() % 5) - 3);
-        // double new_headingvy_dev = (double)((rand() % 5) - 3);
-        // */
-
-        // struct vector new_heading = {(-1*ast->ast.mechanics.vx)/*+new_headingvx_dev*/, (-1*ast->ast.mechanics.vy)/*+new_headingvy_dev*/};
-        // /*ast->ast.mechanics.vx += headingvx_dev;
-        // ast->ast.mechanics.vy += headingvy_dev;*/
-
-        // // Randomizes spawned asteroid type.
-        // enum asteroid_type type = A + (rand() % 3);
-        // asteroid_custom_spawn(ast_loc, new_heading, type, ast->ast.size);
     }
+
+    // Stop explosion effect from moving
+    ast->ast.mechanics.vx = ast->ast.mechanics.vy = 0;
 }
 
 struct point ASTEROID_A_SMALL_POINTS[ASTEROID_NUM_POINTS] = {
