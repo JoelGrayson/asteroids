@@ -1,13 +1,4 @@
-#include <stdbool.h>
 #include "rocket.h"
-#include "graphics/geometry.h"
-#include "graphics/rotate_vector.h"
-#include "maths.h"
-#include "timer.h"
-#include "rand.h"
-#include "bullets.h"
-#include "asteroid.h"
-#include "audio/sounds.h"
 
 #define ROCKET_DECELERATION 0.22
 
@@ -27,6 +18,19 @@ struct point ROCKET_POINTS_TEMPLATE[ROCKET_NUM_POINTS] = {
     {  10,  11 }, //4
     {  13,  20 }, //5
     {   0, -20 }  //6 (same as 1)
+};
+
+#define ROCKET_THRUST_NUM_POINTS 3
+struct point ROCKET_THRUST_ICON_POINTS[ROCKET_THRUST_NUM_POINTS] = {
+    { -7, 11 },
+    { 0, 25 },
+    { 7, 11 }
+};
+
+struct point rotated_rocket_thrust_icon[ROCKET_THRUST_NUM_POINTS] = {
+    { -7, 11 },
+    { 0, 25 },
+    { 7, 11 }
 };
 
 #define MINI_ROCKET_RATIO 0.6
@@ -63,7 +67,7 @@ static struct mechanics rocket_mechanics = {
 };
 
 
-static bool rocket_is_exploding = false;
+bool rocket_is_exploding = false;
 bool is_rocket_exploding() {
     return rocket_is_exploding;
 }
@@ -71,7 +75,7 @@ bool is_rocket_exploding() {
 static bool rocket_is_thrusting = false;
 static bool is_invincible = true;
 bool rocket_is_invincible() {
-    return is_invincible;
+    return is_invincible || rocket_is_exploding;
 }
 
 static long frame_when_first_invincible = 0;
@@ -205,6 +209,11 @@ static void render_rocket() {
     } else {
         // Show the rocket
         draw_points(rotated_rocket_points, ROCKET_NUM_POINTS, rocket_mechanics.x, rocket_mechanics.y, GL_WHITE);
+
+        if (rocket_is_thrusting) {
+            rotate_template_points(rotated_rocket_thrust_icon, ROCKET_THRUST_ICON_POINTS, ROCKET_THRUST_NUM_POINTS, rocket_mechanics.rotation);
+            draw_points(rotated_rocket_thrust_icon, ROCKET_THRUST_NUM_POINTS, rocket_mechanics.x, rocket_mechanics.y, GL_WHITE);
+        }
     }
 
     // Only invincible for NUM_INVINCIBLE_FRAMES
@@ -225,8 +234,25 @@ void loop_rocket() {
 void rocket_explode() {
     // DO NOT EXPLODE AGAIN IF ROCKET IS ALREADY EXPLODING.
     if(!rocket_is_exploding) {
+        static long frame_when_rocket_last_exploded = 0;
+    
+        printf("frame_when_rocket_last_exploded = %10ld, frame = %10ld\n", frame_when_rocket_last_exploded, frame);
+        if (frame_when_rocket_last_exploded == frame) { //cannot explode on the same frame
+            return;
+        }
+    
         rocket_is_exploding = true;
         num_frames_after_rocket_exploded = 0;
+    
+        frame_when_rocket_last_exploded = frame;
+
+        // Make sure the explosion doesn't drift
+        rocket_mechanics.vx = 0;
+        rocket_mechanics.vy = 0;
+        rocket_mechanics.ax = 0;
+        rocket_mechanics.ay = 0;
+
+
         decrease_lives();
     }
 }

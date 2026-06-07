@@ -5,7 +5,7 @@
 
 #define MAX_SCORE_STRING_SIZE 1024
 
-#define DEFAULT_NUM_LIVES 3
+#define DEFAULT_NUM_LIVES 4
 
 static int num_lives = DEFAULT_NUM_LIVES;
 static int score = 0;
@@ -46,7 +46,7 @@ static void render_score() {
 
 static void render_lives() {
     // Draw num_lives number of rockets
-    for (int i = 0; i < num_lives; i++) {
+    for (int i = 0; i < num_lives - 1; i++) { //-1 because if there are 1 lives left it doesn't show anything
         int x = i * ROCKET_WIDTH + LEFT_OFFSET + 8;
         draw_points(MINI_ROCKET_POINTS, ROCKET_NUM_POINTS, x, 90, GL_WHITE);
     }

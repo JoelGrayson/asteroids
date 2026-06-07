@@ -48,6 +48,9 @@ enum saucer_state saucer_state = NO_SAUCER;
 static int num_frames_after_saucer_explode = 0;
 static bool saucer_is_exploding = false;
 
+const double big_saucer_bullet_speed = 4;
+const double small_saucer_bullet_speed = 8;
+
 void render_saucer() {
     if (saucer_state == NO_SAUCER) {
         if (saucer_is_exploding) {
@@ -146,6 +149,7 @@ void loop_saucer() {
         if ((frame - frame_when_saucer_last_despawned) > frames_until_saucer_respawns) {
             // spawn saucer
             frame_when_saucer_last_spawned = frame;
+            // spawn_saucer(SMALL_SAUCER);
             if (rand() % 2 == 0) { //50-50 chance of being big or small
                 spawn_saucer(BIG_SAUCER);
             } else {
@@ -156,21 +160,61 @@ void loop_saucer() {
         // There is a saucer  
 
         int saucer_frame = frame - frame_when_saucer_last_spawned;
-        if (saucer_frame > FPS * 3 && saucer_frame % (int)(FPS * 1.5) == 0) { //every 1.5 seconds after 3 seconds passed (to make it toward the center of the screen)
-            face_toward(random_angle());
-        }
-        if (saucer_frame % (int)(FPS * .6666) == 0) { //every 2/3 seconds
-            // Shoot!
-            struct mechanics new_bullet_mechanics = {
-                .x = saucer_mechanics.x,
-                .y = saucer_mechanics.y,
-                .vx = saucer_mechanics.vx * 3,
-                .vy = saucer_mechanics.vy * 3,
-                .ax = 0,
-                .ay = 0,
-                .rotation = 0
-            };
-            new_bullet(new_bullet_mechanics, SAUCER);
+
+
+        if (saucer_state == BIG_SAUCER) {
+            // Big saucer is clumsy. Just shoots once per second and it is in a random direction
+
+            // Move in random direction every 3 seconds after 3 seconds passed (to make it toward the center of the screen)
+            if (saucer_frame >= FPS * 3 && saucer_frame % (int)(FPS * 3) == 0) {
+                face_toward(random_angle());
+            }
+
+            if (saucer_frame % (int)FPS == 0) { //every second
+                // Shoot!
+                double angle = random_angle();
+
+                struct mechanics new_bullet_mechanics = {
+                    .x = saucer_mechanics.x,
+                    .y = saucer_mechanics.y,
+                    .vx = big_saucer_bullet_speed * cosine(angle),
+                    .vy = big_saucer_bullet_speed * sine(angle),
+                    .ax = 0,
+                    .ay = 0,
+                    .rotation = 0
+                };
+                new_bullet(new_bullet_mechanics, SAUCER);
+            }
+        } else {
+            // Small saucer shoots at you with a random offset and shoots twice per second. The bullets are faster too.
+
+            // Move in random direction every 1.5 seconds after 3 seconds passed (to make it toward the center of the screen)
+            if (saucer_frame >= FPS * 3 && saucer_frame % (int)(FPS * 1.5) == 0) {
+                face_toward(random_angle());
+            }
+
+            if (saucer_frame % (int)(FPS / 2) == 0) { //twice a second
+                // Shoot!
+                struct mechanics rocket_mechanics = get_rocket_mechanics();
+                struct vector rocket_to_saucer = {
+                    .x = rocket_mechanics.x - saucer_mechanics.x,
+                    .y = rocket_mechanics.y - saucer_mechanics.y
+                };
+                double eps = 0.2 * ((rand() % 3) - 1.5); //small angle to rotate by so it is not shooting straight at you
+                rotate_vector(&rocket_to_saucer, eps);
+                rocket_to_saucer = vec_normalize(rocket_to_saucer);
+                
+                struct mechanics new_bullet_mechanics = {
+                    .x = saucer_mechanics.x,
+                    .y = saucer_mechanics.y,
+                    .vx = small_saucer_bullet_speed * rocket_to_saucer.x,
+                    .vy = small_saucer_bullet_speed * rocket_to_saucer.y,
+                    .ax = 0,
+                    .ay = 0,
+                    .rotation = 0
+                };
+                new_bullet(new_bullet_mechanics, SAUCER);
+            }
         }
 
         update_mechanics(&saucer_mechanics, false);

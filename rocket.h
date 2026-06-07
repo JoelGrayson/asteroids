@@ -11,7 +11,15 @@
 #include "graphics/draw_points.h"
 #include "rocket.h"
 #include "explosion.h"
-
+#include <stdbool.h>
+#include "graphics/geometry.h"
+#include "graphics/rotate_vector.h"
+#include "maths.h"
+#include "timer.h"
+#include "rand.h"
+#include "bullets.h"
+#include "asteroid.h"
+#include "audio/sounds.h"
 
 #define ROCKET_NUM_POINTS 6
 #define FIRE_SOUND_TICK_DURATION 400000*TICKS_PER_USEC
@@ -21,6 +29,8 @@ extern struct point ROCKET_POINTS_TEMPLATE[ROCKET_NUM_POINTS];
 extern struct point MINI_ROCKET_POINTS[ROCKET_NUM_POINTS];
 
 extern struct point rotated_rocket_points[ROCKET_NUM_POINTS]; //exported for collision_detection
+
+extern bool rocket_is_exploding;
 
 void setup_rocket();
 

@@ -87,7 +87,7 @@ static void run_game() {
             ; // SPIN!
         
         // Game over
-        if (get_num_lives() <= 0) {
+        if (get_num_lives() <= 0 && !rocket_is_exploding) {
             game_manager_state = GAME_OVER_SCREEN;
             setup_gameover(); // Sets up game over screen.
             return;
