@@ -29,6 +29,19 @@ struct point ROCKET_POINTS_TEMPLATE[ROCKET_NUM_POINTS] = {
     {   0, -20 }  //6 (same as 1)
 };
 
+#define ROCKET_THRUST_NUM_POINTS 3
+struct point ROCKET_THRUST_ICON_POINTS[ROCKET_THRUST_NUM_POINTS] = {
+    { -7, 11 },
+    { 0, 25 },
+    { 7, 11 }
+};
+
+struct point rotated_rocket_thrust_icon[ROCKET_THRUST_NUM_POINTS] = {
+    { -7, 11 },
+    { 0, 25 },
+    { 7, 11 }
+};
+
 #define MINI_ROCKET_RATIO 0.6
 // Points of a rocket facing north
 struct point MINI_ROCKET_POINTS[ROCKET_NUM_POINTS] = {
@@ -205,6 +218,11 @@ static void render_rocket() {
     } else {
         // Show the rocket
         draw_points(rotated_rocket_points, ROCKET_NUM_POINTS, rocket_mechanics.x, rocket_mechanics.y, GL_WHITE);
+
+        if (rocket_is_thrusting) {
+            rotate_template_points(rotated_rocket_thrust_icon, ROCKET_THRUST_ICON_POINTS, ROCKET_THRUST_NUM_POINTS, rocket_mechanics.rotation);
+            draw_points(rotated_rocket_thrust_icon, ROCKET_THRUST_NUM_POINTS, rocket_mechanics.x, rocket_mechanics.y, GL_WHITE);
+        }
     }
 
     // Only invincible for NUM_INVINCIBLE_FRAMES

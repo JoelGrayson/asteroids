@@ -149,12 +149,12 @@ void loop_saucer() {
         if ((frame - frame_when_saucer_last_despawned) > frames_until_saucer_respawns) {
             // spawn saucer
             frame_when_saucer_last_spawned = frame;
-            spawn_saucer(SMALL_SAUCER);
-            // if (rand() % 2 == 0) { //50-50 chance of being big or small
-            //     spawn_saucer(BIG_SAUCER);
-            // } else {
-            //     spawn_saucer(SMALL_SAUCER);
-            // }
+            // spawn_saucer(SMALL_SAUCER);
+            if (rand() % 2 == 0) { //50-50 chance of being big or small
+                spawn_saucer(BIG_SAUCER);
+            } else {
+                spawn_saucer(SMALL_SAUCER);
+            }
         }
     } else {
         // There is a saucer  
