@@ -17,8 +17,11 @@ static int let_index = 0;
 static int highscore_index = -1;
 static unsigned long last_rotate_tick;
 
+// BEGIN PERSIST
 int high_scores[10];
 char* high_score_names[10];
+// END PERSIST
+
 static char empty[1];
 static bool score_loaded = false;
 
@@ -111,6 +114,8 @@ bool is_gameover() {
 }
 
 void game_over_screen() {
+    const double char_width = gl_get_char_width();
+    
     load_highscore(); // Loads highscore if we made it!
     rotate_letter();
     gl_clear(GL_BLACK);
@@ -119,7 +124,10 @@ void game_over_screen() {
     gl_draw_string(MONITOR_WIDTH / 2 - 300, MONITOR_HEIGHT * 0.25, "Please enter your initials", GL_WHITE);
     gl_draw_string(MONITOR_WIDTH / 2 - 300, MONITOR_HEIGHT * 0.30, "Push ROTATE to select letter", GL_WHITE);
     gl_draw_string(MONITOR_WIDTH / 2 - 300, MONITOR_HEIGHT * 0.35, "Push HYPERSPACE when letter is correct", GL_WHITE);
-    gl_draw_string(MONITOR_WIDTH / 2 - 200, MONITOR_HEIGHT * 0.47, (const char*)(&name[0]), GL_WHITE);
+    
+    gl_draw_char(MONITOR_WIDTH / 2 - 200, MONITOR_HEIGHT * 0.47, name[0], GL_WHITE);
+    gl_draw_char(MONITOR_WIDTH / 2 - 200 + char_width * 1.5, MONITOR_HEIGHT * 0.47, name[1], GL_WHITE);
+    gl_draw_char(MONITOR_WIDTH / 2 - 200 + char_width * 3.0, MONITOR_HEIGHT * 0.47, name[2], GL_WHITE);
 
     gl_swap_buffer();
     if(highscore_index != -1) {
@@ -151,6 +159,9 @@ void letter_enter() {
 
     // If the name has been fully entered, delay a half-second so user can see (disable interrupts temporarily), and then restart game.
     if(let_index == 3) {
+        for(int i = 0; i < 3; i++) {
+            if(name[i] == '_') name[i] = ' ';
+        }
         unsigned long start = timer_get_ticks();
         while(timer_get_ticks() - start < 500000*TICKS_PER_USEC) {
             game_over_screen();
