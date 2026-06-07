@@ -6,19 +6,12 @@
 struct bullet *bullets[MAX_NUM_BULLETS] = { 0 }; //zero out so all are NULL
 static int curr_num_bullets = 0; // number of allocated bullets starts out at zero
 
-// A square. More visible than a single point
-struct point BULLET_POINTS[BULLET_NUM_POINTS] = {
-    { -0.5, -0.5 },
-    { 0.5, -0.5 },
-    { 0.5, 0.5 },
-    { -0.5, 0.5 }
-};
-
-struct point BULLET_COLLISION_POINTS[BULLET_NUM_POINTS] = {
+struct point BULLET_COLLISION_POINTS[BULLET_COLLISION_NUM_POINTS] = {
     { -5, -5 },
     {  5, -5 },
+    {  5,  5 },
     { -5,  5 },
-    {  5,  5 }
+    { -5, -5 },
 };
 
 void new_bullet(struct mechanics mechanics, enum bullet_owner owner) {
@@ -104,10 +97,6 @@ void delete_bullet(struct bullet **bullet) {
     free(*bullet);
     *bullet = NULL;
     curr_num_bullets--; // Decrease total count of allocated bullets
-}
-
-struct point *get_bullet_points() {
-    return BULLET_POINTS;
 }
 
 int get_curr_num_bullets() {

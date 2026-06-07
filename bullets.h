@@ -15,7 +15,8 @@ enum bullet_owner {
 };
 
 // This is not a template. No rotation rendering on bullet
-#define BULLET_NUM_POINTS 4
+#define BULLET_COLLISION_NUM_POINTS 5
+extern struct point BULLET_COLLISION_POINTS[BULLET_COLLISION_NUM_POINTS];
 
 
 /* Represents a bullet */
@@ -37,14 +38,10 @@ void setup_bullets();
 void loop_bullets();
 int get_curr_num_bullets();
 
-struct point *get_bullet_points();
-
 // Collision handling function for when bullet collides with an asteroid.
 void bullets_asteroid_collision();
 
 // Deallocates a bullet from our list on command, given a pointer to it.
 void delete_bullet(struct bullet **bullet);
 
-extern struct point BULLET_POINTS[BULLET_NUM_POINTS];
-extern struct point BULLET_COLLISION_POINTS[BULLET_NUM_POINTS];
 

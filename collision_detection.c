@@ -2,7 +2,7 @@
 
 static void check_if_bullet_touching_objs(struct bullet **bullet) {
     // # Bullet <-> Asteroid
-    struct asteroid_list_t *asteroid_to_explode = get_asteroid_collision((*bullet)->mechanics, BULLET_COLLISION_POINTS, BULLET_NUM_POINTS);
+    struct asteroid_list_t *asteroid_to_explode = get_asteroid_collision((*bullet)->mechanics, BULLET_COLLISION_POINTS, BULLET_COLLISION_NUM_POINTS);
     if (asteroid_to_explode != NULL) {
         // If an asteroid has collided with our bullet
 
@@ -19,7 +19,7 @@ static void check_if_bullet_touching_objs(struct bullet **bullet) {
 
     // # Bullet <-> Rocket
     if((*bullet)->owner == SAUCER && !rocket_is_invincible()) {
-        if (are_colliding((*bullet)->mechanics, get_rocket_mechanics(), BULLET_COLLISION_POINTS, rotated_rocket_points, BULLET_NUM_POINTS, ROCKET_NUM_POINTS)) {
+        if (are_colliding((*bullet)->mechanics, get_rocket_mechanics(), BULLET_COLLISION_POINTS, rotated_rocket_points, BULLET_COLLISION_NUM_POINTS, ROCKET_NUM_POINTS)) {
             delete_bullet(bullet);
             rocket_explode();
         }
@@ -29,7 +29,7 @@ static void check_if_bullet_touching_objs(struct bullet **bullet) {
     // # Bullet <-> Saucer
     if (saucer_state != NO_SAUCER) {
         if ((*bullet)->owner == ROCKET) { //only rocket bullet can destroy saucer
-            if (are_colliding((*bullet)->mechanics, get_saucer_mechanics(), BULLET_COLLISION_POINTS, get_saucer_points(), BULLET_NUM_POINTS, get_num_saucer_exterior_points())) {
+            if (are_colliding((*bullet)->mechanics, get_saucer_mechanics(), BULLET_COLLISION_POINTS, get_saucer_points(), BULLET_COLLISION_NUM_POINTS, get_num_saucer_exterior_points())) {
                 // 1000 - small, 200 big
                 if (saucer_state == BIG_SAUCER) {
                     increase_score_by(200);
