@@ -126,7 +126,7 @@ static dma_addr_mode_t mode_for_drq(dma_drq_type_t drq) {
     error("Invalid DRQ type");
 }
 
-// future TODO: expose link structure for endpoint and/or allow circular link?
+// future T O D O: expose link structure for endpoint and/or allow circular link?
 dma_endpoint_t dma_create_endpoint(dma_drq_type_t type, const volatile void *addr) {
     dma_addr_mode_t mode = mode_for_drq(type);
     dma_endpoint_t end = { .type = type, .mode = mode, .addr = (uintptr_t)addr };
