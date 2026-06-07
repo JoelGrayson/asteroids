@@ -48,11 +48,9 @@ int main() {
 }
 
 static void game_manager() {
-    // Start game screen (on first boot)
-    start_game_screen();
-
     while (true) {
-        run_game();
+        start_game_screen(); // Start game screen!
+        run_game(); // Game run screen!
         while(game_manager_state == GAME_OVER_SCREEN) {
             game_over_screen();
         }
@@ -69,6 +67,7 @@ static void one_time_setup() {
     sounds_init();
     buttons_init();
     score_and_lives_init();
+    reset_highscores();
 }
 
 static void run_game() {
@@ -90,6 +89,7 @@ static void run_game() {
         // Game over
         if (get_num_lives() <= 0) {
             game_manager_state = GAME_OVER_SCREEN;
+            setup_gameover(); // Sets up game over screen.
             return;
         }
 

@@ -1,4 +1,5 @@
 #include "buttons.h"
+#include "game_over_screen.h"
 
 typedef void (*click_fn_t)(void* aux_data);
 
@@ -87,60 +88,81 @@ void buttons_init() {
 
 // Rotate left and right have pressed and released listeners. Hyperspace, thrust, and fire only have pressed listeners
 void rotate_left_pressed_listener() {
-    printf("Button pressed: left\n");
-    waiting = false;
-    rocket_rotate_left_press();
+    if(!is_gameover()) {
+        waiting = false;
+        rocket_rotate_left_press();
+    } else {
+        letter_set_rotating_down();
+    }
     gpio_interrupt_clear(ROTATE_LEFT_BUTTON_PRESS);
 }
 
 void rotate_left_released_listener() {
-    printf("Button released: left\n");
-    rocket_rotate_left_release();
+    if(!is_gameover()) {
+        rocket_rotate_left_release();
+    } else {
+        letter_set_unrotating_down();
+    }
     gpio_interrupt_clear(ROTATE_LEFT_BUTTON_RELEASE);
 }
 
 void rotate_right_pressed_listener() {
-    printf("Button pressed: right\n");
-    waiting = false;
-    rocket_rotate_right_press();
+    if(!is_gameover()) {
+        waiting = false;
+        rocket_rotate_right_press();
+    } else {
+        letter_set_rotating_up();
+    }
     gpio_interrupt_clear(ROTATE_RIGHT_BUTTON_PRESS);
 }
 
 void rotate_right_released_listener() {
-    printf("Button released: right\n");
-    rocket_rotate_right_release();
+    if(!is_gameover()) {
+        rocket_rotate_right_release();
+    } else {
+        letter_set_unrotating_up();
+    }
     gpio_interrupt_clear(ROTATE_RIGHT_BUTTON_RELEASE);
 }
 
 void hyperspace_pressed_listener() {
-    printf("Button pressed: hyperspace\n");
-    waiting = false;
+    if(!is_gameover()) {
+        waiting = false;
     
-    // Use hyper button to test exploding
-    rocket_hyperspace();
+        // Use hyper button to test exploding
+        rocket_hyperspace();
+    } else {
+        letter_enter();
+    }
     gpio_interrupt_clear(HYPERSPACE_BUTTON);
 }
 
 void thrust_pressed_listener() {
-    printf("Button pressed: thrust\n");
-    waiting = false;
-    rocket_thrust();
-
+    if(!is_gameover()) {
+        waiting = false;
+        rocket_thrust();
+    } else {
+        // Does nothing in end screen.
+    }
     gpio_interrupt_clear(THRUST_BUTTON_PRESS);
 }
 
 void thrust_released_listener() {
-    printf("Button released: thrust\n");
-    rocket_unthrust();
-
+    if(!is_gameover()) {
+        rocket_unthrust();
+    } else {
+        // Does nothing in end screen.
+    }
     gpio_interrupt_clear(THRUST_BUTTON_RELEASE);
 }
 
 void fire_pressed_listener() {
-    printf("Button pressed: fire\n");
-    waiting = false;
-    rocket_fire();
-
+    if(!is_gameover()) {
+        waiting = false;
+        rocket_fire();
+    } else {
+        // Does nothing in end screen
+    }
     gpio_interrupt_clear(FIRE_BUTTON);
 }
 

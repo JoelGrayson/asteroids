@@ -223,9 +223,12 @@ void loop_rocket() {
 
 
 void rocket_explode() {
-    rocket_is_exploding = true;
-    num_frames_after_rocket_exploded = 0;
-    decrease_lives();
+    // DO NOT EXPLODE AGAIN IF ROCKET IS ALREADY EXPLODING.
+    if(!rocket_is_exploding) {
+        rocket_is_exploding = true;
+        num_frames_after_rocket_exploded = 0;
+        decrease_lives();
+    }
 }
 
 struct point *get_points_of_rocket() {
