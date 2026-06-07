@@ -15,6 +15,7 @@
 #include "rocket.h"
 #include "graphics/geometry.h"
 #include "graphics/rotate_vector.h"
+#include "maths.h"
 
 enum saucer_state {
     NO_SAUCER, //no saucer on screen

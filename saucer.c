@@ -49,8 +49,8 @@ enum saucer_state saucer_state = NO_SAUCER;
 static int num_frames_after_saucer_explode = 0;
 static bool saucer_is_exploding = false;
 
-const double big_saucer_bullet_speed = 4;
-const double small_saucer_bullet_speed = 8;
+const double big_saucer_bullet_speed = 6;
+const double small_saucer_bullet_speed = 12;
 
 static unsigned long last_saucer_sound_tick;
 #define SAUCER_SOUND_INTERVAL 120000*TICKS_PER_USEC
@@ -213,7 +213,9 @@ void loop_saucer() {
                     .x = rocket_mechanics.x - saucer_mechanics.x,
                     .y = rocket_mechanics.y - saucer_mechanics.y
                 };
-                double eps = 0.2 * ((rand() % 3) - 1.5); //small angle to rotate by so it is not shooting straight at you
+                double num_minutes = frame / (FPS * 60);
+                double max_angle_off_by = max(0.3 - (num_minutes * 0.15), 0); //at start, off by 0.3 radians. After 2 minutes, off by nothing. Shoots straight at you.
+                double eps = max_angle_off_by * ((rand() % 3) - 1.5); //small angle to rotate by so it is not shooting straight at you
                 rotate_vector(&rocket_to_saucer, eps);
                 rocket_to_saucer = vec_normalize(rocket_to_saucer);
                 
