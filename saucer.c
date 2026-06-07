@@ -195,14 +195,18 @@ void loop_saucer() {
 
             if (saucer_frame % (int)(FPS / 2) == 0) { //twice a second
                 // Shoot!
-                double angle = angle_from(mechanics_to_point(saucer_mechanics), mechanics_to_point(get_rocket_mechanics()));
-                printf("angle from saucer→rocket = %d / 100\n", (int)(angle*100));
-
+                struct mechanics rocket_mechanics = get_rocket_mechanics();
+                struct vector rocket_to_saucer = {
+                    .x = rocket_mechanics.x - saucer_mechanics.x,
+                    .y = rocket_mechanics.y - saucer_mechanics.y
+                };
+                rocket_to_saucer = vec_normalize(rocket_to_saucer);
+                
                 struct mechanics new_bullet_mechanics = {
                     .x = saucer_mechanics.x,
                     .y = saucer_mechanics.y,
-                    .vx = small_saucer_bullet_speed * cosine(angle),
-                    .vy = small_saucer_bullet_speed * sine(angle),
+                    .vx = small_saucer_bullet_speed * rocket_to_saucer.x,
+                    .vy = small_saucer_bullet_speed * rocket_to_saucer.y,
                     .ax = 0,
                     .ay = 0,
                     .rotation = 0
