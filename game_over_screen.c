@@ -22,7 +22,7 @@ char* high_score_names[10];
 static char empty[1];
 static bool score_loaded = false;
 
-#define ROTATE_PERIOD 400000*TICKS_PER_USEC
+#define ROTATE_PERIOD 200000*TICKS_PER_USEC
 
 // Resets start and end screen states for new game start!
 void restart_game() {
@@ -88,11 +88,12 @@ static void rotate_letter() {
         if(rotating_down) {
             rotate_letter_up();
             name[let_index] = letter_selected;
+            last_rotate_tick = timer_get_ticks();
         } else if(rotating_up) {
             rotate_letter_down();
             name[let_index] = letter_selected;
+            last_rotate_tick = timer_get_ticks();
         }
-        last_rotate_tick = timer_get_ticks();
     }
 }
 
