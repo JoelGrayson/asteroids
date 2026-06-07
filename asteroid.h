@@ -47,6 +47,7 @@ struct asteroid {
 struct asteroid_list_t {
     struct asteroid ast;
     bool allocated;
+    bool allocate_on_next_frame; //whether it was created on the current frame and is yet to be allocated. This way, the new spawned asteroids don't immediately consume bullets.
 };
 
 

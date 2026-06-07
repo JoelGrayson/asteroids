@@ -91,11 +91,11 @@ static double saucer_speed = 5.0;
 
 static void spawn_saucer(enum saucer_state new_saucer_state) {
     if (new_saucer_state == BIG_SAUCER) {
-        printf("Spawning big saucer\n");
+        // printf("Spawning big saucer\n");
         saucer_state = new_saucer_state;
     }
     if (new_saucer_state == SMALL_SAUCER) {
-        printf("Spawning smol saucer\n");
+        // printf("Spawning smol saucer\n");
         saucer_state = new_saucer_state;
     }
 

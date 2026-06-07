@@ -24,7 +24,7 @@ static int noisy_num_frames_between_spawn = 2 * FPS; //±80% of num_frames_betwe
 
 static void spawn_asteroids_if_necessary();
 static void asteroid_spawn();
-static void asteroid_custom_spawn(struct point loc, struct vector heading, enum asteroid_type type, enum asteroid_size size); // Allows us to spawn an asteroid with custom parameters.
+static void asteroid_custom_spawn(struct point loc, struct vector heading, enum asteroid_type type, enum asteroid_size size, bool); // Allows us to spawn an asteroid with custom parameters.
 static void asteroid_despawn(struct asteroid_list_t* ast);
 static struct asteroid_list_t *get_next_spawnable_asteroid();
 
@@ -75,15 +75,16 @@ static void asteroid_set_pos(struct asteroid* ast, struct point new_pos) {
 // Mechanics function for asteroids during game loop
 static void asteroids_update_mechanics() {
     for(int i = 0; i < list_size; i++) {
-        if(asteroid_list[i].allocated) { // Only update mechanics
+        struct asteroid_list_t a = asteroid_list[i];
+        if(a.allocated && a.allocate_on_next_frame == false) { // Only update mechanics
             // If exploding, increment the exploding frame so animation precedes
-            if (asteroid_list[i].ast.is_exploding) {
-                asteroid_list[i].ast.exploding_frame++;
+            if (a.ast.is_exploding) {
+                a.ast.exploding_frame++;
             }
             // Done exploding animation
-            if (asteroid_list[i].ast.exploding_frame > NUM_FRAMES_OF_EXPLOSION) {
-                asteroid_list[i].ast.exploding_frame = 0;
-                asteroid_list[i].ast.is_exploding = false;
+            if (a.ast.exploding_frame > NUM_FRAMES_OF_EXPLOSION) {
+                a.ast.exploding_frame = 0;
+                a.ast.is_exploding = false;
                 asteroid_despawn(&asteroid_list[i]);
             }
             
@@ -178,7 +179,7 @@ static void asteroid_spawn(enum asteroid_type type, enum asteroid_size size) {
     ast->allocated = true; // We have just spawned this asteroid, so it is now allocated in the asteroid list.
 }
 
-static void asteroid_custom_spawn(struct point loc, struct vector heading, enum asteroid_type type, enum asteroid_size size) {
+static void asteroid_custom_spawn(struct point loc, struct vector heading, enum asteroid_type type, enum asteroid_size size, bool allocate_on_next_frame) {
     // Locates next spawnable asteroid from our list -- just returns function if there is no space for any more asteroids.
     struct asteroid_list_t *ast = get_next_spawnable_asteroid(asteroid_list, list_size);
     if(ast == NULL) return;
@@ -192,6 +193,7 @@ static void asteroid_custom_spawn(struct point loc, struct vector heading, enum 
     ast->ast.type = type;
     ast->ast.size = size;
     ast->allocated = true; // We have just spawned this asteroid, so it is now allocated in the asteroid list.
+    ast->allocate_on_next_frame = allocate_on_next_frame;
 }
 
 // Despawns asteroid by setting it to "deallocated."
@@ -211,7 +213,7 @@ static struct asteroid_list_t *get_next_spawnable_asteroid() {
 static void render_asteroids() {
     // Draws all allocated asteroids
     for(int i = 0; i < list_size; i++) {
-        if(asteroid_list[i].allocated) {
+        if(asteroid_list[i].allocated && asteroid_list[i].allocate_on_next_frame == false) {
             //printf("something is allocated\n");
             struct asteroid a = asteroid_list[i].ast;
             if (a.is_exploding) {
@@ -229,6 +231,11 @@ void loop_asteroids() {
     render_asteroids();
     asteroids_update_mechanics();
     spawn_asteroids_if_necessary();
+
+
+    for (int i = 0; i < list_size; i++) {
+        asteroid_list[i].allocate_on_next_frame = false;
+    }
 }
 
 static void spawn_asteroids_if_necessary() {
@@ -253,7 +260,7 @@ static void spawn_asteroids_if_necessary() {
 struct asteroid_list_t *get_asteroid_collision(struct mechanics obj, struct point *points_obj, int num_points_obj) {
     // Checks all allocated asteroids for collisions with object:
     for(int i = 0; i < list_size; i++) {
-        if(asteroid_list[i].allocated) {
+        if(asteroid_list[i].allocated && asteroid_list[i].allocate_on_next_frame == false) {
             struct asteroid a = asteroid_list[i].ast;
             struct point *points = get_points_of_asteroid(a);
             if(are_colliding(a.mechanics, obj, points, points_obj, ASTEROID_NUM_POINTS, num_points_obj)) return &asteroid_list[i];
@@ -274,6 +281,11 @@ void asteroid_increase_score_by(enum asteroid_size asteroid_size) {
             increase_score_by(100);
             break;
     }
+}
+
+
+void queue_up_asteroid_to_spawn(struct point p, struct vector v, enum asteroid_type t, enum asteroid_size s) {
+    
 }
 
 void asteroid_explode(struct asteroid_list_t *ast) {
@@ -308,8 +320,8 @@ void asteroid_explode(struct asteroid_list_t *ast) {
         rotate_vector(&v1, 0.2);
         rotate_vector(&v2, -0.2);
         enum asteroid_size new_asteroid_size = ast->ast.size + 1; // Decrement asteroid size from BIG to MEDIUM, or from MEDIUM to SMALL.
-        asteroid_custom_spawn(ast_loc, v1, ast->ast.type, new_asteroid_size);
-        asteroid_custom_spawn(ast_loc, v2, ast->ast.type, new_asteroid_size);
+        asteroid_custom_spawn(ast_loc, v1, ast->ast.type, new_asteroid_size, true);
+        asteroid_custom_spawn(ast_loc, v2, ast->ast.type, new_asteroid_size, true);
     }
 
     // Stop explosion effect from moving

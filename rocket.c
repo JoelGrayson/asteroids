@@ -236,7 +236,7 @@ void rocket_explode() {
     if(!rocket_is_exploding) {
         static long frame_when_rocket_last_exploded = 0;
     
-        printf("frame_when_rocket_last_exploded = %10ld, frame = %10ld\n", frame_when_rocket_last_exploded, frame);
+        // printf("frame_when_rocket_last_exploded = %10ld, frame = %10ld\n", frame_when_rocket_last_exploded, frame);
         if (frame_when_rocket_last_exploded == frame) { //cannot explode on the same frame
             return;
         }
