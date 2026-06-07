@@ -16,5 +16,9 @@
   * multiple gpio_extras including issues: added to ld flags: --allow-multiple-definition
   * clang: error: unsupported argument 'rv64im_zicsr' to option '-march='
     * Turns out my target was wrong
+* SD Card
+  * Used Stanford AI Playground's copy of Claude 4-5 Sonnet to translate the "write mmc image to bootloader" script in the CS107E SD card boot loader library
+  * from MacOS shell script to Windows 11 Powershell;
+    * that somehow worked.
 
 
