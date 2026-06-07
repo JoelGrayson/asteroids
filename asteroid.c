@@ -17,8 +17,9 @@ extern unsigned long last_thrust_sound_tick;
 
 
 static long frame_when_asteroid_last_spawned = 0;
+const int STARTING_NUM_FRAMES_BETWEEN_SPAWN = 2 * FPS;
 int num_frames_between_spawn;
-static int noisy_num_frames_between_spawn = 2 * FPS; //±80% of num_frames_between_spawn. Updated every time a new asteroid is spawned
+static int noisy_num_frames_between_spawn = STARTING_NUM_FRAMES_BETWEEN_SPAWN; //±80% of num_frames_between_spawn. Updated every time a new asteroid is spawned
 
 static void spawn_asteroids_if_necessary();
 static void asteroid_spawn();

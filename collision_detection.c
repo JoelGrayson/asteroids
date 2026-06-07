@@ -75,6 +75,7 @@ void collision_detection() {
         if (asteroid_to_explode != NULL) {
             //if an asteroid has collided with the rocket
             asteroid_explode(asteroid_to_explode);
+            asteroid_increase_score_by(asteroid_to_explode->ast.size);
             rocket_explode();
         }
     }
