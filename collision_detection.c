@@ -30,9 +30,6 @@ static void check_if_bullet_touching_objs(struct bullet **bullet) {
     if (saucer_state != NO_SAUCER) {
         if ((*bullet)->owner == ROCKET) { //only rocket bullet can destroy saucer
             if (are_colliding((*bullet)->mechanics, get_saucer_mechanics(), BULLET_COLLISION_POINTS, get_saucer_points(), BULLET_NUM_POINTS, get_num_saucer_exterior_points())) {
-                // Bullet touching saucer
-                delete_bullet(bullet);
-                despawn_saucer(true);
                 // 1000 - small, 200 big
                 if (saucer_state == BIG_SAUCER) {
                     increase_score_by(200);
@@ -40,6 +37,10 @@ static void check_if_bullet_touching_objs(struct bullet **bullet) {
                 if (saucer_state == SMALL_SAUCER) {
                     increase_score_by(1000);
                 }
+                
+                // Bullet touching saucer
+                delete_bullet(bullet);
+                despawn_saucer(true);
             }
         }
     }
