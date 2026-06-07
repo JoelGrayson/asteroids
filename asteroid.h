@@ -24,6 +24,8 @@ extern unsigned int MAX_ASTEROID_SPEED;
 
 #define EXPLOSION_SOUND_TICK_DURATION 2000000*TICKS_PER_USEC
 
+extern const int STARTING_NUM_FRAMES_BETWEEN_SPAWN;
+
 enum asteroid_type {
     A,
     B,

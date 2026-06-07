@@ -33,8 +33,13 @@ static void check_if_bullet_touching_objs(struct bullet **bullet) {
                 // Bullet touching saucer
                 delete_bullet(bullet);
                 despawn_saucer(true);
-                // TODO: proper point increment count
-                increase_score_by(100);
+                // 1000 - small, 200 big
+                if (saucer_state == BIG_SAUCER) {
+                    increase_score_by(200);
+                }
+                if (saucer_state == SMALL_SAUCER) {
+                    increase_score_by(1000);
+                }
             }
         }
     }
@@ -75,6 +80,7 @@ void collision_detection() {
         if (asteroid_to_explode != NULL) {
             //if an asteroid has collided with the rocket
             asteroid_explode(asteroid_to_explode);
+            asteroid_increase_score_by(asteroid_to_explode->ast.size);
             rocket_explode();
         }
     }

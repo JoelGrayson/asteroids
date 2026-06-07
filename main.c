@@ -28,7 +28,7 @@
 #include "frame.h"
 #include "game_manager_state.h"
 
-#define NUM_FRAMES_TIL_SPEEDUP 24*40
+#define NUM_FRAMES_TIL_SPEEDUP (FPS * 4)
 
 static void game_manager();
 static void one_time_setup();
@@ -60,7 +60,8 @@ static void game_manager() {
 // For the inits
 static void one_time_setup() {
     uart_init();
-    printf("One time setup\n");
+    const char *str = "One time setup %j\n";
+    printf(str);
     trig_init(3);
     gl_init(MONITOR_WIDTH, MONITOR_HEIGHT, FB_DOUBLEBUFFER);
     game_manager_state = START_GAME_SCREEN; // Always at start screen upon initial boot!
@@ -106,7 +107,9 @@ static void run_game() {
 
         // Game very slowly speeds up in difficulty and song beat as num_frames_between_spawn decreases:
         if(frame % NUM_FRAMES_TIL_SPEEDUP == 0) {
-            if(num_frames_between_spawn > 4) num_frames_between_spawn--;
+            if(num_frames_between_spawn > 4) {
+                num_frames_between_spawn--;
+            }
         }
             
         ticks_at_start_of_loop = timer_get_ticks();
@@ -115,7 +118,7 @@ static void run_game() {
 }
 
 static void setup_game() {
-    num_frames_between_spawn = 2 * FPS; // Sets number of seconds between asteroid spawns to default at 2.
+    num_frames_between_spawn = STARTING_NUM_FRAMES_BETWEEN_SPAWN; // Sets number of seconds between asteroid spawns to default at 2.
     setup_asteroids();
     setup_score_and_lives();
     setup_rocket();

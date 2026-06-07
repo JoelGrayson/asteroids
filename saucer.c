@@ -255,9 +255,8 @@ void despawn_saucer(bool explode) {
     if (explode) {
         num_frames_after_saucer_explode = 0;
         saucer_is_exploding = true;
+        play_bangMedium();
     }
-
-    // TODO: add sound effect when saucer destroyed
 }
 
 struct mechanics get_saucer_mechanics() {
