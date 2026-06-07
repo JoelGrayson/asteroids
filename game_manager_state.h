@@ -1,5 +1,5 @@
 enum game_manager_state {
-    START_GAME_SCREEN, //on first boot
+    START_GAME_SCREEN, //on first boot. Shows the high scores and press button to start
     GAME_IN_PLAY,
     GAME_OVER_SCREEN, //asks you to input your name
 };

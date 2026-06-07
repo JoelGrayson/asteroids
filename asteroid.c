@@ -30,6 +30,13 @@ static struct asteroid_list_t *get_next_spawnable_asteroid();
 void setup_asteroids() {
     if (DISABLE_ASTEROIDS) return;
 
+    for (int i = 0; i < MAX_NUM_ASTEROIDS; i++) {
+        asteroid_list[i].allocated = false;
+        asteroid_list[i].allocate_on_next_frame = false;
+    }
+    num_frames_between_spawn = STARTING_NUM_FRAMES_BETWEEN_SPAWN;
+    noisy_num_frames_between_spawn = STARTING_NUM_FRAMES_BETWEEN_SPAWN;
+
     // Spawn 9 asteroids at the start of the game
     MAX_ASTEROID_SPEED = 5; //start off slow
     for(int i = 0; i < 5; i++) {

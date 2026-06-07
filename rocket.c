@@ -89,6 +89,8 @@ static int num_frames_after_rocket_exploded = 0;
 static bool is_rotating_left = false;
 static bool is_rotating_right = false;
 
+static void reset_rocket();
+
 
 static void reset_rocket_mechanics() {
     // Mechanics
@@ -102,7 +104,7 @@ static void reset_rocket_mechanics() {
 }
 
 void setup_rocket() {
-    reset_rocket_mechanics();
+    reset_rocket();
 
     is_rotating_left = false;
     is_rotating_right = false;
@@ -217,6 +219,7 @@ static void render_rocket() {
     }
 
     // Only invincible for NUM_INVINCIBLE_FRAMES
+    printf("frame_when_first_invincible = %10ld, frame = %10ld\n", frame_when_first_invincible, frame);
     if (is_invincible && frame - frame_when_first_invincible > NUM_INVINCIBLE_FRAMES) {
         // No longer invincible
         is_invincible = false;

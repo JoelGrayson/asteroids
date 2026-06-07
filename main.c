@@ -73,12 +73,12 @@ static void one_time_setup() {
 
 static void run_game() {
     // Setup
+    frame = 0;
     setup_game();
     beat1 = true;
 
     // Loop surrounded by checks to throttle fps if necessary
     long ticks_at_start_of_loop = timer_get_ticks();
-    frame = 0;
     while (true) {
         loop(frame);
 
