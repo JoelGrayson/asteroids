@@ -61,6 +61,16 @@ void render_bullets() {
 }
 
 void bullets_update_mechanics();
+
+void setup_bullets() {
+    for (int i = 0; i < MAX_NUM_BULLETS; i++) {
+        if (bullets[i]) {
+            free(bullets[i]);
+            bullets[i] = NULL;
+        }
+    }
+}
+
 void loop_bullets() {
     render_bullets();
     bullets_update_mechanics();

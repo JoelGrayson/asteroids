@@ -27,6 +27,7 @@
 #include "collision_detection.h"
 #include "frame.h"
 #include "game_manager_state.h"
+#include "bullets.h"
 
 #define NUM_FRAMES_TIL_SPEEDUP (FPS * 4)
 
@@ -123,6 +124,7 @@ static void setup_game() {
     setup_score_and_lives();
     setup_rocket();
     setup_saucer();
+    setup_bullets();
 }
 
 // Runs one frame of the game

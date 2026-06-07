@@ -88,6 +88,10 @@ void buttons_init() {
 
 // Rotate left and right have pressed and released listeners. Hyperspace, thrust, and fire only have pressed listeners
 void rotate_left_pressed_listener() {
+    if (PRINT_BUTTON_PRESS) {
+        printf("Button pressed: rotate left\n");
+    }
+
     if(!is_gameover()) {
         waiting = false;
         rocket_rotate_left_press();
@@ -98,6 +102,10 @@ void rotate_left_pressed_listener() {
 }
 
 void rotate_left_released_listener() {
+    if (PRINT_BUTTON_PRESS) {
+        printf("Button released: rotate left\n");
+    }
+    
     if(!is_gameover()) {
         rocket_rotate_left_release();
     } else {
@@ -107,6 +115,10 @@ void rotate_left_released_listener() {
 }
 
 void rotate_right_pressed_listener() {
+    if (PRINT_BUTTON_PRESS) {
+        printf("Button pressed: rotate right\n");
+    }
+    
     if(!is_gameover()) {
         waiting = false;
         rocket_rotate_right_press();
@@ -117,6 +129,10 @@ void rotate_right_pressed_listener() {
 }
 
 void rotate_right_released_listener() {
+    if (PRINT_BUTTON_PRESS) {
+        printf("Button released: rotate right\n");
+    }
+    
     if(!is_gameover()) {
         rocket_rotate_right_release();
     } else {
@@ -126,6 +142,10 @@ void rotate_right_released_listener() {
 }
 
 void hyperspace_pressed_listener() {
+    if (PRINT_BUTTON_PRESS) {
+        printf("Button pressed: hyperspace\n");
+    }
+    
     if(!is_gameover()) {
         waiting = false;
     
@@ -138,6 +158,10 @@ void hyperspace_pressed_listener() {
 }
 
 void thrust_pressed_listener() {
+    if (PRINT_BUTTON_PRESS) {
+        printf("Button pressed: thrust\n");
+    }
+    
     if(!is_gameover()) {
         waiting = false;
         rocket_thrust();
@@ -148,6 +172,10 @@ void thrust_pressed_listener() {
 }
 
 void thrust_released_listener() {
+    if (PRINT_BUTTON_PRESS) {
+        printf("Button released: thrust\n");
+    }
+    
     if(!is_gameover()) {
         rocket_unthrust();
     } else {
@@ -157,6 +185,10 @@ void thrust_released_listener() {
 }
 
 void fire_pressed_listener() {
+    if (PRINT_BUTTON_PRESS) {
+        printf("Button pressed: fire\n");
+    }
+    
     if(!is_gameover()) {
         waiting = false;
         rocket_fire();

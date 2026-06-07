@@ -33,6 +33,7 @@ extern struct bullet *bullets[MAX_NUM_BULLETS];
 
 void draw_bullet(struct bullet *bullet) ;
 
+void setup_bullets();
 void loop_bullets();
 int get_curr_num_bullets();
 

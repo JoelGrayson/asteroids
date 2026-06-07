@@ -219,7 +219,7 @@ static void render_rocket() {
     }
 
     // Only invincible for NUM_INVINCIBLE_FRAMES
-    printf("frame_when_first_invincible = %10ld, frame = %10ld\n", frame_when_first_invincible, frame);
+    // printf("frame_when_first_invincible = %10ld, frame = %10ld\n", frame_when_first_invincible, frame);
     if (is_invincible && frame - frame_when_first_invincible > NUM_INVINCIBLE_FRAMES) {
         // No longer invincible
         is_invincible = false;
