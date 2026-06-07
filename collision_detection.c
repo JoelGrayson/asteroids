@@ -34,7 +34,13 @@ static void check_if_bullet_touching_objs(struct bullet **bullet) {
                 delete_bullet(bullet);
                 despawn_saucer(true);
                 // TODO: proper point increment count
-                increase_score_by(100);
+                // 1000 - small, 200 big
+                if (saucer_state == BIG_SAUCER) {
+                    increase_score_by(200);
+                }
+                if (saucer_state == SMALL_SAUCER) {
+                    increase_score_by(1000);
+                }
             }
         }
     }
