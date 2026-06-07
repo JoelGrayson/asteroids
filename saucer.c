@@ -1,4 +1,5 @@
 #include "saucer.h"
+#include "timer.h"
 
 #define NUM_SAUCER_EXTERIOR_POINTS (sizeof(BIG_SAUCER_EXTERIOR_POINTS) / sizeof(BIG_SAUCER_EXTERIOR_POINTS[0]))
 struct point BIG_SAUCER_EXTERIOR_POINTS[] = {
@@ -51,6 +52,9 @@ static bool saucer_is_exploding = false;
 const double big_saucer_bullet_speed = 4;
 const double small_saucer_bullet_speed = 8;
 
+static unsigned long last_saucer_sound_tick;
+#define SAUCER_SOUND_INTERVAL 120000*TICKS_PER_USEC
+
 void render_saucer() {
     if (saucer_state == NO_SAUCER) {
         if (saucer_is_exploding) {
@@ -85,6 +89,7 @@ void setup_saucer() {
     saucer_mechanics.rotation = 0;
 
     saucer_state = NO_SAUCER;
+    last_saucer_sound_tick = timer_get_ticks();
 }
 
 static double saucer_speed = 5.0;
@@ -157,6 +162,14 @@ void loop_saucer() {
             }
         }
     } else {
+        if(timer_get_ticks() > last_saucer_sound_tick + SAUCER_SOUND_INTERVAL) {
+            if(saucer_state == BIG_SAUCER) {
+                play_saucerBig();
+            } else {
+                play_saucerSmall();
+            }
+            last_saucer_sound_tick = timer_get_ticks();
+        }
         // There is a saucer  
 
         int saucer_frame = frame - frame_when_saucer_last_spawned;

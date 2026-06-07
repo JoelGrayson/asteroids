@@ -1,9 +1,10 @@
 #include "rocket.h"
+#include "frame.h"
 
 #define ROCKET_DECELERATION 0.22
 
 // Sound timing tracking variables for I2S non-blocking play:
-unsigned long last_fire_sound_tick;
+long last_fire_sound_frame;
 unsigned long last_thrust_sound_tick;
 
 extern unsigned long last_explosion_sound_tick;
@@ -138,8 +139,7 @@ static void reset_rocket() {
 /** Creates a bullet */
 void rocket_fire() {
     if(!rocket_is_exploding) {
-        unsigned long present_tick = timer_get_ticks();
-        if(present_tick-last_fire_sound_tick <= FIRE_SOUND_TICK_DURATION) return; // Refuse to fire faster than sound play!
+        if(frame-last_fire_sound_frame <= FIRE_SOUND_TICK_DURATION) return; // Refuse to fire faster than sound play!
         struct mechanics *mech = &rocket_mechanics;
         // Calculates direction bullet should be heading in
         struct vector dir = {0, -1.5};
@@ -159,7 +159,7 @@ void rocket_fire() {
         //present_tick = timer_get_ticks();
         //if(present_tick-last_fire_sound_tick > FIRE_SOUND_TICK_DURATION && present_tick-last_thrust_sound_tick > THRUST_SOUND_TICK_DURATION && present_tick-last_explosion_sound_tick > EXPLOSION_SOUND_TICK_DURATION) {
         //play_fire();
-        last_fire_sound_tick = timer_get_ticks();
+        last_fire_sound_frame = frame;
         //}
     }
 }
