@@ -12,9 +12,9 @@
 #include "bullets.h"
 #include "frame.h"
 #include "explosion.h"
-#include "angle_from.h"
 #include "rocket.h"
 #include "graphics/geometry.h"
+#include "graphics/rotate_vector.h"
 
 enum saucer_state {
     NO_SAUCER, //no saucer on screen

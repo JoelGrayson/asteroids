@@ -200,6 +200,8 @@ void loop_saucer() {
                     .x = rocket_mechanics.x - saucer_mechanics.x,
                     .y = rocket_mechanics.y - saucer_mechanics.y
                 };
+                double eps = 0.2 * ((rand() % 3) - 1.5); //small angle to rotate by so it is not shooting straight at you
+                rotate_vector(&rocket_to_saucer, eps);
                 rocket_to_saucer = vec_normalize(rocket_to_saucer);
                 
                 struct mechanics new_bullet_mechanics = {

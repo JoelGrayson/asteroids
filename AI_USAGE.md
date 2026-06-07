@@ -1,5 +1,4 @@
 # AI Usage
-* atan2.c/.h implemented by Claude
 * Rotation matrix equation
 * Center-align my rocket and explosion points
 * Learned that NULL can be assigned to any pointer type and `= { 0 }` is how you set a new array to all NULL (instead of garbage value because not zeroed out by default). Also if (x == NULL) can be written as if (!x) because of the falsiness of NULL
