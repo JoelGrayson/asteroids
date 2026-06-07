@@ -1,5 +1,8 @@
 #include "asteroid.h"
 
+// Minimum asteroid speed define
+#define MIN_ASTEROID_SPEED 2
+
 // Maximum asteroid speed global variable -- should increase as game progresses in time (and thereby difficulty).
 unsigned int MAX_ASTEROID_SPEED = 15;
 
@@ -14,8 +17,6 @@ unsigned long last_explosion_sound_tick;
 extern unsigned long last_fire_sound_tick;
 extern unsigned long last_thrust_sound_tick;
 
-// Minimum asteroid speed define
-#define MIN_ASTEROID_SPEED 2
 
 static long frame_when_asteroid_last_spawned = 0;
 int num_frames_between_spawn;
@@ -31,10 +32,12 @@ void setup_asteroids() {
     if (DISABLE_ASTEROIDS) return;
 
     // Spawn 9 asteroids at the start of the game
+    MAX_ASTEROID_SPEED = 5; //start off slow
     for(int i = 0; i < 5; i++) {
         asteroid_spawn(-1, BIG);
         frame_when_asteroid_last_spawned = 0;
     }
+    MAX_ASTEROID_SPEED = 15; //return to fast
 }
 
 // Gets the asteroid polygon points

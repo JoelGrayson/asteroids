@@ -307,7 +307,7 @@ static void rocket_update_mechanics() {
         rotate_vector(&dir, mech->rotation);
         mech->ax = dir.x;
         mech->ay = dir.y;
-        unsigned long present_tick = timer_get_ticks();
+        // unsigned long present_tick = timer_get_ticks();
         //if(present_tick-last_fire_sound_tick > FIRE_SOUND_TICK_DURATION && present_tick-last_thrust_sound_tick > THRUST_SOUND_TICK_DURATION && present_tick-last_explosion_sound_tick > EXPLOSION_SOUND_TICK_DURATION) {
         play_thrust();
         last_thrust_sound_tick = timer_get_ticks();
