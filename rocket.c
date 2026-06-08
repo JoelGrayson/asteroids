@@ -111,6 +111,8 @@ void setup_rocket() {
     rocket_is_exploding = false;
     rocket_is_thrusting = false;
     num_frames_after_rocket_exploded = 0;
+
+    last_fire_sound_frame = 0;
 }
 
 void rocket_rotate_left_press() {
