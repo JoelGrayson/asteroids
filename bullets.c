@@ -62,6 +62,7 @@ void setup_bullets() {
             bullets[i] = NULL;
         }
     }
+    curr_num_bullets = 0;
 }
 
 void loop_bullets() {
