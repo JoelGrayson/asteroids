@@ -4,6 +4,7 @@
 #include "timer.h"
 #include "interrupts.h"
 #include "score_and_lives.h"
+#include "leaderboard_store.h"
 #include <stdbool.h>
 
 static char name[4];
@@ -24,6 +25,7 @@ char* high_score_names[10];
 
 static char empty[1];
 static bool score_loaded = false;
+static bool entry_complete = false; // set by letter_enter() (ISR), handled in main loop
 
 #define ROTATE_PERIOD 200000*TICKS_PER_USEC
 
@@ -44,6 +46,9 @@ void reset_highscores() {
         high_score_names[i] = &empty[0];
     }
     highscore_index = -1;
+    // Restore the leaderboard persisted in SPI flash, overriding the defaults
+    // above. No-op (keeps defaults) if nothing has been saved yet.
+    leaderboard_load(high_scores, high_score_names);
 }
 
 static void load_highscore() {
@@ -107,6 +112,7 @@ void setup_gameover() {
     name[2] = '_';
     gameover = true;
     let_index = 0;
+    entry_complete = false;
 }
 
 bool is_gameover() {
@@ -115,7 +121,22 @@ bool is_gameover() {
 
 void game_over_screen() {
     const double char_width = gl_get_char_width();
-    
+
+    // Name entry just finished (flagged by letter_enter, an interrupt handler):
+    // commit the finalized name into the table, persist to flash, then restart.
+    // Done here in main context since flash erase/program blocks for ~50-400ms.
+    if (entry_complete) {
+        if (highscore_index != -1) {
+            for (int i = 0; i < 4; i++) {
+                high_score_names[highscore_index][i] = name[i];
+            }
+        }
+        leaderboard_save(high_scores, high_score_names);
+        entry_complete = false;
+        restart_game();
+        return;
+    }
+
     load_highscore(); // Loads highscore if we made it!
     rotate_letter();
     gl_clear(GL_BLACK);
@@ -157,12 +178,14 @@ void letter_enter() {
     // Advances to next index
     let_index++;
 
-    // If the name has been fully entered, delay a half-second so user can see (disable interrupts temporarily), and then restart game.
+    // If the name has been fully entered, finalize it and flag completion.
+    // The actual flash save + restart happen in game_over_screen() (main
+    // context) because this runs in an interrupt handler and a flash erase
+    // blocks for ~50-400ms.
     if(let_index == 3) {
         for(int i = 0; i < 3; i++) {
             if(name[i] == '_') name[i] = ' ';
         }
-        
-        restart_game();
+        entry_complete = true;
     }
 }

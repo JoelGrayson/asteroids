@@ -2,6 +2,7 @@
 * SPI Flash - I didn't want to have to deal with this complication. I learned about SPI and Flash from AI but had it write the code
   * jedec_test
   * rw_test and spi_flash.c
+  * leaderboard_store.c
 * Rotation matrix equation
 * Center-align my rocket and explosion points
 * Learned that NULL can be assigned to any pointer type and `= { 0 }` is how you set a new array to all NULL (instead of garbage value because not zeroed out by default). Also if (x == NULL) can be written as if (!x) because of the falsiness of NULL
