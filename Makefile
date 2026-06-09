@@ -64,6 +64,14 @@ tests/jedec_test.elf: tests/jedec_test.o
 tests/jedec_test: tests/jedec_test.bin
 	mango-run $<
 
+# Write-path test: links the test object + the spi_flash driver against the
+# staff -lmango library only (no game objects). Explicit rule overrides %.elf.
+tests/flash_rw_test.elf: tests/flash_rw_test.o spi_flash.o
+	riscv64-unknown-elf-ld $(LD_FLAGS) $^ $(LDLIBS) -o $@
+
+tests/flash_rw_test: tests/flash_rw_test.bin
+	mango-run $<
+
 
 
 # .PRECIOUS: %.o %.elf %.bin
