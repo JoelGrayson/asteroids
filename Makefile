@@ -25,7 +25,7 @@ run: $(RUN_PROGRAM)
 LD_FLAGS = -nostdlib -L$$CS107E/lib -T memmap.ld --allow-multiple-definition
 LDLIBS = -lmango -lmango_gcc
 %.elf: %.o $(LIBMANGO_SOURCES) $(GRAPHICS_SOURCES) $(OTHER_SOURCES)
-	riscv64-unknown-elf-ld $(LD_FLAGS) $^ $(LDLIBS) -o $@ 
+	riscv64-unknown-elf-ld $(LD_FLAGS) $^ $(LDLIBS) -o $@
 
 ARCH = -march=rv64im_zicsr -mabi=lp64 
 CFLAGS = $(ARCH) -g -Og -I$$CS107E/include -fno-omit-frame-pointer $$warn $$freestanding -fstack-protector-strong -Wno-builtin-declaration-mismatch  #no-builtin-decoration-mismatch because we implement math functions with different type signatures
@@ -51,6 +51,17 @@ tests/draw_asteroid_test: tests/draw_asteroid_test.bin
 	mango-run $<
 
 tests/audio_test: tests/audio_test.bin
+	mango-run $<
+
+
+
+# Self-contained bring-up test: links only against the staff -lmango library
+# (gpio/uart/timer/printf), NOT the game objects. This explicit rule overrides
+# the generic %.elf rule above so we don't drag in game_over_screen.o etc.
+tests/jedec_test.elf: tests/jedec_test.o
+	riscv64-unknown-elf-ld $(LD_FLAGS) $^ $(LDLIBS) -o $@
+
+tests/jedec_test: tests/jedec_test.bin
 	mango-run $<
 
 
