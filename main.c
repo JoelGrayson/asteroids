@@ -29,7 +29,7 @@
 #include "game_manager_state.h"
 #include "bullets.h"
 
-#define NUM_FRAMES_TIL_SPEEDUP (FPS * 4)
+#define NUM_FRAMES_TIL_SPEEDUP (FPS * 3)
 
 static void game_manager();
 static void one_time_setup();
