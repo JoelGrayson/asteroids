@@ -2,6 +2,7 @@
 
 A recreation of the 1979 Atari asteroids from bare-metal programming. You can purchase a unit at
 [joelgrayson.com/asteroids](https://joelgrayson.com/asteroids)
+
 I2S asynchronous audio in audio/sounds.c programmed by Sebastian (using Julie's I2S driver from lecture code, and using AI to refactor 11000 kHz, 8-bit-per-sample asteroids sound .wav files to 16-bit-per-sample 48 kHZ .wavs that could play on our audio chips).
 
 Trigonometry functions (sine, cosine, tan, trig_init) in maths.c programmed by Sebastian
