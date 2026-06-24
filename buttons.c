@@ -12,8 +12,8 @@ const gpio_id_t ROTATE_RIGHT_BUTTON_PRESS = GPIO_PB10;
 const gpio_id_t ROTATE_RIGHT_BUTTON_RELEASE = GPIO_PE17;
 const gpio_id_t HYPERSPACE_BUTTON = GPIO_PD15;
 const gpio_id_t THRUST_BUTTON_PRESS = GPIO_PD13;
-// const gpio_id_t THRUST_BUTTON_RELEASE = GPIO_PD12;
-const gpio_id_t THRUST_BUTTON_RELEASE = GPIO_PD10; //just for unit 2, since the PD12 not working on unit 2
+// const gpio_id_t THRUST_BUTTON_RELEASE = GPIO_PD12; //for unit 1. The default as shown on the schematics
+const gpio_id_t THRUST_BUTTON_RELEASE = GPIO_PD10; //just for unit 2 and 3, since the PD12 not working on unit 2
 const gpio_id_t FIRE_BUTTON = GPIO_PB0;
 #else
 // Sebastian's button configuration
